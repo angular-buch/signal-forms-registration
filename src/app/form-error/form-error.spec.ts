@@ -8,9 +8,8 @@ describe('FormError', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormError]
-    })
-    .compileComponents();
+      imports: [FormError],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FormError);
     component = fixture.componentInstance;

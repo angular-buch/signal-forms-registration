@@ -1,1 +1,22 @@
-<p>multiselect works!</p>
+<details class="dropdown" [ariaDisabled]="disabled()">
+  <summary>
+    {{ label() }}
+  </summary>
+  @if (!disabled()) {
+    <ul>
+      @for (topic of allTopics; track $index) {
+        <li>
+          <label>
+            <input
+              type="checkbox"
+              [name]="topic"
+              [checked]="value().includes(topic)"
+              (input)="changeInput(topic, $event)"
+            />
+            {{ topic }}
+          </label>
+        </li>
+      }
+    </ul>
+  }
+</details>

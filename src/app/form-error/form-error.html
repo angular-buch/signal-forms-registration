@@ -1,1 +1,8 @@
-<p>form-error works!</p>
+<small>
+  @for (error of errors(); track $index) {
+    {{ error.message }}
+    @if (!$last) {
+      <br />
+    }
+  }
+</small>

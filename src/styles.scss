@@ -24,7 +24,7 @@
     // "components/progress": false,
     // "components/tooltip": false,
     // "utilities/accessibility": false,
-    // "utilities/reduce-motion": false,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+     // "utilities/reduce-motion": false,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
   )
 );
 
@@ -42,8 +42,7 @@ section {
     'headline action'
     'body body';
   align-items: baseline;
-  gap: var(--pico-form-element-spacing-vertical)
-    var(--pico-form-element-spacing-horizontal);
+  gap: var(--pico-form-element-spacing-vertical) var(--pico-form-element-spacing-horizontal);
 
   > h1,
   > h2,
@@ -66,8 +65,7 @@ section {
   margin-bottom: var(--pico-block-spacing-vertical);
   box-shadow: var(--pico-card-box-shadow);
   border-radius: calc(var(--pico-border-radius) * 2);
-  padding: calc(var(--pico-block-spacing-vertical) * 0.66)
-    var(--pico-block-spacing-horizontal);
+  padding: calc(var(--pico-block-spacing-vertical) * 0.66) var(--pico-block-spacing-horizontal);
   background-color: var(--pico-card-sectioning-background-color);
 
   h2 {
@@ -132,8 +130,7 @@ article.book-card {
     }
 
     + * {
-      padding: calc(0.5 * var(--pico-block-spacing-vertical))
-        var(--pico-block-spacing-horizontal);
+      padding: calc(0.5 * var(--pico-block-spacing-vertical)) var(--pico-block-spacing-horizontal);
     }
   }
 
@@ -212,16 +209,14 @@ p {
 p[role='alert'] {
   box-shadow: var(--pico-card-box-shadow);
   border-radius: calc(var(--pico-border-radius) * 2);
-  padding: calc(var(--pico-block-spacing-vertical) * 0.66)
-    var(--pico-block-spacing-horizontal);
+  padding: calc(var(--pico-block-spacing-vertical) * 0.66) var(--pico-block-spacing-horizontal);
   background-color: #f7f7f7;
   border: 1px solid var(--pico-form-element-invalid-border-color);
 }
 
 p[aria-busy='true'] {
   margin-bottom: var(--pico-block-spacing-vertical);
-  padding: var(--pico-block-spacing-vertical)
-    var(--pico-block-spacing-horizontal);
+  padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
   border-radius: var(--pico-border-radius);
   background: var(--pico-card-background-color);
   box-shadow: var(--pico-card-box-shadow);
@@ -233,17 +228,12 @@ ul {
 }
 
 :where(a:not([role='button'])):is(
-    [aria-current]:not([aria-current='false']),
-    :hover,
-    :active,
-    :focus
-  ),
-[role='link']:is(
-    [aria-current]:not([aria-current='false']),
-    :hover,
-    :active,
-    :focus
-  ) {
+  [aria-current]:not([aria-current='false']),
+  :hover,
+  :active,
+  :focus
+),
+[role='link']:is([aria-current]:not([aria-current='false']), :hover, :active, :focus) {
   --pico-background-color: #ad40bf;
   --pico-border-color: var(--pico-primary-border);
   --pico-color: var(--pico-primary-inverse);
@@ -278,14 +268,10 @@ select.ng-touched.ng-invalid,
 textarea.ng-touched.ng-invalid {
   background-image: var(--pico-icon-invalid);
   --pico-border-color: var(--pico-form-element-invalid-border-color);
-  padding-right: calc(
-    var(--pico-form-element-spacing-horizontal) + 1.5rem
-  ) !important;
+  padding-right: calc(var(--pico-form-element-spacing-horizontal) + 1.5rem) !important;
   padding-left: var(--pico-form-element-spacing-horizontal);
   padding-inline-start: var(--pico-form-element-spacing-horizontal) !important;
-  padding-inline-end: calc(
-    var(--pico-form-element-spacing-horizontal) + 1.5rem
-  ) !important;
+  padding-inline-end: calc(var(--pico-form-element-spacing-horizontal) + 1.5rem) !important;
   background-position: center right 0.75rem;
   background-size: 1rem auto;
   background-repeat: no-repeat;

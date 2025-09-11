@@ -1,1 +1,24 @@
-<p>identity-form works!</p>
+<label
+  >Gender
+  <select name="gender-identity" [control]="identity().gender">
+    <option value="" selected>Please select</option>
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+    <option value="diverse">Diverse</option>
+  </select>
+</label>
+
+<div class="group-with-gap">
+  @if (!identity().salutation().hidden()) {
+    <label
+      >Salutation
+      <input type="text" placeholder="e. g. Mx." [control]="identity().salutation" />
+    </label>
+  }
+  @if (!identity().pronoun().hidden()) {
+    <label
+      >Pronoun
+      <input type="text" placeholder="e. g. they/them" [control]="identity().pronoun" />
+    </label>
+  }
+</div>
