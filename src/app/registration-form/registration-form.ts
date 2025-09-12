@@ -23,13 +23,12 @@ import {
   validate,
   validateAsync,
   validateTree,
-  TreeValidator,
 } from '@angular/forms/signals';
 
-import { FormError } from '../form-error/form-error';
-import { IdentityForm, GenderIdentity, identitySchema } from '../identity-form/identity-form';
-import { Multiselect } from '../multiselect/multiselect';
 import { RegistrationService } from '../registration-service';
+import { IdentityForm, GenderIdentity, identitySchema } from '../identity-form/identity-form';
+import { FormError } from '../form-error/form-error';
+import { Multiselect } from '../multiselect/multiselect';
 
 export interface RegisterFormData {
   username: string;
@@ -89,7 +88,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
           kind: 'atLeastOneEmail',
           message: 'At least one E-Mail address must be added',
         })
-      : undefined,
+      : undefined
   );
   applyEach(fieldPath.email, (emailPath) => {
     email(emailPath, { message: 'E-Mail format is invalid' });
@@ -106,7 +105,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   pattern(
     fieldPath.password.pw1,
     new RegExp('^.*[!@#$%^&*(),.?":{}|<>\\[\\]\\\\/~`_+=;\'\\-].*$'),
-    { message: 'The passwort must contain at least one special character' },
+    { message: 'The passwort must contain at least one special character' }
   );
   validateTree(fieldPath.password, ({ valueOf, fieldOf }) => {
     return valueOf(fieldPath.password.pw2) === valueOf(fieldPath.password.pw1)
@@ -134,9 +133,9 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
               kind: 'noTopicSelected',
               message: 'Select at least one newsletter topic',
             })
-          : undefined,
+          : undefined
       );
-    },
+    }
   );
 
   // disable topics selection when checkbox for subscription was not activated
@@ -169,7 +168,7 @@ export class RegistrationForm {
   private readonly registrationService = inject(RegistrationService);
   protected readonly registrationModel = signal<RegisterFormData>(initialState);
 
-  protected readonly f = form(this.registrationModel, formSchema);
+  protected readonly registrationForm = form(this.registrationModel, formSchema);
 
   protected ariaInvalidState(field: FieldState<string | boolean | number>): boolean | undefined {
     const errors = field.errors();
@@ -181,20 +180,22 @@ export class RegistrationForm {
   }
 
   protected addEmail(e: Event): boolean {
-    this.f.email().value.update((items) => [...items, '']);
+    this.registrationForm.email().value.update((items) => [...items, '']);
     e.preventDefault();
     return false;
   }
 
   protected removeEmail(removeIndex: number): void {
-    this.f.email().value.update((items) => items.filter((_, index) => index !== removeIndex));
+    this.registrationForm
+      .email()
+      .value.update((items) => items.filter((_, index) => index !== removeIndex));
   }
 
   protected async submit(e: Event) {
     e?.preventDefault();
 
     // validate when submitting and assign possible errors for matching field for showing in the UI
-    await submit(this.f, async (form) => {
+    await submit(this.registrationForm, async (form) => {
       const errors: WithField<CustomValidationError | ValidationError>[] = [];
 
       try {
@@ -207,7 +208,7 @@ export class RegistrationForm {
               kind: 'serverError',
               message: 'There was an server error, please try again (should work after 3rd try)',
             },
-          }),
+          })
         );
       }
 
@@ -219,6 +220,6 @@ export class RegistrationForm {
   // Reset form
   protected reset() {
     this.registrationModel.set(initialState);
-    this.f().reset();
+    this.registrationForm().reset();
   }
 }

@@ -3,29 +3,33 @@
     >Username
     <input
       type="text"
-      [control]="f.username"
-      [attr.aria-invalid]="ariaInvalidState(f.username())"
+      [control]="registrationForm.username"
+      [attr.aria-invalid]="ariaInvalidState(registrationForm.username())"
     />
-    @if (f.username().touched() && f.username().errors().length) {
-      <app-form-error [errors]="f.username().errors()" />
+    @if (registrationForm.username().touched() && registrationForm.username().errors().length) {
+    <app-form-error [errors]="registrationForm.username().errors()" />
     }
   </label>
 
   <!-- A whole child form with own model -->
-  <app-identity-form [identity]="f.identity" />
+  <app-identity-form [identity]="registrationForm.identity" />
 
   <!-- native HTML inputs bound with the [control] directive -->
   <div>
     <label
       >Age
-      <input type="number" [control]="f.age" [attr.aria-invalid]="ariaInvalidState(f.age())" />
-      @if (f.age().touched() && f.age().errors().length) {
-        <app-form-error [errors]="f.age().errors()" />
+      <input
+        type="number"
+        [control]="registrationForm.age"
+        [attr.aria-invalid]="ariaInvalidState(registrationForm.age())"
+      />
+      @if (registrationForm.age().touched() && registrationForm.age().errors().length) {
+      <app-form-error [errors]="registrationForm.age().errors()" />
       }
     </label>
     <label
       >Birthday
-      <input type="date" [control]="f.birthday" />
+      <input type="date" [control]="registrationForm.birthday" />
     </label>
   </div>
 
@@ -35,11 +39,12 @@
       <input
         type="password"
         autocomplete
-        [control]="f.password.pw1"
-        [attr.aria-invalid]="ariaInvalidState(f.password.pw1())"
+        [control]="registrationForm.password.pw1"
+        [attr.aria-invalid]="ariaInvalidState(registrationForm.password.pw1())"
       />
-      @if (f.password.pw1().touched() && f.password.pw1().errors().length) {
-        <app-form-error [errors]="f.password.pw1().errors()" />
+      @if (registrationForm.password.pw1().touched() &&
+      registrationForm.password.pw1().errors().length) {
+      <app-form-error [errors]="registrationForm.password.pw1().errors()" />
       }
     </label>
     <label
@@ -47,66 +52,77 @@
       <input
         type="password"
         autocomplete
-        [control]="f.password.pw2"
-        [attr.aria-invalid]="ariaInvalidState(f.password.pw2())"
+        [control]="registrationForm.password.pw2"
+        [attr.aria-invalid]="ariaInvalidState(registrationForm.password.pw2())"
       />
-      @if (f.password.pw2().touched() && f.password.pw2().errors().length) {
-        <app-form-error [errors]="f.password.pw2().errors()" />
+      @if (registrationForm.password.pw2().touched() &&
+      registrationForm.password.pw2().errors().length) {
+      <app-form-error [errors]="registrationForm.password.pw2().errors()" />
       }
     </label>
-    @if (f.password().touched() && f.password().errors().length) {
-      <app-form-error [errors]="f.password().errors()" />
+    @if (registrationForm.password().touched() && registrationForm.password().errors().length) {
+    <app-form-error [errors]="registrationForm.password().errors()" />
     }
   </div>
   <fieldset>
     <legend>E-Mail Addresses</legend>
     <div>
-      @for (emailField of f.email; track $index) {
-        <div>
-          <div role="group">
-            <input
-              type="email"
-              [control]="emailField"
-              [attr.aria-label]="'E-Mail ' + $index"
-              [attr.aria-invalid]="ariaInvalidState(emailField())"
-            />
-            <button type="button" (click)="removeEmail($index)">-</button>
-          </div>
-          @if (emailField().touched() && emailField().errors().length) {
-            <app-form-error [errors]="emailField().errors()" />
-          }
+      @for (emailField of registrationForm.email; track $index) {
+      <div>
+        <div role="group">
+          <input
+            type="email"
+            [control]="emailField"
+            [attr.aria-label]="'E-Mail ' + $index"
+            [attr.aria-invalid]="ariaInvalidState(emailField())"
+          />
+          <button type="button" (click)="removeEmail($index)">-</button>
         </div>
+        @if (emailField().touched() && emailField().errors().length) {
+        <app-form-error [errors]="emailField().errors()" />
+        }
+      </div>
       }
     </div>
-    @if (!f.email[0] || (f.email[0]().touched() && f.email().errors().length)) {
-      <app-form-error [errors]="f.email().errors()" />
+    @if (!registrationForm.email[0] || (registrationForm.email[0]().touched() &&
+    registrationForm.email().errors().length)) {
+    <app-form-error [errors]="registrationForm.email().errors()" />
     }
     <button type="button" (click)="addEmail($event)">+</button>
   </fieldset>
   <label
     >Subscribe to Newsletter?
-    <input type="checkbox" [control]="f.newsletter" />
+    <input type="checkbox" [control]="registrationForm.newsletter" />
   </label>
-  <app-multiselect [control]="f.newsletterTopics" label="Topics (multiple possible):" />
-  @if (f.newsletterTopics().touched() && f.newsletterTopics().errors().length) {
-    <app-form-error [errors]="f.newsletterTopics().errors()" />
+  <app-multiselect
+    [control]="registrationForm.newsletterTopics"
+    label="Topics (multiple possible):"
+  />
+  @if (registrationForm.newsletterTopics().touched() &&
+  registrationForm.newsletterTopics().errors().length) {
+  <app-form-error [errors]="registrationForm.newsletterTopics().errors()" />
   }
   <label
     >I agree to the terms and conditions
     <input
       type="checkbox"
-      [attr.aria-invalid]="ariaInvalidState(f.agreeToTermsAndConditions())"
-      [control]="f.agreeToTermsAndConditions"
+      [attr.aria-invalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions())"
+      [control]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
-  @if (f.agreeToTermsAndConditions().touched() && f.agreeToTermsAndConditions().errors().length) {
-    <app-form-error [errors]="f.agreeToTermsAndConditions().errors()" />
+  @if (registrationForm.agreeToTermsAndConditions().touched() &&
+  registrationForm.agreeToTermsAndConditions().errors().length) {
+  <app-form-error [errors]="registrationForm.agreeToTermsAndConditions().errors()" />
   }
   <hr />
-  <app-form-error [errors]="f().errors()" />
+  <app-form-error [errors]="registrationForm().errors()" />
   <div role="group">
-    <button type="submit" [disabled]="f().submitting()" [ariaBusy]="f().submitting()">
-      Register
+    <button
+      type="submit"
+      [disabled]="registrationForm().submitting()"
+      [attr.aria-busy]="registrationForm().submitting()"
+    >
+      @if (registrationForm().submitting()) { Registering... } @else { Register }
     </button>
     <button type="reset" (click)="reset()">Reset</button>
   </div>
@@ -118,13 +134,13 @@
     <div>
       <h2>Form States</h2>
       <ul>
-        <li>Touched: {{ f().touched() }}</li>
-        <li>Valid: {{ f().valid() }}</li>
-        <li>Invalid: {{ f().invalid() }}</li>
-        <li>Dirty: {{ f().dirty() }}</li>
-        <li>Disabled: {{ f().disabled() }}</li>
-        <li>Pending: {{ f().pending() }}</li>
-        <li>Submitting: {{ f().submitting() }}</li>
+        <li>Touched: {{ registrationForm().touched() }}</li>
+        <li>Valid: {{ registrationForm().valid() }}</li>
+        <li>Invalid: {{ registrationForm().invalid() }}</li>
+        <li>Dirty: {{ registrationForm().dirty() }}</li>
+        <li>Disabled: {{ registrationForm().disabled() }}</li>
+        <li>Pending: {{ registrationForm().pending() }}</li>
+        <li>Submitting: {{ registrationForm().submitting() }}</li>
       </ul>
     </div>
     <div>
