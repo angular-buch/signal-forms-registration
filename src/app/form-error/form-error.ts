@@ -1,6 +1,5 @@
 import { Component, input } from '@angular/core';
-
-import { ValidationError, WithOptionalField } from '@angular/forms/signals';
+import { FieldState } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-form-error',
@@ -8,6 +7,6 @@ import { ValidationError, WithOptionalField } from '@angular/forms/signals';
   templateUrl: './form-error.html',
   styleUrl: './form-error.scss',
 })
-export class FormError {
-  errors = input<readonly WithOptionalField<ValidationError>[]>([]);
+export class FormError<T> {
+  field = input.required<FieldState<T>>();
 }

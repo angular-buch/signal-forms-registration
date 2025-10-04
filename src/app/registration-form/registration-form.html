@@ -6,9 +6,7 @@
       [control]="registrationForm.username"
       [attr.aria-invalid]="ariaInvalidState(registrationForm.username())"
     />
-    @if (registrationForm.username().touched() && registrationForm.username().errors().length) {
-    <app-form-error [errors]="registrationForm.username().errors()" />
-    }
+    <app-form-error [field]="registrationForm.username()" />
   </label>
 
   <!-- A whole child form with own model -->
@@ -23,9 +21,7 @@
         [control]="registrationForm.age"
         [attr.aria-invalid]="ariaInvalidState(registrationForm.age())"
       />
-      @if (registrationForm.age().touched() && registrationForm.age().errors().length) {
-      <app-form-error [errors]="registrationForm.age().errors()" />
-      }
+      <app-form-error [field]="registrationForm.age()" />
     </label>
   </div>
 
@@ -38,10 +34,7 @@
         [control]="registrationForm.password.pw1"
         [attr.aria-invalid]="ariaInvalidState(registrationForm.password.pw1())"
       />
-      @if (registrationForm.password.pw1().touched() &&
-      registrationForm.password.pw1().errors().length) {
-      <app-form-error [errors]="registrationForm.password.pw1().errors()" />
-      }
+      <app-form-error [field]="registrationForm.password.pw1()" />
     </label>
     <label
       >Password Confirmation
@@ -51,14 +44,9 @@
         [control]="registrationForm.password.pw2"
         [attr.aria-invalid]="ariaInvalidState(registrationForm.password.pw2())"
       />
-      @if (registrationForm.password.pw2().touched() &&
-      registrationForm.password.pw2().errors().length) {
-      <app-form-error [errors]="registrationForm.password.pw2().errors()" />
-      }
+      <app-form-error [field]="registrationForm.password.pw2()" />
     </label>
-    @if (registrationForm.password().touched() && registrationForm.password().errors().length) {
-    <app-form-error [errors]="registrationForm.password().errors()" />
-    }
+    <app-form-error [field]="registrationForm.password()" />
   </div>
   <fieldset>
     <legend>E-Mail Addresses</legend>
@@ -74,16 +62,11 @@
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
-        @if (emailField().touched() && emailField().errors().length) {
-        <app-form-error [errors]="emailField().errors()" />
-        }
+        <app-form-error [field]="emailField()" />
       </div>
       }
     </div>
-    @if (!registrationForm.email[0] || (registrationForm.email[0]().touched() &&
-    registrationForm.email().errors().length)) {
-    <app-form-error [errors]="registrationForm.email().errors()" />
-    }
+    <app-form-error [field]="registrationForm.email()" />
     <button type="button" (click)="addEmail($event)">+</button>
   </fieldset>
   <label
@@ -94,10 +77,7 @@
     [control]="registrationForm.newsletterTopics"
     label="Topics (multiple possible):"
   />
-  @if (registrationForm.newsletterTopics().touched() &&
-  registrationForm.newsletterTopics().errors().length) {
-  <app-form-error [errors]="registrationForm.newsletterTopics().errors()" />
-  }
+  <app-form-error [field]="registrationForm.newsletterTopics()" />
   <label
     >I agree to the terms and conditions
     <input
@@ -106,12 +86,9 @@
       [control]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
-  @if (registrationForm.agreeToTermsAndConditions().touched() &&
-  registrationForm.agreeToTermsAndConditions().errors().length) {
-  <app-form-error [errors]="registrationForm.agreeToTermsAndConditions().errors()" />
-  }
+  <app-form-error [field]="registrationForm.agreeToTermsAndConditions()" />
   <hr />
-  <app-form-error [errors]="registrationForm().errors()" />
+  <app-form-error [field]="registrationForm()" />
   <div role="group">
     <button
       type="submit"
