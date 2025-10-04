@@ -34,7 +34,6 @@ export interface RegisterFormData {
   username: string;
   identity: GenderIdentity;
   age: number;
-  birthday: Date;
   password: { pw1: string; pw2: string };
   email: string[];
   newsletter: boolean;
@@ -149,8 +148,7 @@ const initialState: RegisterFormData = {
     salutation: '',
     pronoun: '',
   },
-  age: 18, // FIMXE (not implemented yet in Angular): when input changes it will be a string again :/
-  birthday: new Date(), // FIMXE (not implemented yet in Angular): it will be a string (format: yyyy-mm-dd) when input changes
+  age: 18,
   password: { pw1: '', pw2: '' },
   email: [''],
   newsletter: false,
