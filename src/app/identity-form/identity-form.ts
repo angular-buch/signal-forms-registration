@@ -1,5 +1,6 @@
 import { Component, model } from '@angular/core';
-import { Control, Field, hidden, schema } from '@angular/forms/signals';
+import { Control, Field, hidden, required, schema } from '@angular/forms/signals';
+import { FormError } from '../form-error/form-error';
 
 export interface GenderIdentity {
   gender: '' | 'male' | 'female' | 'diverse';
@@ -14,11 +15,20 @@ export const identitySchema = schema<GenderIdentity>((path) => {
   hidden(path.pronoun, ({ valueOf }) => {
     return !valueOf(path.gender) || valueOf(path.gender) !== 'diverse';
   });
+
+  required(path.salutation, {
+    when: ({ valueOf }) => valueOf(path.gender) === 'diverse',
+    message: "Please choose a salutation, when 'diverse' gender selected",
+  });
+  required(path.pronoun, {
+    when: ({ valueOf }) => valueOf(path.gender) === 'diverse',
+    message: "Please choose a pronoun, when 'diverse' gender selected",
+  });
 });
 
 @Component({
   selector: 'app-identity-form',
-  imports: [Control],
+  imports: [Control, FormError],
   templateUrl: './identity-form.html',
   styleUrl: './identity-form.scss',
 })
