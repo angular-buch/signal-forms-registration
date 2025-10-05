@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { Control, Field, hidden, schema } from '@angular/forms/signals';
 
 export interface GenderIdentity {
@@ -23,5 +23,13 @@ export const identitySchema = schema<GenderIdentity>((path) => {
   styleUrl: './identity-form.scss',
 })
 export class IdentityForm {
-  readonly identity = input.required<Field<GenderIdentity>>();
+  readonly identity = model.required<Field<GenderIdentity>>();
+
+  protected maybeUpdateSalutationAndPronoun(event: Event) {
+    const gender = (event.target as HTMLSelectElement).value;
+    if (gender !== 'diverse') {
+      this.identity().salutation().value.set('');
+      this.identity().pronoun().value.set('');
+    }
+  }
 }
