@@ -40,6 +40,9 @@ export class IdentityForm {
     if (gender !== 'diverse') {
       this.identity().salutation().value.set('');
       this.identity().pronoun().value.set('');
+    } else {
+      // this.identity().salutation().markAsUntouched();
+      // this.identity().pronoun().markAsUntouched();
     }
   }
 }
