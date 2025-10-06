@@ -103,18 +103,47 @@
 
 <!-- Debug Output -->
 <article>
-  <div class="columns">
+  <div role="group" class="gap">
     <div>
       <h2>Form States</h2>
-      <ul>
-        <li>Touched: {{ registrationForm().touched() }}</li>
-        <li>Valid: {{ registrationForm().valid() }}</li>
-        <li>Invalid: {{ registrationForm().invalid() }}</li>
-        <li>Dirty: {{ registrationForm().dirty() }}</li>
-        <li>Disabled: {{ registrationForm().disabled() }}</li>
-        <li>Pending: {{ registrationForm().pending() }}</li>
-        <li>Submitting: {{ registrationForm().submitting() }}</li>
-      </ul>
+      <table class="striped">
+        <thead>
+          <tr>
+            <th scope="col">State</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td scope="row">Touched:</td>
+            <td>{{ registrationForm().touched() }}</td>
+          </tr>
+          <tr>
+            <td scope="row">Valid:</td>
+            <td>{{ registrationForm().valid() }}</td>
+          </tr>
+          <tr>
+            <td scope="row">Invalid:</td>
+            <td>{{ registrationForm().invalid() }}</td>
+          </tr>
+          <tr>
+            <td scope="row">Dirty:</td>
+            <td>{{ registrationForm().dirty() }}</td>
+          </tr>
+          <tr>
+            <td scope="row">Disabled:</td>
+            <td>{{ registrationForm().disabled() }}</td>
+          </tr>
+          <tr>
+            <td scope="row">Pending:</td>
+            <td>{{ registrationForm().pending() }}</td>
+          </tr>
+          <tr>
+            <td scope="row">Submitting:</td>
+            <td>{{ registrationForm().submitting() }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div>
       <h3>Data Model</h3>

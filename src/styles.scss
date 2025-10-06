@@ -24,7 +24,7 @@
     // "components/progress": false,
     // "components/tooltip": false,
     // "utilities/accessibility": false,
-     // "utilities/reduce-motion": false,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    // "utilities/reduce-motion": false,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
   )
 );
 
@@ -71,6 +71,11 @@ section {
   h2 {
     font-size: calc(0.8 * var(--pico-font-size));
   }
+}
+
+.gap {
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 article.book-card {
@@ -228,11 +233,11 @@ ul {
 }
 
 :where(a:not([role='button'])):is(
-  [aria-current]:not([aria-current='false']),
-  :hover,
-  :active,
-  :focus
-),
+    [aria-current]:not([aria-current='false']),
+    :hover,
+    :active,
+    :focus
+  ),
 [role='link']:is([aria-current]:not([aria-current='false']), :hover, :active, :focus) {
   --pico-background-color: #ad40bf;
   --pico-border-color: var(--pico-primary-border);
