@@ -1,5 +1,7 @@
 # SignalFormsRegistration
 
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/angular-buch/signal-forms-registration)
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.0-next.3.
 
 ## Development server
