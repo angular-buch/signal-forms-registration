@@ -8,6 +8,25 @@
   $enable-viewport: true,
   $enable-responsive-spacings: true,
   $enable-responsive-typography: true,
+  // Breakpoints, viewports and root font size
+  $breakpoints:
+    (
+      // Small (landscape phones)
+      // Font size: 17px
+      sm: (breakpoint: 576px, viewport: 510px, root-font-size: 106.25%),
+      // Medium (tablets)
+      // Font size: 18px
+      md: (breakpoint: 600px, viewport: 550px, root-font-size: 112.5%),
+      // Large
+      // Font size: 19px
+      lg: (breakpoint: 768px, viewport: 700px, root-font-size: 118.75%),
+      // Extra large
+      // Font size: 20px
+      xl: (breakpoint: 1024px, viewport: 800px, root-font-size: 125%),
+      // Extra extra large
+      // Font size: 21px
+      xxl: (breakpoint: 1536px, viewport: 800px, root-font-size: 131.25%),
+    ),
   $modules: (
     // "content/code": false,
     // "forms/input-color": false,
@@ -24,7 +43,7 @@
     // "components/progress": false,
     // "components/tooltip": false,
     // "utilities/accessibility": false,
-    // "utilities/reduce-motion": false,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    // "utilities/reduce-motion": false,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
   )
 );
 
