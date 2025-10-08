@@ -169,12 +169,7 @@ export class RegistrationForm {
   protected readonly registrationForm = form(this.registrationModel, formSchema);
 
   protected ariaInvalidState(field: FieldState<string | boolean | number>): boolean | undefined {
-    const errors = field.errors();
-    if (!field.touched()) {
-      return undefined;
-    } else {
-      return errors.length > 0 && field.touched();
-    }
+    return field.touched() ? field.errors().length > 0 : undefined;
   }
 
   protected addEmail(e: Event): boolean {
