@@ -23,6 +23,7 @@ import {
   validate,
   validateAsync,
   validateTree,
+  applyWhenValue,
 } from '@angular/forms/signals';
 
 import { RegistrationService } from '../registration-service';
@@ -52,7 +53,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   });
   validateAsync(fieldPath.username, {
     // Reactive params
-    params: ({ value }) => value(),
+    params: (ctx) => ctx.value(),
     // Factory creating a resource
     factory: (params) => {
       const registrationService = inject(RegistrationService);
@@ -81,8 +82,8 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   min(fieldPath.age, 18, { message: 'You must be >=18 years old' });
 
   // at least one email and each email must match format
-  validate(fieldPath.email, ({ value }) =>
-    !value().some((e) => e)
+  validate(fieldPath.email, (ctx) =>
+    !ctx.value().some((e) => e)
       ? customError({
           kind: 'atLeastOneEmail',
           message: 'At least one E-Mail address must be added',
@@ -106,11 +107,11 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
     new RegExp('^.*[!@#$%^&*(),.?":{}|<>\\[\\]\\\\/~`_+=;\'\\-].*$'),
     { message: 'The passwort must contain at least one special character' }
   );
-  validateTree(fieldPath.password, ({ valueOf, fieldOf }) => {
-    return valueOf(fieldPath.password.pw2) === valueOf(fieldPath.password.pw1)
+  validateTree(fieldPath.password, (ctx) => {
+    return ctx.value().pw2 === ctx.value().pw1
       ? undefined
       : customError({
-          field: fieldOf(fieldPath.password.pw2), // assign the error to the seconds password field
+          field: ctx.fieldOf(fieldPath.password.pw2), // assign the error to the second password field
           kind: 'confirmationPassword',
           message: 'The entered password must match with the one specified in "Password" field',
         });
@@ -121,13 +122,28 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
     message: 'You must agree to the terms and conditions',
   });
 
+  /*applyWhenValue(
+    fieldPath,
+    (value) => value.newsletter,
+    (fieldPathWhenTrue) => {
+      validate(fieldPathWhenTrue.newsletterTopics, (ctx) =>
+        !ctx.value().length
+          ? customError({
+              kind: 'noTopicSelected',
+              message: 'Select at least one newsletter topic',
+            })
+          : undefined
+      );
+    }
+  );*/
+
   // apply conditionally: only when subscribe to newsletter, rules apply and at least one topic must be selected
   applyWhen(
     fieldPath,
-    ({ value }) => value().newsletter,
+    (ctx) => ctx.value().newsletter,
     (fieldPathWhenTrue) => {
-      validate(fieldPathWhenTrue.newsletterTopics, ({ value }) =>
-        !value().length
+      validate(fieldPathWhenTrue.newsletterTopics, (ctx) =>
+        !ctx.value().length
           ? customError({
               kind: 'noTopicSelected',
               message: 'Select at least one newsletter topic',
@@ -138,7 +154,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   );
 
   // disable topics selection when checkbox for subscription was not activated
-  disabled(fieldPath.newsletterTopics, ({ valueOf }) => !valueOf(fieldPath.newsletter));
+  disabled(fieldPath.newsletterTopics, (ctx) => !ctx.valueOf(fieldPath.newsletter));
 });
 
 const initialState: RegisterFormData = {
