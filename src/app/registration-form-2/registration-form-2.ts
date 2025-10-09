@@ -1,5 +1,5 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { applyEach, Control, customError, CustomValidationError, email, FieldState, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
+import { applyEach, applyWhen, Control, customError, CustomValidationError, disabled, email, FieldState, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
 
 import { FormError } from '../form-error/form-error';
 import { RegistrationService } from '../registration-service';
@@ -11,6 +11,7 @@ export interface RegisterFormData {
   password: { pw1: string; pw2: string };
   email: string[];
   newsletter: boolean;
+  newsletterTopics: string;
   agreeToTermsAndConditions: boolean;
 }
 
@@ -90,6 +91,25 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   required(fieldPath.agreeToTermsAndConditions, {
     message: 'You must agree to the terms and conditions',
   });
+
+  // apply conditionally: only when subscribe to newsletter, rules apply and at least one topic must be selected
+  applyWhen(
+    fieldPath,
+    (ctx) => ctx.value().newsletter,
+    (fieldPathWhenTrue) => {
+      validate(fieldPathWhenTrue.newsletterTopics, (ctx) =>
+        !ctx.value().length
+          ? customError({
+              kind: 'noTopicSelected',
+              message: 'Select at least one newsletter topic',
+            })
+          : undefined
+      );
+    }
+  );
+
+  // disable topics selection when checkbox for subscription was not activated
+  disabled(fieldPath.newsletterTopics, (ctx) => !ctx.valueOf(fieldPath.newsletter));
 });
 
 const initialState: RegisterFormData = {
@@ -98,6 +118,7 @@ const initialState: RegisterFormData = {
   password: { pw1: '', pw2: '' },
   email: [''],
   newsletter: false,
+  newsletterTopics: '',
   agreeToTermsAndConditions: false,
 };
 

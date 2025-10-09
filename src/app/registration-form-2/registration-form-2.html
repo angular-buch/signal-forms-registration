@@ -77,6 +77,18 @@
     >Subscribe to Newsletter?
     <input type="checkbox" [control]="registrationForm.newsletter" />
   </label>
+
+  <label>
+    Topics (multiple possible):
+    <select [disabled]="registrationForm.newsletterTopics().disabled()" [control]="registrationForm.newsletterTopics">
+      <option value=""></option>
+      <option value="Angular">Angular</option>
+      <option value="Vue">Vue</option>
+      <option value="React">React</option>
+    </select>
+    <app-form-error [field]="registrationForm.newsletterTopics" />
+  </label>
+
   <label
     >I agree to the terms and conditions
     <input
