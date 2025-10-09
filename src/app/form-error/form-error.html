@@ -1,10 +1,10 @@
-@if (field().touched() && field().errors().length) {
+@let state = field()();
+@if (state.touched() && state.errors().length) {
 <small>
-  @for (error of field().errors(); track $index) {
-    {{ error.message }}
-    @if (!$last) {
-      <br />
-    }
-  }
+  @for (error of state.errors(); track $index) {
+  {{ error.message }}
+  @if (!$last) {
+  <br />
+  } }
 </small>
 }

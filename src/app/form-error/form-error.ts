@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { FieldState } from '@angular/forms/signals';
+import { Field } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-form-error',
@@ -8,5 +8,5 @@ import { FieldState } from '@angular/forms/signals';
   styleUrl: './form-error.scss',
 })
 export class FormError<T> {
-  field = input.required<FieldState<T>>();
+  readonly field = input.required<Field<T>>();
 }
