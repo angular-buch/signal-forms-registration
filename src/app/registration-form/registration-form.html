@@ -1,4 +1,4 @@
-<form (submit)="submit($event)" novalidate>
+<form (submit)="submitForm($event)" novalidate>
   <label
     >Username
     <input
@@ -6,7 +6,7 @@
       [control]="registrationForm.username"
       [attr.aria-invalid]="ariaInvalidState(registrationForm.username())"
     />
-    <app-form-error [field]="registrationForm.username()" />
+    <app-form-error [field]="registrationForm.username" />
   </label>
 
   <!-- A whole child form with own model -->
@@ -21,7 +21,7 @@
         [control]="registrationForm.age"
         [attr.aria-invalid]="ariaInvalidState(registrationForm.age())"
       />
-      <app-form-error [field]="registrationForm.age()" />
+      <app-form-error [field]="registrationForm.age" />
     </label>
   </div>
 
@@ -34,7 +34,7 @@
         [control]="registrationForm.password.pw1"
         [attr.aria-invalid]="ariaInvalidState(registrationForm.password.pw1())"
       />
-      <app-form-error [field]="registrationForm.password.pw1()" />
+      <app-form-error [field]="registrationForm.password.pw1" />
     </label>
     <label
       >Password Confirmation
@@ -44,9 +44,9 @@
         [control]="registrationForm.password.pw2"
         [attr.aria-invalid]="ariaInvalidState(registrationForm.password.pw2())"
       />
-      <app-form-error [field]="registrationForm.password.pw2()" />
+      <app-form-error [field]="registrationForm.password.pw2" />
     </label>
-    <app-form-error [field]="registrationForm.password()" />
+    <app-form-error [field]="registrationForm.password" />
   </div>
   <fieldset>
     <legend>E-Mail Addresses</legend>
@@ -62,12 +62,12 @@
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
-        <app-form-error [field]="emailField()" />
+        <app-form-error [field]="emailField" />
       </div>
       }
     </div>
-    <app-form-error [field]="registrationForm.email()" />
-    <button type="button" (click)="addEmail($event)">+</button>
+    <app-form-error [field]="registrationForm.email" />
+    <button type="button" (click)="addEmail()">+</button>
   </fieldset>
   <label
     >Subscribe to Newsletter?
@@ -77,7 +77,7 @@
     [control]="registrationForm.newsletterTopics"
     label="Topics (multiple possible):"
   />
-  <app-form-error [field]="registrationForm.newsletterTopics()" />
+  <app-form-error [field]="registrationForm.newsletterTopics" />
   <label
     >I agree to the terms and conditions
     <input
@@ -86,18 +86,18 @@
       [control]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
-  <app-form-error [field]="registrationForm.agreeToTermsAndConditions()" />
+  <app-form-error [field]="registrationForm.agreeToTermsAndConditions" />
   <hr />
-  <app-form-error [field]="registrationForm()" />
+  <app-form-error [field]="registrationForm" />
   <div role="group">
     <button
       type="submit"
       [disabled]="registrationForm().submitting()"
       [attr.aria-busy]="registrationForm().submitting()"
     >
-      @if (registrationForm().submitting()) { Registering... } @else { Register }
+      @if (registrationForm().submitting()) { Registering ... } @else { Register }
     </button>
-    <button type="reset" (click)="reset()">Reset</button>
+    <button type="reset" (click)="resetForm()">Reset</button>
   </div>
 </form>
 

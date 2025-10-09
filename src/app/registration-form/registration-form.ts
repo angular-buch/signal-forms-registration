@@ -163,7 +163,7 @@ const initialState: RegisterFormData = {
   styleUrl: './registration-form.scss',
 })
 export class RegistrationForm {
-  private readonly registrationService = inject(RegistrationService);
+  readonly #registrationService = inject(RegistrationService);
   protected readonly registrationModel = signal<RegisterFormData>(initialState);
 
   protected readonly registrationForm = form(this.registrationModel, formSchema);
@@ -172,10 +172,8 @@ export class RegistrationForm {
     return field.touched() ? field.errors().length > 0 : undefined;
   }
 
-  protected addEmail(e: Event): boolean {
+  protected addEmail(): void {
     this.registrationForm.email().value.update((items) => [...items, '']);
-    e.preventDefault();
-    return false;
   }
 
   protected removeEmail(removeIndex: number): void {
@@ -184,15 +182,15 @@ export class RegistrationForm {
       .value.update((items) => items.filter((_, index) => index !== removeIndex));
   }
 
-  protected async submit(e: Event) {
-    e?.preventDefault();
+  protected async submitForm(e: Event) {
+    e.preventDefault();
 
     // validate when submitting and assign possible errors for matching field for showing in the UI
     await submit(this.registrationForm, async (form) => {
       const errors: WithField<CustomValidationError | ValidationError>[] = [];
 
       try {
-        await this.registrationService.registerUser(form().value);
+        await this.#registrationService.registerUser(form().value);
       } catch (e) {
         errors.push(
           customError({
@@ -205,13 +203,13 @@ export class RegistrationForm {
         );
       }
 
-      setTimeout(() => this.reset(), 3000);
+      setTimeout(() => this.resetForm(), 3000);
       return errors;
     });
   }
 
   // Reset form
-  protected reset() {
+  protected resetForm() {
     this.registrationModel.set(initialState);
     this.registrationForm().reset();
   }

@@ -17,13 +17,13 @@
   <label
     >Salutation
     <input type="text" placeholder="e. g. Mx." [control]="identity().salutation" />
-    <app-form-error [field]="identity().salutation()" />
+    <app-form-error [field]="identity().salutation" />
   </label>
   } @if (!identity().pronoun().hidden()) {
   <label
     >Pronoun
     <input type="text" placeholder="e. g. they/them" [control]="identity().pronoun" />
-    <app-form-error [field]="identity().pronoun()" />
+    <app-form-error [field]="identity().pronoun" />
   </label>
   }
 </div>
