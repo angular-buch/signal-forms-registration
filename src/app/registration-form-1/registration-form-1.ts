@@ -1,0 +1,79 @@
+import { Component, inject, signal } from '@angular/core';
+import { Control, FieldState, form, maxLength, min, minLength, pattern, required, schema, submit } from '@angular/forms/signals';
+
+import { FormError } from '../form-error/form-error';
+import { RegistrationService } from '../registration-service';
+import { DebugOutput } from '../debug-output/debug-output';
+
+export interface RegisterFormData {
+  username: string;
+  age: number;
+  email: string[];
+  newsletter: boolean;
+  agreeToTermsAndConditions: boolean;
+}
+
+export const formSchema = schema<RegisterFormData>((fieldPath) => {
+  // Username validation
+  required(fieldPath.username, { message: 'Username is required' });
+  minLength(fieldPath.username, 3, { message: 'A username must be at least 3 characters long' });
+  maxLength(fieldPath.username, 12, { message: 'A username can be max. 12 characters long' });
+
+  // Age validation
+  min(fieldPath.age, 18, { message: 'You must be >=18 years old.' });
+
+  // Terms and conditions
+  required(fieldPath.agreeToTermsAndConditions, {
+    message: 'You must agree to the terms and conditions.',
+  });
+});
+
+const initialState: RegisterFormData = {
+  username: '',
+  age: 18,
+  email: [''],
+  newsletter: false,
+  agreeToTermsAndConditions: false,
+};
+
+@Component({
+  selector: 'app-registration-form-1',
+  imports: [Control, DebugOutput, FormError],
+  templateUrl: './registration-form-1.html',
+  styleUrl: './registration-form-1.scss',
+})
+export class RegistrationForm1 {
+  readonly #registrationService = inject(RegistrationService);
+  protected readonly registrationModel = signal<RegisterFormData>(initialState);
+
+  protected readonly registrationForm = form(this.registrationModel, formSchema);
+
+  protected ariaInvalidState(field: FieldState<string | boolean | number>): boolean | undefined {
+    return field.touched() ? field.errors().length > 0 : undefined;
+  }
+
+  protected addEmail(): void {
+    this.registrationForm.email().value.update((items) => [...items, '']);
+  }
+
+  protected removeEmail(removeIndex: number): void {
+    this.registrationForm
+      .email()
+      .value.update((items) => items.filter((_, index) => index !== removeIndex));
+  }
+
+  protected async submitForm(e: Event) {
+    e.preventDefault();
+
+    await submit(this.registrationForm, async (form) => {
+      await this.#registrationService.registerUser(form().value);
+      console.log('Registration successful!');
+      this.resetForm();
+    });
+  }
+
+  protected resetForm() {
+    this.registrationModel.set(initialState);
+    this.registrationForm().reset();
+  }
+}

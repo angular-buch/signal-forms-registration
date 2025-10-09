@@ -1,0 +1,107 @@
+<p>
+  <mark>Note:</mark> User "johndoe" already exists. Use this user to simulate async validation
+  error.
+</p>
+
+<form (submit)="submitForm($event)" novalidate>
+  <label
+    >Username
+    <input
+      type="text"
+      [control]="registrationForm.username"
+      [ariaInvalid]="ariaInvalidState(registrationForm.username())"
+    />
+    <app-form-error [field]="registrationForm.username" />
+  </label>
+
+  <!-- native HTML inputs bound with the [control] directive -->
+  <div>
+    <label
+      >Age
+      <input
+        type="number"
+        [control]="registrationForm.age"
+        [ariaInvalid]="ariaInvalidState(registrationForm.age())"
+      />
+      <app-form-error [field]="registrationForm.age" />
+    </label>
+  </div>
+
+  <div>
+    <label
+      >Password
+      <input
+        type="password"
+        autocomplete
+        [control]="registrationForm.password.pw1"
+        [ariaInvalid]="ariaInvalidState(registrationForm.password.pw1())"
+      />
+      <app-form-error [field]="registrationForm.password.pw1" />
+    </label>
+    <label
+      >Password Confirmation
+      <input
+        type="password"
+        autocomplete
+        [control]="registrationForm.password.pw2"
+        [ariaInvalid]="ariaInvalidState(registrationForm.password.pw2())"
+      />
+      <app-form-error [field]="registrationForm.password.pw2" />
+    </label>
+    <app-form-error [field]="registrationForm.password" />
+  </div>
+  <fieldset>
+    <legend>
+      E-Mail Addresses
+      <button type="button" (click)="addEmail()">+</button>
+    </legend>
+    <div>
+      @for (emailField of registrationForm.email; track $index) {
+      <div>
+        <div role="group">
+          <input
+            type="email"
+            [control]="emailField"
+            [ariaLabel]="'E-Mail ' + $index"
+            [ariaInvalid]="ariaInvalidState(emailField())"
+          />
+          <button type="button" (click)="removeEmail($index)">-</button>
+        </div>
+        <app-form-error [field]="emailField" />
+      </div>
+      }
+    </div>
+    <app-form-error [field]="registrationForm.email" />
+  </fieldset>
+  <label
+    >Subscribe to Newsletter?
+    <input type="checkbox" [control]="registrationForm.newsletter" />
+  </label>
+  <label
+    >I agree to the terms and conditions
+    <input
+      type="checkbox"
+      [ariaInvalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions())"
+      [control]="registrationForm.agreeToTermsAndConditions"
+    />
+  </label>
+  <app-form-error [field]="registrationForm.agreeToTermsAndConditions" />
+  <hr />
+  <app-form-error [field]="registrationForm" />
+  <div role="group">
+    <button
+      type="submit"
+      [disabled]="registrationForm().submitting()"
+      [ariaBusy]="registrationForm().submitting()"
+    >
+      @if (registrationForm().submitting()) {
+        Registering ...
+      } @else {
+        Register
+      }
+    </button>
+    <button type="reset" (click)="resetForm()">Reset</button>
+  </div>
+</form>
+
+<app-debug-output [form]="registrationForm"/>

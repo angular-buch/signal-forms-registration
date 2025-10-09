@@ -1,44 +1,16 @@
-import { JsonPipe } from '@angular/common';
 import { Component, inject, resource, signal } from '@angular/core';
-import {
-  Control,
-  customError,
-  CustomValidationError,
-  FieldState,
-  form,
-  submit,
-  ValidationError,
-  WithField,
-  apply,
-  pattern,
-  schema,
-  applyEach,
-  applyWhen,
-  disabled,
-  email,
-  maxLength,
-  min,
-  minLength,
-  required,
-  validate,
-  validateAsync,
-  validateTree,
-  applyWhenValue,
-} from '@angular/forms/signals';
+import { applyEach, Control, customError, CustomValidationError, email, FieldState, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
 
-import { RegistrationService } from '../registration-service';
-import { IdentityForm, GenderIdentity, identitySchema } from '../identity-form/identity-form';
 import { FormError } from '../form-error/form-error';
-import { Multiselect } from '../multiselect/multiselect';
+import { RegistrationService } from '../registration-service';
+import { DebugOutput } from '../debug-output/debug-output';
 
 export interface RegisterFormData {
   username: string;
-  identity: GenderIdentity;
   age: number;
   password: { pw1: string; pw2: string };
   email: string[];
   newsletter: boolean;
-  newsletterTopics: string[];
   agreeToTermsAndConditions: boolean;
 }
 
@@ -74,9 +46,6 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
         : undefined;
     },
   });
-
-  // apply child schema for identity checks
-  apply(fieldPath.identity, identitySchema);
 
   // validate number input
   min(fieldPath.age, 18, { message: 'You must be >=18 years old' });
@@ -121,64 +90,24 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   required(fieldPath.agreeToTermsAndConditions, {
     message: 'You must agree to the terms and conditions',
   });
-
-  /*applyWhenValue(
-    fieldPath,
-    (value) => value.newsletter,
-    (fieldPathWhenTrue) => {
-      validate(fieldPathWhenTrue.newsletterTopics, (ctx) =>
-        !ctx.value().length
-          ? customError({
-              kind: 'noTopicSelected',
-              message: 'Select at least one newsletter topic',
-            })
-          : undefined
-      );
-    }
-  );*/
-
-  // apply conditionally: only when subscribe to newsletter, rules apply and at least one topic must be selected
-  applyWhen(
-    fieldPath,
-    (ctx) => ctx.value().newsletter,
-    (fieldPathWhenTrue) => {
-      validate(fieldPathWhenTrue.newsletterTopics, (ctx) =>
-        !ctx.value().length
-          ? customError({
-              kind: 'noTopicSelected',
-              message: 'Select at least one newsletter topic',
-            })
-          : undefined
-      );
-    }
-  );
-
-  // disable topics selection when checkbox for subscription was not activated
-  disabled(fieldPath.newsletterTopics, (ctx) => !ctx.valueOf(fieldPath.newsletter));
 });
 
 const initialState: RegisterFormData = {
   username: '',
-  identity: {
-    gender: '',
-    salutation: '',
-    pronoun: '',
-  },
   age: 18,
   password: { pw1: '', pw2: '' },
   email: [''],
   newsletter: false,
-  newsletterTopics: ['Angular'],
   agreeToTermsAndConditions: false,
 };
 
 @Component({
-  selector: 'app-registration-form',
-  imports: [Control, JsonPipe, FormError, IdentityForm, Multiselect],
-  templateUrl: './registration-form.html',
-  styleUrl: './registration-form.scss',
+  selector: 'app-registration-form-2',
+  imports: [Control, DebugOutput, FormError],
+  templateUrl: './registration-form-2.html',
+  styleUrl: './registration-form-2.scss',
 })
-export class RegistrationForm {
+export class RegistrationForm2 {
   readonly #registrationService = inject(RegistrationService);
   protected readonly registrationModel = signal<RegisterFormData>(initialState);
 
