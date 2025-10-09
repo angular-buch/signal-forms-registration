@@ -2,5 +2,13 @@
   display: block;
   margin-top: -0.75rem;
   margin-bottom: 1rem;
-  color: #bb2233;
+}
+
+ul {
+  padding: 0;
+  li {
+    color: #bb2233;
+    list-style: none;
+    font-size: 0.8em;
+  }
 }

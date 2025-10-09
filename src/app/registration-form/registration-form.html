@@ -4,7 +4,7 @@
     <input
       type="text"
       [control]="registrationForm.username"
-      [attr.aria-invalid]="ariaInvalidState(registrationForm.username())"
+      [ariaInvalid]="ariaInvalidState(registrationForm.username())"
     />
     <app-form-error [field]="registrationForm.username" />
   </label>
@@ -19,7 +19,7 @@
       <input
         type="number"
         [control]="registrationForm.age"
-        [attr.aria-invalid]="ariaInvalidState(registrationForm.age())"
+        [ariaInvalid]="ariaInvalidState(registrationForm.age())"
       />
       <app-form-error [field]="registrationForm.age" />
     </label>
@@ -32,7 +32,7 @@
         type="password"
         autocomplete
         [control]="registrationForm.password.pw1"
-        [attr.aria-invalid]="ariaInvalidState(registrationForm.password.pw1())"
+        [ariaInvalid]="ariaInvalidState(registrationForm.password.pw1())"
       />
       <app-form-error [field]="registrationForm.password.pw1" />
     </label>
@@ -42,14 +42,17 @@
         type="password"
         autocomplete
         [control]="registrationForm.password.pw2"
-        [attr.aria-invalid]="ariaInvalidState(registrationForm.password.pw2())"
+        [ariaInvalid]="ariaInvalidState(registrationForm.password.pw2())"
       />
       <app-form-error [field]="registrationForm.password.pw2" />
     </label>
     <app-form-error [field]="registrationForm.password" />
   </div>
   <fieldset>
-    <legend>E-Mail Addresses</legend>
+    <legend>
+      E-Mail Addresses
+      <button type="button" (click)="addEmail()">+</button>
+    </legend>
     <div>
       @for (emailField of registrationForm.email; track $index) {
       <div>
@@ -57,8 +60,8 @@
           <input
             type="email"
             [control]="emailField"
-            [attr.aria-label]="'E-Mail ' + $index"
-            [attr.aria-invalid]="ariaInvalidState(emailField())"
+            [ariaLabel]="'E-Mail ' + $index"
+            [ariaInvalid]="ariaInvalidState(emailField())"
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
@@ -67,7 +70,6 @@
       }
     </div>
     <app-form-error [field]="registrationForm.email" />
-    <button type="button" (click)="addEmail()">+</button>
   </fieldset>
   <label
     >Subscribe to Newsletter?
@@ -82,7 +84,7 @@
     >I agree to the terms and conditions
     <input
       type="checkbox"
-      [attr.aria-invalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions())"
+      [ariaInvalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions())"
       [control]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
@@ -93,9 +95,13 @@
     <button
       type="submit"
       [disabled]="registrationForm().submitting()"
-      [attr.aria-busy]="registrationForm().submitting()"
+      [ariaBusy]="registrationForm().submitting()"
     >
-      @if (registrationForm().submitting()) { Registering ... } @else { Register }
+      @if (registrationForm().submitting()) {
+        Registering ...
+      } @else {
+        Register
+      }
     </button>
     <button type="reset" (click)="resetForm()">Reset</button>
   </div>

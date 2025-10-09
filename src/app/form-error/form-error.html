@@ -1,10 +1,7 @@
-@let state = field()();
-@if (state.touched() && state.errors().length) {
-<small>
+@let state = field()(); @if (state.touched() && state.errors().length) {
+<ul>
   @for (error of state.errors(); track $index) {
-  {{ error.message }}
-  @if (!$last) {
-  <br />
-  } }
-</small>
+  <li>{{ error.message }}</li>
+  }
+</ul>
 }
