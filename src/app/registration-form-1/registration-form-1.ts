@@ -4,6 +4,7 @@ import { Control, FieldState, form, maxLength, min, minLength, pattern, required
 import { FormError } from '../form-error/form-error';
 import { RegistrationService } from '../registration-service';
 import { DebugOutput } from '../debug-output/debug-output';
+import { BackButton } from '../back-button/back-button';
 
 export interface RegisterFormData {
   username: string;
@@ -38,7 +39,7 @@ const initialState: RegisterFormData = {
 
 @Component({
   selector: 'app-registration-form-1',
-  imports: [Control, DebugOutput, FormError],
+  imports: [Control, DebugOutput, FormError, BackButton],
   templateUrl: './registration-form-1.html',
   styleUrl: './registration-form-1.scss',
 })
