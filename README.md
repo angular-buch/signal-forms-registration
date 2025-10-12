@@ -7,7 +7,6 @@
 This is the demo application for our blog series about **Angular Signal Forms**:
 
 - [Angular Signal Forms Part 1: Getting Started with the Basics](https://angular-buch.com/blog/2025-10-signal-forms-part1)
-
 - *Parts 2 and 3 will be published soon!*
 
 
