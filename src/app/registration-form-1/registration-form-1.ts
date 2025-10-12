@@ -39,7 +39,7 @@ const initialState: RegisterFormData = {
 
 @Component({
   selector: 'app-registration-form-1',
-  imports: [Control, DebugOutput, FormError, BackButton],
+  imports: [BackButton, Control, DebugOutput, FormError],
   templateUrl: './registration-form-1.html',
   styleUrl: './registration-form-1.scss',
 })

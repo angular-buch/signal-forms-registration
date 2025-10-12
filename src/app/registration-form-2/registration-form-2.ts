@@ -4,6 +4,7 @@ import { applyEach, applyWhen, Control, customError, CustomValidationError, disa
 import { FormError } from '../form-error/form-error';
 import { RegistrationService } from '../registration-service';
 import { DebugOutput } from '../debug-output/debug-output';
+import { BackButton } from '../back-button/back-button';
 
 export interface RegisterFormData {
   username: string;
@@ -124,7 +125,7 @@ const initialState: RegisterFormData = {
 
 @Component({
   selector: 'app-registration-form-2',
-  imports: [Control, DebugOutput, FormError],
+  imports: [BackButton, Control, DebugOutput, FormError],
   templateUrl: './registration-form-2.html',
   styleUrl: './registration-form-2.scss',
 })

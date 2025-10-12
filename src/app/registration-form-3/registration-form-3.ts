@@ -6,6 +6,7 @@ import { GenderIdentity, IdentityForm, identitySchema } from '../identity-form/i
 import { Multiselect } from '../multiselect/multiselect';
 import { RegistrationService } from '../registration-service';
 import { DebugOutput } from '../debug-output/debug-output';
+import { BackButton } from '../back-button/back-button';
 
 export interface RegisterFormData {
   username: string;
@@ -135,7 +136,7 @@ const initialState: RegisterFormData = {
 
 @Component({
   selector: 'app-registration-form-3',
-  imports: [Control, DebugOutput, FormError, IdentityForm, Multiselect],
+  imports: [BackButton, Control, DebugOutput, FormError, IdentityForm, Multiselect],
   templateUrl: './registration-form-3.html',
   styleUrl: './registration-form-3.scss',
 })
