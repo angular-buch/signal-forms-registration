@@ -15,6 +15,18 @@ cp -r src/app/registration-form-1/* tmp/version-1/
 cp -r src/app/registration-form-2/* tmp/version-2/
 cp -r src/app/registration-form-3/* tmp/version-3/
 
+# Copy additional files for version-2 to version-3 comparison
+# Create empty files in version-2 to show as new in diff
+touch tmp/version-2/identity-form.ts
+touch tmp/version-2/identity-form.html
+touch tmp/version-2/multiselect.ts
+touch tmp/version-2/multiselect.html
+# Copy actual files to version-3
+cp src/app/identity-form/identity-form.ts tmp/version-3/
+cp src/app/identity-form/identity-form.html tmp/version-3/
+cp src/app/multiselect/multiselect.ts tmp/version-3/
+cp src/app/multiselect/multiselect.html tmp/version-3/
+
 # Rename files
 cd tmp/version-1 && for f in registration-form-1.*; do mv "$f" "${f/registration-form-1/registration-form}"; done
 cd ../version-2 && for f in registration-form-2.*; do mv "$f" "${f/registration-form-2/registration-form}"; done
