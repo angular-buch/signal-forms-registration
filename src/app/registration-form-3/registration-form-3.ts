@@ -1,12 +1,12 @@
 import { Component, inject, resource, signal } from '@angular/core';
 import { apply, applyEach, applyWhen, Control, customError, CustomValidationError, disabled, email, FieldState, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
 
+import { BackButton } from '../back-button/back-button';
+import { DebugOutput } from '../debug-output/debug-output';
 import { FormError } from '../form-error/form-error';
 import { GenderIdentity, IdentityForm, identitySchema } from '../identity-form/identity-form';
 import { Multiselect } from '../multiselect/multiselect';
 import { RegistrationService } from '../registration-service';
-import { DebugOutput } from '../debug-output/debug-output';
-import { BackButton } from '../back-button/back-button';
 
 export interface RegisterFormData {
   username: string;
@@ -20,14 +20,10 @@ export interface RegisterFormData {
 }
 
 export const formSchema = schema<RegisterFormData>((fieldPath) => {
-  // username is required and must be between 3 and 12 characters long
+  // Username validation
   required(fieldPath.username, { message: 'Username is required' });
-  minLength(fieldPath.username, 3, {
-    message: 'A username must be at least 3 characters long',
-  });
-  maxLength(fieldPath.username, 12, {
-    message: 'A username can be max. 12 characters long',
-  });
+  minLength(fieldPath.username, 3, { message: 'A username must be at least 3 characters long' });
+  maxLength(fieldPath.username, 12, { message: 'A username can be max. 12 characters long' });
   validateAsync(fieldPath.username, {
     // Reactive params
     params: (ctx) => ctx.value(),
@@ -52,13 +48,15 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
     },
   });
 
-  // apply child schema for identity checks
-  apply(fieldPath.identity, identitySchema);
+  // Age validation
+  min(fieldPath.age, 18, { message: 'You must be >=18 years old.' });
 
-  // validate number input
-  min(fieldPath.age, 18, { message: 'You must be >=18 years old' });
+  // Terms and conditions
+  required(fieldPath.agreeToTermsAndConditions, {
+    message: 'You must agree to the terms and conditions.',
+  });
 
-  // at least one email and each email must match format
+  // E-Mail validation
   validate(fieldPath.email, (ctx) =>
     !ctx.value().some((e) => e)
       ? customError({
@@ -71,7 +69,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
     email(emailPath, { message: 'E-Mail format is invalid' });
   });
 
-  // passwords are required and must match
+  // Password validation
   required(fieldPath.password.pw1, { message: 'A password is required' });
   required(fieldPath.password.pw2, {
     message: 'A password confirmation is required',
@@ -94,12 +92,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
         });
   });
 
-  // checkbox must be activated
-  required(fieldPath.agreeToTermsAndConditions, {
-    message: 'You must agree to the terms and conditions',
-  });
-
-  // apply conditionally: only when subscribe to newsletter, rules apply and at least one topic must be selected
+  // Newsletter validation
   applyWhen(
     fieldPath,
     (ctx) => ctx.value().newsletter,
@@ -114,9 +107,10 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
       );
     }
   );
-
-  // disable topics selection when checkbox for subscription was not activated
   disabled(fieldPath.newsletterTopics, (ctx) => !ctx.valueOf(fieldPath.newsletter));
+
+  // apply child schema for identity checks
+  apply(fieldPath.identity, identitySchema);
 });
 
 const initialState: RegisterFormData = {
