@@ -25,23 +25,23 @@ cd ../..
 rm -f tmp/*/registration-form.spec.ts
 
 # Clean up HTML files - remove everything before <form
-$SED_INPLACE '1,/<form/{ /<form/!d; }' tmp/*/registration-form.html
+eval "$SED_INPLACE '1,/<form/{ /<form/!d; }' tmp/*/registration-form.html"
 
 # Remove BackButton import and reference from TypeScript files
-$SED_INPLACE '/import { BackButton } from/d' tmp/*/registration-form.ts
-$SED_INPLACE 's/BackButton, //g' tmp/*/registration-form.ts
+eval "$SED_INPLACE '/import { BackButton } from/d' tmp/*/registration-form.ts"
+eval "$SED_INPLACE 's/BackButton, //g' tmp/*/registration-form.ts"
 
 # Update class names and selectors
-$SED_INPLACE 's/RegistrationForm1/RegistrationForm/g; s/registration-form-1/registration-form/g' tmp/version-1/registration-form.ts
-$SED_INPLACE 's/RegistrationForm2/RegistrationForm/g; s/registration-form-2/registration-form/g' tmp/version-2/registration-form.ts
-$SED_INPLACE 's/RegistrationForm3/RegistrationForm/g; s/registration-form-3/registration-form/g' tmp/version-3/registration-form.ts
+eval "$SED_INPLACE 's/RegistrationForm1/RegistrationForm/g; s/registration-form-1/registration-form/g' tmp/version-1/registration-form.ts"
+eval "$SED_INPLACE 's/RegistrationForm2/RegistrationForm/g; s/registration-form-2/registration-form/g' tmp/version-2/registration-form.ts"
+eval "$SED_INPLACE 's/RegistrationForm3/RegistrationForm/g; s/registration-form-3/registration-form/g' tmp/version-3/registration-form.ts"
 
 # Generate diffs
 git diff --no-index tmp/version-1 tmp/version-2 > version-1-version-2.diff
 git diff --no-index tmp/version-2 tmp/version-3 > version-2-version-3.diff
 
 # Remove tmp paths from diffs
-$SED_INPLACE 's|tmp/version[123]/||g' version-1-version-2.diff version-2-version-3.diff
+eval "$SED_INPLACE 's|tmp/version[123]/||g' version-1-version-2.diff version-2-version-3.diff"
 
 # Generate HTML views
 npx diff2html-cli -i file -o stdout -s side --title="Version 1 - Version 2" -- version-1-version-2.diff > public/version-1-version-2.html
