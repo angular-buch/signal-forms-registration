@@ -23,7 +23,7 @@ export class RegistrationService {
     return new Promise<boolean>((resolve) => {
       setTimeout(() => {
         resolve(username === 'johndoe');
-      }, 500);
+      }, 2000);
     });
   }
 }

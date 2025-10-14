@@ -141,7 +141,7 @@ export class RegistrationForm3 {
   protected readonly registrationForm = form(this.registrationModel, formSchema);
 
   protected ariaInvalidState(field: FieldTree<unknown>): boolean | undefined {
-    return field().touched() ? field().errors().length > 0 : undefined;
+    return field().touched() && !field().pending() ? field().errors().length > 0 : undefined;
   }
 
   protected addEmail(): void {
