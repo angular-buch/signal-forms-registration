@@ -104,6 +104,8 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
       );
     }
   );
+  
+  // Disable newsletter topics when newsletter is unchecked
   disabled(fieldPath.newsletterTopics, (ctx) => !ctx.valueOf(fieldPath.newsletter));
 });
 
