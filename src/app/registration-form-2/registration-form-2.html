@@ -12,7 +12,7 @@
     <input
       type="text"
       [control]="registrationForm.username"
-      [ariaInvalid]="ariaInvalidState(registrationForm.username())"
+      [ariaInvalid]="ariaInvalidState(registrationForm.username)"
     />
     <app-form-error [field]="registrationForm.username" />
   </label>
@@ -24,7 +24,7 @@
       <input
         type="number"
         [control]="registrationForm.age"
-        [ariaInvalid]="ariaInvalidState(registrationForm.age())"
+        [ariaInvalid]="ariaInvalidState(registrationForm.age)"
       />
       <app-form-error [field]="registrationForm.age" />
     </label>
@@ -37,7 +37,7 @@
         type="password"
         autocomplete
         [control]="registrationForm.password.pw1"
-        [ariaInvalid]="ariaInvalidState(registrationForm.password.pw1())"
+        [ariaInvalid]="ariaInvalidState(registrationForm.password.pw1)"
       />
       <app-form-error [field]="registrationForm.password.pw1" />
     </label>
@@ -47,7 +47,7 @@
         type="password"
         autocomplete
         [control]="registrationForm.password.pw2"
-        [ariaInvalid]="ariaInvalidState(registrationForm.password.pw2())"
+        [ariaInvalid]="ariaInvalidState(registrationForm.password.pw2)"
       />
       <app-form-error [field]="registrationForm.password.pw2" />
     </label>
@@ -66,7 +66,7 @@
             type="email"
             [control]="emailField"
             [ariaLabel]="'E-Mail ' + $index"
-            [ariaInvalid]="ariaInvalidState(emailField())"
+            [ariaInvalid]="ariaInvalidState(emailField)"
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
@@ -96,7 +96,7 @@
     >I agree to the terms and conditions
     <input
       type="checkbox"
-      [ariaInvalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions())"
+      [ariaInvalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions)"
       [control]="registrationForm.agreeToTermsAndConditions"
     />
   </label>

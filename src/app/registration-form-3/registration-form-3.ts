@@ -1,5 +1,5 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { apply, applyEach, applyWhen, Control, customError, CustomValidationError, disabled, email, FieldState, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
+import { apply, applyEach, applyWhen, Control, customError, CustomValidationError, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
@@ -140,8 +140,8 @@ export class RegistrationForm3 {
 
   protected readonly registrationForm = form(this.registrationModel, formSchema);
 
-  protected ariaInvalidState(field: FieldState<string | boolean | number>): boolean | undefined {
-    return field.touched() ? field.errors().length > 0 : undefined;
+  protected ariaInvalidState(field: FieldTree<unknown>): boolean | undefined {
+    return field().touched() ? field().errors().length > 0 : undefined;
   }
 
   protected addEmail(): void {
