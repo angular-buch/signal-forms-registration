@@ -2,7 +2,7 @@
   >Gender
   <select
     name="gender-identity"
-    [control]="identity().gender"
+    [field]="identity().gender"
     (change)="maybeUpdateSalutationAndPronoun($event)"
   >
     <option value="" selected>Please select</option>
@@ -16,13 +16,13 @@
   @if (!identity().salutation().hidden()) {
   <label
     >Salutation
-    <input type="text" placeholder="e. g. Mx." [control]="identity().salutation" />
+    <input type="text" placeholder="e. g. Mx." [field]="identity().salutation" />
     <app-form-error [field]="identity().salutation" />
   </label>
   } @if (!identity().pronoun().hidden()) {
   <label
     >Pronoun
-    <input type="text" placeholder="e. g. they/them" [control]="identity().pronoun" />
+    <input type="text" placeholder="e. g. they/them" [field]="identity().pronoun" />
     <app-form-error [field]="identity().pronoun" />
   </label>
   }

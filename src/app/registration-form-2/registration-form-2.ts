@@ -1,5 +1,5 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { applyEach, applyWhen, Control, customError, CustomValidationError, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
+import { applyEach, applyWhen, Field, customError, CustomValidationError, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
@@ -121,7 +121,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
 
 @Component({
   selector: 'app-registration-form-2',
-  imports: [BackButton, Control, DebugOutput, FormError],
+  imports: [BackButton, Field, DebugOutput, FormError],
   templateUrl: './registration-form-2.html',
   styleUrl: './registration-form-2.scss',
 })

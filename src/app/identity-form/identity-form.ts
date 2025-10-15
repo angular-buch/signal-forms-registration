@@ -1,5 +1,5 @@
 import { Component, model } from '@angular/core';
-import { Control, FieldTree, hidden, required, schema } from '@angular/forms/signals';
+import { Field, FieldTree, hidden, required, schema } from '@angular/forms/signals';
 import { FormError } from '../form-error/form-error';
 
 export interface GenderIdentity {
@@ -34,7 +34,7 @@ export const identitySchema = schema<GenderIdentity>((path) => {
 
 @Component({
   selector: 'app-identity-form',
-  imports: [Control, FormError],
+  imports: [Field, FormError],
   templateUrl: './identity-form.html',
   styleUrl: './identity-form.scss',
 })

@@ -6,19 +6,19 @@
     >Username
     <input
       type="text"
-      [control]="registrationForm.username"
+      [field]="registrationForm.username"
       [ariaInvalid]="ariaInvalidState(registrationForm.username())"
     />
     <app-form-error [field]="registrationForm.username" />
   </label>
 
-  <!-- native HTML inputs bound with the [control] directive -->
+  <!-- native HTML inputs bound with the [field] directive -->
   <div>
     <label
       >Age
       <input
         type="number"
-        [control]="registrationForm.age"
+        [field]="registrationForm.age"
         [ariaInvalid]="ariaInvalidState(registrationForm.age())"
       />
       <app-form-error [field]="registrationForm.age" />
@@ -35,7 +35,7 @@
         <div role="group">
           <input
             type="email"
-            [control]="emailField"
+            [field]="emailField"
             [ariaLabel]="'E-Mail ' + $index"
             [ariaInvalid]="ariaInvalidState(emailField())"
           />
@@ -49,14 +49,14 @@
   </fieldset>
   <label
     >Subscribe to Newsletter?
-    <input type="checkbox" [control]="registrationForm.newsletter" />
+    <input type="checkbox" [field]="registrationForm.newsletter" />
   </label>
   <label
     >I agree to the terms and conditions
     <input
       type="checkbox"
       [ariaInvalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions())"
-      [control]="registrationForm.agreeToTermsAndConditions"
+      [field]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
   <app-form-error [field]="registrationForm.agreeToTermsAndConditions" />

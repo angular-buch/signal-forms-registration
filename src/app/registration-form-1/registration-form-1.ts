@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { Control, FieldState, form, maxLength, min, minLength, pattern, required, schema, submit } from '@angular/forms/signals';
+import { Field, FieldState, form, maxLength, min, minLength, pattern, required, schema, submit } from '@angular/forms/signals';
 
 import { FormError } from '../form-error/form-error';
 import { RegistrationService } from '../registration-service';
@@ -39,7 +39,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
 
 @Component({
   selector: 'app-registration-form-1',
-  imports: [BackButton, Control, DebugOutput, FormError],
+  imports: [BackButton, Field, DebugOutput, FormError],
   templateUrl: './registration-form-1.html',
   styleUrl: './registration-form-1.scss',
 })
