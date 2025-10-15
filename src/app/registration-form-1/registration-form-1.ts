@@ -14,6 +14,14 @@ export interface RegisterFormData {
   agreeToTermsAndConditions: boolean;
 }
 
+const initialState: RegisterFormData = {
+  username: '',
+  age: 18,
+  email: [''],
+  newsletter: false,
+  agreeToTermsAndConditions: false,
+};
+
 export const formSchema = schema<RegisterFormData>((fieldPath) => {
   // Username validation
   required(fieldPath.username, { message: 'Username is required' });
@@ -28,14 +36,6 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
     message: 'You must agree to the terms and conditions.',
   });
 });
-
-const initialState: RegisterFormData = {
-  username: '',
-  age: 18,
-  email: [''],
-  newsletter: false,
-  agreeToTermsAndConditions: false,
-};
 
 @Component({
   selector: 'app-registration-form-1',

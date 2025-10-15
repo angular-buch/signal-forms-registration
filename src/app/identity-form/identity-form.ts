@@ -8,6 +8,12 @@ export interface GenderIdentity {
   pronoun: string; // e. g. "they/them"
 }
 
+export const initialGenderIdentityState: GenderIdentity = {
+  gender: '',
+  salutation: '',
+  pronoun: '',
+};
+
 export const identitySchema = schema<GenderIdentity>((path) => {
   hidden(path.salutation, (ctx) => {
     return !ctx.valueOf(path.gender) || ctx.valueOf(path.gender) !== 'diverse';

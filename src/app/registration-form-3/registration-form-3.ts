@@ -4,7 +4,7 @@ import { apply, applyEach, applyWhen, Control, customError, CustomValidationErro
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
 import { FormError } from '../form-error/form-error';
-import { GenderIdentity, IdentityForm, identitySchema } from '../identity-form/identity-form';
+import { GenderIdentity, IdentityForm, identitySchema, initialGenderIdentityState } from '../identity-form/identity-form';
 import { Multiselect } from '../multiselect/multiselect';
 import { RegistrationService } from '../registration-service';
 
@@ -18,6 +18,17 @@ export interface RegisterFormData {
   newsletterTopics: string[];
   agreeToTermsAndConditions: boolean;
 }
+
+const initialState: RegisterFormData = {
+  username: '',
+  identity: initialGenderIdentityState,
+  age: 18,
+  password: { pw1: '', pw2: '' },
+  email: [''],
+  newsletter: false,
+  newsletterTopics: ['Angular'],
+  agreeToTermsAndConditions: false,
+};
 
 export const formSchema = schema<RegisterFormData>((fieldPath) => {
   // Username validation
@@ -114,21 +125,6 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   // apply child schema for identity checks
   apply(fieldPath.identity, identitySchema);
 });
-
-const initialState: RegisterFormData = {
-  username: '',
-  identity: {
-    gender: '',
-    salutation: '',
-    pronoun: '',
-  },
-  age: 18,
-  password: { pw1: '', pw2: '' },
-  email: [''],
-  newsletter: false,
-  newsletterTopics: ['Angular'],
-  agreeToTermsAndConditions: false,
-};
 
 @Component({
   selector: 'app-registration-form-3',

@@ -16,6 +16,16 @@ export interface RegisterFormData {
   agreeToTermsAndConditions: boolean;
 }
 
+const initialState: RegisterFormData = {
+  username: '',
+  age: 18,
+  password: { pw1: '', pw2: '' },
+  email: [''],
+  newsletter: false,
+  newsletterTopics: '',
+  agreeToTermsAndConditions: false,
+};
+
 export const formSchema = schema<RegisterFormData>((fieldPath) => {
   // Username validation
   required(fieldPath.username, { message: 'Username is required' });
@@ -104,20 +114,10 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
       );
     }
   );
-  
+
   // Disable newsletter topics when newsletter is unchecked
   disabled(fieldPath.newsletterTopics, (ctx) => !ctx.valueOf(fieldPath.newsletter));
 });
-
-const initialState: RegisterFormData = {
-  username: '',
-  age: 18,
-  password: { pw1: '', pw2: '' },
-  email: [''],
-  newsletter: false,
-  newsletterTopics: '',
-  agreeToTermsAndConditions: false,
-};
 
 @Component({
   selector: 'app-registration-form-2',
