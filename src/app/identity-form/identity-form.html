@@ -1,5 +1,5 @@
-<label
-  >Gender
+<label>
+  Gender <app-field-info [fieldRef]="identity().gender" />
   <select
     name="gender-identity"
     [field]="identity().gender"
@@ -14,14 +14,14 @@
 
 <div class="group-with-gap">
   @if (!identity().salutation().hidden()) {
-  <label
-    >Salutation
+  <label>
+    Salutation <app-field-info [fieldRef]="identity().salutation" />
     <input type="text" placeholder="e. g. Mx." [field]="identity().salutation" />
     <app-form-error [fieldRef]="identity().salutation" />
   </label>
   } @if (!identity().pronoun().hidden()) {
-  <label
-    >Pronoun
+  <label>
+    Pronoun <app-field-info [fieldRef]="identity().pronoun" />
     <input type="text" placeholder="e. g. they/them" [field]="identity().pronoun" />
     <app-form-error [fieldRef]="identity().pronoun" />
   </label>

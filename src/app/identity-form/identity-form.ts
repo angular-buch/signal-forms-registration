@@ -1,6 +1,7 @@
 import { Component, model } from '@angular/core';
 import { Field, FieldTree, hidden, required, schema } from '@angular/forms/signals';
 import { FormError } from '../form-error/form-error';
+import { FieldInfo } from '../field-info/field-info';
 
 export interface GenderIdentity {
   gender: '' | 'male' | 'female' | 'diverse';
@@ -22,6 +23,9 @@ export const identitySchema = schema<GenderIdentity>((path) => {
     return !ctx.valueOf(path.gender) || ctx.valueOf(path.gender) !== 'diverse';
   });
 
+  required(path.gender, {
+    message: 'Please select a gender',
+  });
   required(path.salutation, {
     when: (ctx) => ctx.valueOf(path.gender) === 'diverse',
     message: 'Please choose a salutation, when diverse gender selected',
@@ -34,7 +38,7 @@ export const identitySchema = schema<GenderIdentity>((path) => {
 
 @Component({
   selector: 'app-identity-form',
-  imports: [Field, FormError],
+  imports: [Field, FormError, FieldInfo],
   templateUrl: './identity-form.html',
   styleUrl: './identity-form.scss',
 })
