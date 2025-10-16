@@ -7,16 +7,13 @@
 </p>
 
 <form (submit)="submitForm($event)" novalidate>
-  <label
-    >Username
+  <label>
+    Username <app-field-info [fieldRef]="registrationForm.username" />
     <input
       type="text"
       [field]="registrationForm.username"
       [ariaInvalid]="ariaInvalidState(registrationForm.username)"
     />
-    @if (registrationForm.username().pending()) {
-      <small>Checking availability ...</small>
-    }
     <app-form-error [fieldRef]="registrationForm.username" />
   </label>
 
@@ -25,8 +22,8 @@
 
   <!-- native HTML inputs bound with the [field] directive -->
   <div>
-    <label
-      >Age
+    <label>
+      Age <app-field-info [fieldRef]="registrationForm.age" />
       <input
         type="number"
         [field]="registrationForm.age"
@@ -37,8 +34,8 @@
   </div>
 
   <div>
-    <label
-      >Password
+    <label>
+      Password <app-field-info [fieldRef]="registrationForm.password.pw1" />
       <input
         type="password"
         autocomplete
@@ -47,8 +44,8 @@
       />
       <app-form-error [fieldRef]="registrationForm.password.pw1" />
     </label>
-    <label
-      >Password Confirmation
+    <label>
+      Password Confirmation <app-field-info [fieldRef]="registrationForm.password.pw2" />
       <input
         type="password"
         autocomplete
@@ -63,6 +60,7 @@
     <legend>
       E-Mail Addresses
       <button type="button" (click)="addEmail()">+</button>
+      <app-field-info [fieldRef]="registrationForm.email" />
     </legend>
     <div>
       @for (emailField of registrationForm.email; track $index) {
@@ -82,8 +80,8 @@
     </div>
     <app-form-error [fieldRef]="registrationForm.email" />
   </fieldset>
-  <label
-    >Subscribe to Newsletter?
+  <label>
+    Subscribe to Newsletter? <app-field-info [fieldRef]="registrationForm.newsletter" />
     <input type="checkbox" [field]="registrationForm.newsletter" />
   </label>
   <app-multiselect
@@ -91,8 +89,9 @@
     label="Topics (multiple possible):"
   />
   <app-form-error [fieldRef]="registrationForm.newsletterTopics" />
-  <label
-    >I agree to the terms and conditions
+  <label>
+    I agree to the terms and conditions
+    <app-field-info [fieldRef]="registrationForm.agreeToTermsAndConditions" />
     <input
       type="checkbox"
       [ariaInvalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions)"
@@ -108,14 +107,10 @@
       [disabled]="registrationForm().submitting()"
       [ariaBusy]="registrationForm().submitting()"
     >
-      @if (registrationForm().submitting()) {
-        Registering ...
-      } @else {
-        Register
-      }
+      @if (registrationForm().submitting()) { Registering ... } @else { Register }
     </button>
     <button type="reset" (click)="resetForm()">Reset</button>
   </div>
 </form>
 
-<app-debug-output [form]="registrationForm"/>
+<app-debug-output [form]="registrationForm" />
