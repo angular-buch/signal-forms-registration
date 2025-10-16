@@ -9,7 +9,7 @@
       [field]="registrationForm.username"
       [ariaInvalid]="ariaInvalidState(registrationForm.username())"
     />
-    <app-form-error [field]="registrationForm.username" />
+    <app-form-error [fieldRef]="registrationForm.username" />
   </label>
 
   <!-- native HTML inputs bound with the [field] directive -->
@@ -21,7 +21,7 @@
         [field]="registrationForm.age"
         [ariaInvalid]="ariaInvalidState(registrationForm.age())"
       />
-      <app-form-error [field]="registrationForm.age" />
+      <app-form-error [fieldRef]="registrationForm.age" />
     </label>
   </div>
   <fieldset>
@@ -41,11 +41,11 @@
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
-        <app-form-error [field]="emailField" />
+        <app-form-error [fieldRef]="emailField" />
       </div>
       }
     </div>
-    <app-form-error [field]="registrationForm.email" />
+    <app-form-error [fieldRef]="registrationForm.email" />
   </fieldset>
   <label
     >Subscribe to Newsletter?
@@ -59,9 +59,9 @@
       [field]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
-  <app-form-error [field]="registrationForm.agreeToTermsAndConditions" />
+  <app-form-error [fieldRef]="registrationForm.agreeToTermsAndConditions" />
   <hr />
-  <app-form-error [field]="registrationForm" />
+  <app-form-error [fieldRef]="registrationForm" />
   <div role="group">
     <button
       type="submit"

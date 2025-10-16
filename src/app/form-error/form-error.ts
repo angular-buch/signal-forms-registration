@@ -8,5 +8,5 @@ import { FieldTree } from '@angular/forms/signals';
   styleUrl: './form-error.scss',
 })
 export class FormError<T> {
-  readonly field = input.required<FieldTree<T>>();
+  readonly fieldRef = input.required<FieldTree<T>>();
 }

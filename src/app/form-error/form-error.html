@@ -1,4 +1,5 @@
-@let state = field()(); @if (state.touched() && state.errors().length) {
+@let state = fieldRef()();
+@if (state.touched() && state.errors().length) {
 <ul>
   @for (error of state.errors(); track $index) {
   <li>{{ error.message }}</li>
