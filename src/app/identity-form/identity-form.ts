@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Field, FieldTree, hidden, required, schema } from '@angular/forms/signals';
 import { FormError } from '../form-error/form-error';
 
@@ -39,7 +39,7 @@ export const identitySchema = schema<GenderIdentity>((path) => {
   styleUrl: './identity-form.scss',
 })
 export class IdentityForm {
-  readonly identity = model.required<FieldTree<GenderIdentity>>();
+  readonly identity = input.required<FieldTree<GenderIdentity>>();
 
   protected maybeUpdateSalutationAndPronoun(event: Event) {
     const gender = (event.target as HTMLSelectElement).value;
