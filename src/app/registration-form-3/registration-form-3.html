@@ -88,6 +88,7 @@
   </label>
   <app-multiselect
     [field]="registrationForm.newsletterTopics"
+    [selectOptions]="['Angular', 'React', 'Vue', 'Svelte']"
     label="Topics (multiple possible):"
   />
   <app-form-error [fieldRef]="registrationForm.newsletterTopics" />

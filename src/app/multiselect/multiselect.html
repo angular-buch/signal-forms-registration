@@ -4,16 +4,16 @@
   </summary>
   @if (!disabled()) {
     <ul>
-      @for (topic of allTopics; track $index) {
+      @for (option of selectOptions(); track $index) {
         <li>
           <label>
             <input
               type="checkbox"
-              [name]="topic"
-              [checked]="value().includes(topic)"
-              (input)="changeInput(topic, $event)"
+              [name]="option"
+              [checked]="value().includes(option)"
+              (input)="changeInput(option, $event)"
             />
-            {{ topic }}
+            {{ option }}
           </label>
         </li>
       }

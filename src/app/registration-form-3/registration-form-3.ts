@@ -25,7 +25,7 @@ const initialState: RegisterFormData = {
   age: 18,
   password: { pw1: '', pw2: '' },
   email: [''],
-  newsletter: false,
+  newsletter: true,
   newsletterTopics: ['Angular'],
   agreeToTermsAndConditions: false,
 };
