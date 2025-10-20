@@ -41,8 +41,8 @@ export const identitySchema = schema<GenderIdentity>((path) => {
 export class IdentityForm {
   readonly identity = input.required<FieldTree<GenderIdentity>>();
 
-  protected maybeUpdateSalutationAndPronoun(event: Event) {
-    const gender = (event.target as HTMLSelectElement).value;
+  protected maybeUpdateSalutationAndPronoun() {
+    const gender = this.identity().gender().value();
     if (gender !== 'diverse') {
       this.identity().salutation().value.set('');
       this.identity().pronoun().value.set('');

@@ -3,7 +3,7 @@
   <select
     name="gender-identity"
     [field]="identity().gender"
-    (change)="maybeUpdateSalutationAndPronoun($event)"
+    (change)="maybeUpdateSalutationAndPronoun()"
   >
     <option value="" selected>Please select</option>
     <option value="male">Male</option>
