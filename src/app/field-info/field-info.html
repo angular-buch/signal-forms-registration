@@ -1,0 +1,15 @@
+@if (isFieldRequired()) {
+<b>*</b>
+} @if(hasSpecificInfo()) {
+<div>
+  @if (fieldMin()) {
+  <small>(Minimum {{ fieldMin() }})</small>
+  } @if (fieldOneInList()) {
+  <small>(Minimum one, multiple possible)</small>
+  } @if (fieldRange()) {
+  <small>({{ fieldRange() }} characters)</small>
+  } @if (isValidationPending()) {
+  <small><i>Checking availability ...</i></small>
+  }
+</div>
+}

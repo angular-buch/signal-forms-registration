@@ -1,12 +1,14 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { apply, applyEach, applyWhen, Field, customError, CustomValidationError, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
+import { apply, applyEach, applyWhen, createProperty, customError, CustomValidationError, disabled, email, Field, FieldTree, form, maxLength, min, minLength, orProperty, pattern, property, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
+import { FieldInfo } from '../field-info/field-info';
 import { FormError } from '../form-error/form-error';
 import { GenderIdentity, IdentityForm, identitySchema, initialGenderIdentityState } from '../identity-form/identity-form';
 import { Multiselect } from '../multiselect/multiselect';
 import { RegistrationService } from '../registration-service';
+import { MIN_ONE_IN_LIST } from '../form-props';
 
 export interface RegisterFormData {
   username: string;
@@ -60,6 +62,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   });
 
   // Age validation
+  required(fieldPath.age, { message: 'You must enter an age.' });
   min(fieldPath.age, 18, { message: 'You must be >=18 years old.' });
 
   // Terms and conditions
@@ -79,6 +82,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   applyEach(fieldPath.email, (emailPath) => {
     email(emailPath, { message: 'E-Mail format is invalid' });
   });
+  property(fieldPath.email, MIN_ONE_IN_LIST, () => true);
 
   // Password validation
   required(fieldPath.password.pw1, { message: 'A password is required' });
@@ -121,6 +125,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
 
   // Disable newsletter topics when newsletter is unchecked
   disabled(fieldPath.newsletterTopics, (ctx) => !ctx.valueOf(fieldPath.newsletter));
+  property(fieldPath.newsletterTopics, MIN_ONE_IN_LIST, () => true);
 
   // apply child schema for identity checks
   apply(fieldPath.identity, identitySchema);
@@ -128,7 +133,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
 
 @Component({
   selector: 'app-registration-form-3',
-  imports: [BackButton, Field, DebugOutput, FormError, IdentityForm, Multiselect],
+  imports: [BackButton, Field, DebugOutput, FormError, IdentityForm, Multiselect, FieldInfo],
   templateUrl: './registration-form-3.html',
   styleUrl: './registration-form-3.scss',
 })
