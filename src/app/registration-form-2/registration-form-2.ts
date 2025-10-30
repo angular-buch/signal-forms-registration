@@ -45,7 +45,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
       });
     },
     // Maps resource to error
-    errors: (result) => {
+    onSuccess: (result) => {
       return result
         ? customError({
             kind: 'userExists',
@@ -53,6 +53,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
           })
         : undefined;
     },
+    onError: () => undefined
   });
 
   // Age validation
