@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { Field, FieldState, form, maxLength, min, minLength, pattern, required, schema, submit } from '@angular/forms/signals';
+import { Field, FieldState, form, maxLength, min, minLength, required, schema, submit } from '@angular/forms/signals';
 
 import { FormError } from '../form-error/form-error';
 import { RegistrationService } from '../registration-service';

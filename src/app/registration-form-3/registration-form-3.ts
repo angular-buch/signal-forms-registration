@@ -1,5 +1,5 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { apply, applyEach, applyWhen, Field, customError, CustomValidationError, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
+import { apply, applyEach, applyWhen, Field, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationErrorWithField } from '@angular/forms/signals';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
@@ -51,10 +51,10 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
     // Maps resource to error
     onSuccess: (result) => {
       return result
-        ? customError({
+        ? {
             kind: 'userExists',
             message: 'The username you entered was already taken',
-          })
+          }
         : undefined;
     },
     onError: () => undefined
@@ -71,10 +71,10 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   // E-Mail validation
   validate(fieldPath.email, (ctx) =>
     !ctx.value().some((e) => e)
-      ? customError({
+      ? {
           kind: 'atLeastOneEmail',
           message: 'At least one E-Mail address must be added',
-        })
+        }
       : undefined
   );
   applyEach(fieldPath.email, (emailPath) => {
@@ -97,11 +97,11 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   validateTree(fieldPath.password, (ctx) => {
     return ctx.value().pw2 === ctx.value().pw1
       ? undefined
-      : customError({
+      : {
           field: ctx.fieldOf(fieldPath.password.pw2), // assign the error to the second password field
           kind: 'confirmationPassword',
           message: 'The entered password must match with the one specified in "Password" field',
-        });
+        };
   });
 
   // Newsletter validation
@@ -111,10 +111,10 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
     (fieldPathWhenTrue) => {
       validate(fieldPathWhenTrue.newsletterTopics, (ctx) =>
         !ctx.value().length
-          ? customError({
+          ? {
               kind: 'noTopicSelected',
               message: 'Select at least one newsletter topic',
-            })
+            }
           : undefined
       );
     }
@@ -158,23 +158,21 @@ export class RegistrationForm3 {
 
     // validate when submitting and assign possible errors for matching field for showing in the UI
     await submit(this.registrationForm, async (form) => {
-      const errors: WithField<CustomValidationError | ValidationError>[] = [];
+      const errors: ValidationErrorWithField[] = [];
 
       try {
         await this.#registrationService.registerUser(form().value);
+        setTimeout(() => this.resetForm(), 3000);
       } catch (e) {
         errors.push(
-          customError({
+          {
             field: form,
-            error: {
-              kind: 'serverError',
-              message: 'There was an server error, please try again (should work after 3rd try)',
-            },
-          })
+            kind: 'serverError',
+            message: 'There was an server error, please try again (should work after 3rd try)',
+          }
         );
       }
 
-      setTimeout(() => this.resetForm(), 3000);
       return errors;
     });
   }
