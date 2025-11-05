@@ -14,10 +14,7 @@
       [field]="registrationForm.username"
       [ariaInvalid]="ariaInvalidState(registrationForm.username)"
     />
-    @if (registrationForm.username().pending()) {
-      <small>Checking availability ...</small>
-    }
-    <app-form-error [fieldRef]="registrationForm.username" />
+    <small *fieldInfo="registrationForm.username; let message; let cssClass;" [class]="cssClass">{{ message }}</small>
   </label>
 
   <!-- A whole child form with own model -->
@@ -32,7 +29,7 @@
         [field]="registrationForm.age"
         [ariaInvalid]="ariaInvalidState(registrationForm.age)"
       />
-      <app-form-error [fieldRef]="registrationForm.age" />
+      <small *fieldInfo="registrationForm.age; let message; let cssClass" [class]="cssClass">{{ message }}</small>
     </label>
   </div>
 
@@ -45,7 +42,7 @@
         [field]="registrationForm.password.pw1"
         [ariaInvalid]="ariaInvalidState(registrationForm.password.pw1)"
       />
-      <app-form-error [fieldRef]="registrationForm.password.pw1" />
+      <small *fieldInfo="registrationForm.password.pw1; let message; let cssClass" [class]="cssClass">{{ message }}</small>
     </label>
     <label
       >Password Confirmation
@@ -55,9 +52,9 @@
         [field]="registrationForm.password.pw2"
         [ariaInvalid]="ariaInvalidState(registrationForm.password.pw2)"
       />
-      <app-form-error [fieldRef]="registrationForm.password.pw2" />
+      <small *fieldInfo="registrationForm.password.pw2; let message; let cssClass" [class]="cssClass">{{ message }}</small>
     </label>
-    <app-form-error [fieldRef]="registrationForm.password" />
+    <small *fieldInfo="registrationForm.password; let message; let cssClass" [class]="cssClass">{{ message }}</small>
   </div>
   <fieldset>
     <legend>
@@ -76,11 +73,11 @@
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
-        <app-form-error [fieldRef]="emailField" />
+        <small *fieldInfo="emailField; let message; let cssClass" [class]="cssClass">{{ message }}</small>
       </div>
       }
     </div>
-    <app-form-error [fieldRef]="registrationForm.email" />
+    <small *fieldInfo="registrationForm.email; let message; let cssClass" [class]="cssClass">{{ message }}</small>
   </fieldset>
   <label
     >Subscribe to Newsletter?
@@ -91,7 +88,7 @@
     [selectOptions]="['Angular', 'React', 'Vue', 'Svelte']"
     label="Topics (multiple possible):"
   />
-  <app-form-error [fieldRef]="registrationForm.newsletterTopics" />
+  <small *fieldInfo="registrationForm.newsletterTopics; let message; let cssClass" [class]="cssClass">{{ message }}</small>
   <label
     >I agree to the terms and conditions
     <input
@@ -100,23 +97,20 @@
       [field]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
-  <app-form-error [fieldRef]="registrationForm.agreeToTermsAndConditions" />
+  <small *fieldInfo="registrationForm.agreeToTermsAndConditions; let message; let cssClass" [class]="cssClass">{{ message }}</small>
   <hr />
   <app-form-error [fieldRef]="registrationForm" />
+  <small *fieldInfo="registrationForm; let message; let cssClass" [class]="cssClass">{{ message }}</small>
   <div role="group">
     <button
       type="submit"
       [disabled]="registrationForm().submitting()"
       [ariaBusy]="registrationForm().submitting()"
     >
-      @if (registrationForm().submitting()) {
-        Registering ...
-      } @else {
-        Register
-      }
+      @if (registrationForm().submitting()) { Registering ... } @else { Register }
     </button>
     <button type="reset" (click)="resetForm()">Reset</button>
   </div>
 </form>
 
-<app-debug-output [form]="registrationForm"/>
+<app-debug-output [form]="registrationForm" />
