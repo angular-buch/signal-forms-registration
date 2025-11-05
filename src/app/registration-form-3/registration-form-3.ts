@@ -1,12 +1,14 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { apply, applyEach, applyWhen, Field, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationErrorWithField } from '@angular/forms/signals';
+import { apply, applyEach, applyWhen, disabled, email, Field, FieldTree, form, maxLength, metadata, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationErrorWithField } from '@angular/forms/signals';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
+import { FieldInfo } from '../field-info';
 import { FormError } from '../form-error/form-error';
 import { GenderIdentity, IdentityForm, identitySchema, initialGenderIdentityState } from '../identity-form/identity-form';
 import { Multiselect } from '../multiselect/multiselect';
 import { RegistrationService } from '../registration-service';
+import { FIELD_INFO } from '../form-props';
 
 export interface RegisterFormData {
   username: string;
@@ -59,9 +61,11 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
     },
     onError: () => undefined
   });
+  metadata(fieldPath.username, FIELD_INFO, () => "A username must consists of 3-12 characters.")
 
   // Age validation
   min(fieldPath.age, 18, { message: 'You must be >=18 years old.' });
+  metadata(fieldPath.age, FIELD_INFO, () => "You must be 18 years old to register")
 
   // Terms and conditions
   required(fieldPath.agreeToTermsAndConditions, {
@@ -80,6 +84,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   applyEach(fieldPath.email, (emailPath) => {
     email(emailPath, { message: 'E-Mail format is invalid' });
   });
+  metadata(fieldPath.email, FIELD_INFO, () => "Please enter at least one valid E-Mail address")
 
   // Password validation
   required(fieldPath.password.pw1, { message: 'A password is required' });
@@ -103,6 +108,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
           message: 'The entered password must match with the one specified in "Password" field',
         };
   });
+  metadata(fieldPath.password, FIELD_INFO, () => "Please enter a password with min 8 characters and a special character.")
 
   // Newsletter validation
   applyWhen(
@@ -129,7 +135,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
 
 @Component({
   selector: 'app-registration-form-3',
-  imports: [BackButton, Field, DebugOutput, FormError, IdentityForm, Multiselect],
+  imports: [BackButton, Field, DebugOutput, FormError, IdentityForm, Multiselect, FieldInfo],
   templateUrl: './registration-form-3.html',
   styleUrl: './registration-form-3.scss',
 })
