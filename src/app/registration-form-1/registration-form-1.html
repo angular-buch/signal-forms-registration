@@ -7,7 +7,7 @@
     <input
       type="text"
       [field]="registrationForm.username"
-      [ariaInvalid]="ariaInvalidState(registrationForm.username())"
+      [aria-invalid]="ariaInvalidState(registrationForm.username())"
     />
     <app-form-error [fieldRef]="registrationForm.username" />
   </label>
@@ -19,7 +19,7 @@
       <input
         type="number"
         [field]="registrationForm.age"
-        [ariaInvalid]="ariaInvalidState(registrationForm.age())"
+        [aria-invalid]="ariaInvalidState(registrationForm.age())"
       />
       <app-form-error [fieldRef]="registrationForm.age" />
     </label>
@@ -36,8 +36,8 @@
           <input
             type="email"
             [field]="emailField"
-            [ariaLabel]="'E-Mail ' + $index"
-            [ariaInvalid]="ariaInvalidState(emailField())"
+            [aria-label]="'E-Mail ' + $index"
+            [aria-invalid]="ariaInvalidState(emailField())"
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
@@ -55,7 +55,7 @@
     >I agree to the terms and conditions
     <input
       type="checkbox"
-      [ariaInvalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions())"
+      [aria-invalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions())"
       [field]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
@@ -66,7 +66,7 @@
     <button
       type="submit"
       [disabled]="registrationForm().submitting()"
-      [ariaBusy]="registrationForm().submitting()"
+      [aria-busy]="registrationForm().submitting()"
     >
       @if (registrationForm().submitting()) {
         Registering ...
