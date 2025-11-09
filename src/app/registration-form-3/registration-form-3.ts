@@ -153,11 +153,9 @@ export class RegistrationForm3 {
       .value.update((items) => items.filter((_, index) => index !== removeIndex));
   }
 
-  protected async submitForm(e: Event) {
-    e.preventDefault();
-
+  protected submitForm() {
     // validate when submitting and assign possible errors for matching field for showing in the UI
-    await submit(this.registrationForm, async (form) => {
+    submit(this.registrationForm, async (form) => {
       const errors: ValidationErrorWithField[] = [];
 
       try {
@@ -175,6 +173,9 @@ export class RegistrationForm3 {
 
       return errors;
     });
+
+    // Prevent reloading (default browser behavior)
+    return false;
   }
 
   // Reset form
