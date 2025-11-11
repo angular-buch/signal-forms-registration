@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 import { Field, FieldTree, hidden, required, schema } from '@angular/forms/signals';
+
 import { FormError } from '../form-error/form-error';
 
 export interface GenderIdentity {
@@ -47,8 +48,8 @@ export class IdentityForm {
       this.identity().salutation().value.set('');
       this.identity().pronoun().value.set('');
     } else {
-      // this.identity().salutation().markAsUntouched();
-      // this.identity().pronoun().markAsUntouched();
+      this.identity().salutation().reset();
+      this.identity().pronoun().reset();
     }
   }
 }
