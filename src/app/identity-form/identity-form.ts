@@ -42,14 +42,10 @@ export const identitySchema = schema<GenderIdentity>((path) => {
 export class IdentityForm {
   readonly identity = input.required<FieldTree<GenderIdentity>>();
 
-  protected maybeUpdateSalutationAndPronoun() {
-    const gender = this.identity().gender().value();
-    if (gender !== 'diverse') {
-      this.identity().salutation().value.set('');
-      this.identity().pronoun().value.set('');
-    } else {
-      this.identity().salutation().reset();
-      this.identity().pronoun().reset();
-    }
+  protected updateSalutationAndPronoun() {
+    this.identity().salutation().value.set('');
+    this.identity().salutation().reset();
+    this.identity().pronoun().value.set('');
+    this.identity().pronoun().reset();
   }
 }
