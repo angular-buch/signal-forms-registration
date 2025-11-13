@@ -1,5 +1,5 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { apply, applyEach, applyWhen, Field, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationErrorWithField } from '@angular/forms/signals';
+import { apply, applyEach, applyWhen, Field, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
@@ -30,12 +30,12 @@ const initialState: RegisterFormData = {
   agreeToTermsAndConditions: false,
 };
 
-export const formSchema = schema<RegisterFormData>((fieldPath) => {
+export const formSchema = schema<RegisterFormData>((schemaPath) => {
   // Username validation
-  required(fieldPath.username, { message: 'Username is required' });
-  minLength(fieldPath.username, 3, { message: 'A username must be at least 3 characters long' });
-  maxLength(fieldPath.username, 12, { message: 'A username can be max. 12 characters long' });
-  validateAsync(fieldPath.username, {
+  required(schemaPath.username, { message: 'Username is required' });
+  minLength(schemaPath.username, 3, { message: 'A username must be at least 3 characters long' });
+  maxLength(schemaPath.username, 12, { message: 'A username can be max. 12 characters long' });
+  validateAsync(schemaPath.username, {
     // Reactive params
     params: (ctx) => ctx.value(),
     // Factory creating a resource
@@ -61,15 +61,15 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   });
 
   // Age validation
-  min(fieldPath.age, 18, { message: 'You must be >=18 years old.' });
+  min(schemaPath.age, 18, { message: 'You must be >=18 years old.' });
 
   // Terms and conditions
-  required(fieldPath.agreeToTermsAndConditions, {
+  required(schemaPath.agreeToTermsAndConditions, {
     message: 'You must agree to the terms and conditions.',
   });
 
   // E-Mail validation
-  validate(fieldPath.email, (ctx) =>
+  validate(schemaPath.email, (ctx) =>
     !ctx.value().some((e) => e)
       ? {
           kind: 'atLeastOneEmail',
@@ -77,28 +77,28 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
         }
       : undefined
   );
-  applyEach(fieldPath.email, (emailPath) => {
+  applyEach(schemaPath.email, (emailPath) => {
     email(emailPath, { message: 'E-Mail format is invalid' });
   });
 
   // Password validation
-  required(fieldPath.password.pw1, { message: 'A password is required' });
-  required(fieldPath.password.pw2, {
+  required(schemaPath.password.pw1, { message: 'A password is required' });
+  required(schemaPath.password.pw2, {
     message: 'A password confirmation is required',
   });
-  minLength(fieldPath.password.pw1, 8, {
+  minLength(schemaPath.password.pw1, 8, {
     message: 'A password must be at least 8 characters long',
   });
   pattern(
-    fieldPath.password.pw1,
+    schemaPath.password.pw1,
     new RegExp('^.*[!@#$%^&*(),.?":{}|<>\\[\\]\\\\/~`_+=;\'\\-].*$'),
     { message: 'The passwort must contain at least one special character' }
   );
-  validateTree(fieldPath.password, (ctx) => {
+  validateTree(schemaPath.password, (ctx) => {
     return ctx.value().pw2 === ctx.value().pw1
       ? undefined
       : {
-          field: ctx.fieldOf(fieldPath.password.pw2), // assign the error to the second password field
+          field: ctx.field.pw2, // assign the error to the second password field
           kind: 'confirmationPassword',
           message: 'The entered password must match with the one specified in "Password" field',
         };
@@ -106,10 +106,10 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
 
   // Newsletter validation
   applyWhen(
-    fieldPath,
+    schemaPath,
     (ctx) => ctx.value().newsletter,
-    (fieldPathWhenTrue) => {
-      validate(fieldPathWhenTrue.newsletterTopics, (ctx) =>
+    (schemaPathWhenTrue) => {
+      validate(schemaPathWhenTrue.newsletterTopics, (ctx) =>
         !ctx.value().length
           ? {
               kind: 'noTopicSelected',
@@ -121,10 +121,10 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
   );
 
   // Disable newsletter topics when newsletter is unchecked
-  disabled(fieldPath.newsletterTopics, (ctx) => !ctx.valueOf(fieldPath.newsletter));
+  disabled(schemaPath.newsletterTopics, (ctx) => !ctx.valueOf(schemaPath.newsletter));
 
   // apply child schema for identity checks
-  apply(fieldPath.identity, identitySchema);
+  apply(schemaPath.identity, identitySchema);
 });
 
 @Component({
@@ -156,7 +156,7 @@ export class RegistrationForm3 {
   protected submitForm() {
     // validate when submitting and assign possible errors for matching field for showing in the UI
     submit(this.registrationForm, async (form) => {
-      const errors: ValidationErrorWithField[] = [];
+      const errors: WithField<ValidationError>[] = [];
 
       try {
         await this.#registrationService.registerUser(form().value);
