@@ -1,5 +1,5 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { apply, applyEach, applyWhen, Field, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationErrorWithField } from '@angular/forms/signals';
+import { apply, applyEach, applyWhen, Field, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
@@ -98,7 +98,7 @@ export const formSchema = schema<RegisterFormData>((fieldPath) => {
     return ctx.value().pw2 === ctx.value().pw1
       ? undefined
       : {
-          field: ctx.fieldOf(fieldPath.password.pw2), // assign the error to the second password field
+          field: ctx.field.pw2, // assign the error to the second password field
           kind: 'confirmationPassword',
           message: 'The entered password must match with the one specified in "Password" field',
         };
@@ -158,7 +158,7 @@ export class RegistrationForm3 {
 
     // validate when submitting and assign possible errors for matching field for showing in the UI
     await submit(this.registrationForm, async (form) => {
-      const errors: ValidationErrorWithField[] = [];
+      const errors: WithField<ValidationError>[] = [];
 
       try {
         await this.#registrationService.registerUser(form().value);

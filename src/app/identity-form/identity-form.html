@@ -1,29 +1,30 @@
-<label
-  >Gender
-  <select
-    name="gender-identity"
-    [field]="identity().gender"
-    (change)="maybeUpdateSalutationAndPronoun()"
-  >
-    <option value="" selected>Please select</option>
-    <option value="male">Male</option>
-    <option value="female">Female</option>
-    <option value="diverse">Diverse</option>
-  </select>
-</label>
+<!-- TODO: remove @if, necessary due to a bug with <select> -->
+@if (identity()) {
+  <label
+    >Gender
+    <select [field]="identity().gender"
+      (change)="maybeUpdateSalutationAndPronoun()"
+    >
+      <option value="">Please select</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="diverse">Diverse</option>
+    </select>
+  </label>
 
-<div class="group-with-gap">
-  @if (!identity().salutation().hidden()) {
-  <label
-    >Salutation
-    <input type="text" placeholder="e. g. Mx." [field]="identity().salutation" />
-    <app-form-error [fieldRef]="identity().salutation" />
-  </label>
-  } @if (!identity().pronoun().hidden()) {
-  <label
-    >Pronoun
-    <input type="text" placeholder="e. g. they/them" [field]="identity().pronoun" />
-    <app-form-error [fieldRef]="identity().pronoun" />
-  </label>
-  }
-</div>
+  <div class="group-with-gap">
+    @if (!identity().salutation().hidden()) {
+    <label
+      >Salutation
+      <input type="text" placeholder="e. g. Mx." [field]="identity().salutation" />
+      <app-form-error [fieldRef]="identity().salutation" />
+    </label>
+    } @if (!identity().pronoun().hidden()) {
+    <label
+      >Pronoun
+      <input type="text" placeholder="e. g. they/them" [field]="identity().pronoun" />
+      <app-form-error [fieldRef]="identity().pronoun" />
+    </label>
+    }
+  </div>
+}
