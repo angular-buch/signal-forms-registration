@@ -63,14 +63,15 @@ export class RegistrationForm1 {
       .value.update((items) => items.filter((_, index) => index !== removeIndex));
   }
 
-  protected async submitForm(e: Event) {
-    e.preventDefault();
-
-    await submit(this.registrationForm, async (form) => {
+  protected submitForm() {
+    submit(this.registrationForm, async (form) => {
       await this.#registrationService.registerUser(form().value);
       console.log('Registration successful!');
       this.resetForm();
     });
+
+    // Prevent reloading (default browser behavior)
+    return false;
   }
 
   protected resetForm() {

@@ -3,7 +3,7 @@
   <label
     >Gender
     <select [field]="identity().gender"
-      (change)="maybeUpdateSalutationAndPronoun()"
+      (change)="updateSalutationAndPronoun()"
     >
       <option value="">Please select</option>
       <option value="male">Male</option>

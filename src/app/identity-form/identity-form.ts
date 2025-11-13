@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 import { Field, FieldTree, hidden, required, schema } from '@angular/forms/signals';
+
 import { FormError } from '../form-error/form-error';
 
 export interface GenderIdentity {
@@ -41,14 +42,10 @@ export const identitySchema = schema<GenderIdentity>((path) => {
 export class IdentityForm {
   readonly identity = input.required<FieldTree<GenderIdentity>>();
 
-  protected maybeUpdateSalutationAndPronoun() {
-    const gender = this.identity().gender().value();
-    if (gender !== 'diverse') {
-      this.identity().salutation().value.set('');
-      this.identity().pronoun().value.set('');
-    } else {
-      // this.identity().salutation().markAsUntouched();
-      // this.identity().pronoun().markAsUntouched();
-    }
+  protected updateSalutationAndPronoun() {
+    this.identity().salutation().value.set('');
+    this.identity().salutation().reset();
+    this.identity().pronoun().value.set('');
+    this.identity().pronoun().reset();
   }
 }
