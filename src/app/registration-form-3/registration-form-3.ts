@@ -1,5 +1,5 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { apply, applyEach, applyWhen, Field, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
+import { apply, applyEach, applyWhen, debounce, disabled, email, Field, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
@@ -35,6 +35,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
   required(schemaPath.username, { message: 'Username is required' });
   minLength(schemaPath.username, 3, { message: 'A username must be at least 3 characters long' });
   maxLength(schemaPath.username, 12, { message: 'A username can be max. 12 characters long' });
+  debounce(schemaPath.username, 500);
   validateAsync(schemaPath.username, {
     // Reactive params
     params: (ctx) => ctx.value(),
