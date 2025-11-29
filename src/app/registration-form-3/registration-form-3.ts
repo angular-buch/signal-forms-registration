@@ -133,6 +133,10 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
   imports: [BackButton, Field, DebugOutput, FormError, IdentityForm, Multiselect],
   templateUrl: './registration-form-3.html',
   styleUrl: './registration-form-3.scss',
+  // Also possible: set SignalFormsConfig only for local component:
+  // providers: [
+  //   provideSignalFormsConfig(signalFormsConfig)
+  // ]
 })
 export class RegistrationForm3 {
   readonly #registrationService = inject(RegistrationService);
