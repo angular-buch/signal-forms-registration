@@ -1,0 +1,5 @@
+@for (message of messages(); track $index) {
+<small [class]="message.cssClass">{{ message.info }}.</small>
+@if(!$last) {
+<br />
+} }

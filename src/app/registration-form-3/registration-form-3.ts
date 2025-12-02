@@ -1,9 +1,10 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { apply, applyEach, applyWhen, debounce, disabled, email, Field, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
+import { apply, applyEach, applyWhen, debounce, disabled, email, Field, FieldTree, form, maxLength, metadata, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
-import { FormError } from '../form-error/form-error';
+import { FormFieldInfo } from '../form-field-info/form-field-info';
+import { FIELD_INFO } from '../form-props';
 import { GenderIdentity, IdentityForm, identitySchema, initialGenderIdentityState } from '../identity-form/identity-form';
 import { Multiselect } from '../multiselect/multiselect';
 import { RegistrationService } from '../registration-service';
@@ -60,6 +61,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
     },
     onError: () => undefined
   });
+  metadata(schemaPath.username, FIELD_INFO, () => "A username must consists of 3-12 characters.")
 
   // Age validation
   min(schemaPath.age, 18, { message: 'You must be >=18 years old.' });
@@ -81,6 +83,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
   applyEach(schemaPath.email, (emailPath) => {
     email(emailPath, { message: 'E-Mail format is invalid' });
   });
+  metadata(schemaPath.email, FIELD_INFO, () => "Please enter at least one valid E-Mail address")
 
   // Password validation
   required(schemaPath.password.pw1, { message: 'A password is required' });
@@ -104,6 +107,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
           message: 'The entered password must match with the one specified in "Password" field',
         };
   });
+  metadata(schemaPath.password, FIELD_INFO, () => "Please enter a password with min 8 characters and a special character.")
 
   // Newsletter validation
   applyWhen(
@@ -130,7 +134,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
 
 @Component({
   selector: 'app-registration-form-3',
-  imports: [BackButton, Field, DebugOutput, FormError, IdentityForm, Multiselect],
+  imports: [BackButton, Field, DebugOutput, FormFieldInfo, IdentityForm, Multiselect],
   templateUrl: './registration-form-3.html',
   styleUrl: './registration-form-3.scss',
   // Also possible: set SignalFormsConfig only for local component:

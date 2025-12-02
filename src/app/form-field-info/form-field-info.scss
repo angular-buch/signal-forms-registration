@@ -1,0 +1,16 @@
+small {
+  position: relative;
+  top: -1rem;
+
+  &.pending {
+    color: #886b02;
+  }
+
+  &.invalid {
+    color: var(--pico-del-color);
+  }
+
+  &.valid {
+    color: var(--pico-ins-color);
+  }
+}

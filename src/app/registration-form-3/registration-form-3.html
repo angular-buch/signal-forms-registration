@@ -11,13 +11,11 @@
     >Username
     <input
       type="text"
+      id="myField"
       [field]="registrationForm.username"
       [aria-invalid]="ariaInvalidState(registrationForm.username)"
     />
-    @if (registrationForm.username().pending()) {
-      <small>Checking availability ...</small>
-    }
-    <app-form-error [fieldRef]="registrationForm.username" />
+    <app-form-field-info [fieldRef]="registrationForm.username" />
   </label>
 
   <!-- A whole child form with own model -->
@@ -32,7 +30,7 @@
         [field]="registrationForm.age"
         [aria-invalid]="ariaInvalidState(registrationForm.age)"
       />
-      <app-form-error [fieldRef]="registrationForm.age" />
+      <app-form-field-info [fieldRef]="registrationForm.age" />
     </label>
   </div>
 
@@ -45,7 +43,7 @@
         [field]="registrationForm.password.pw1"
         [aria-invalid]="ariaInvalidState(registrationForm.password.pw1)"
       />
-      <app-form-error [fieldRef]="registrationForm.password.pw1" />
+      <app-form-field-info [fieldRef]="registrationForm.password.pw1" />
     </label>
     <label
       >Password Confirmation
@@ -55,9 +53,9 @@
         [field]="registrationForm.password.pw2"
         [aria-invalid]="ariaInvalidState(registrationForm.password.pw2)"
       />
-      <app-form-error [fieldRef]="registrationForm.password.pw2" />
+      <app-form-field-info [fieldRef]="registrationForm.password.pw2" />
     </label>
-    <app-form-error [fieldRef]="registrationForm.password" />
+    <app-form-field-info [fieldRef]="registrationForm.password" />
   </div>
   <fieldset>
     <legend>
@@ -76,11 +74,11 @@
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
-        <app-form-error [fieldRef]="emailField" />
+        <app-form-field-info [fieldRef]="emailField" />
       </div>
       }
     </div>
-    <app-form-error [fieldRef]="registrationForm.email" />
+    <app-form-field-info [fieldRef]="registrationForm.email" />
   </fieldset>
   <label
     >Subscribe to Newsletter?
@@ -91,7 +89,7 @@
     [selectOptions]="['Angular', 'React', 'Vue', 'Svelte']"
     label="Topics (multiple possible):"
   />
-  <app-form-error [fieldRef]="registrationForm.newsletterTopics" />
+  <app-form-field-info [fieldRef]="registrationForm.newsletterTopics" />
   <label
     >I agree to the terms and conditions
     <input
@@ -100,9 +98,9 @@
       [field]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
-  <app-form-error [fieldRef]="registrationForm.agreeToTermsAndConditions" />
+  <app-form-field-info [fieldRef]="registrationForm.agreeToTermsAndConditions" />
   <hr />
-  <app-form-error [fieldRef]="registrationForm" />
+  <app-form-field-info [fieldRef]="registrationForm" />
   <div role="group">
     <button
       type="submit"
