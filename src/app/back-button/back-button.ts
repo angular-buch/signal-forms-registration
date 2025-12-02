@@ -7,6 +7,4 @@ import { RouterLink } from '@angular/router';
   templateUrl: './back-button.html',
   styleUrl: './back-button.scss'
 })
-export class BackButton {
-
-}
+export class BackButton {}

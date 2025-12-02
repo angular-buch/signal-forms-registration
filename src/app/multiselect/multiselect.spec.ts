@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Multiselect } from './multiselect';
+import { inputBinding, signal } from '@angular/core';
 
 describe('Multiselect', () => {
   let component: Multiselect;
@@ -11,7 +12,10 @@ describe('Multiselect', () => {
       imports: [Multiselect],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Multiselect);
+    fixture = TestBed.createComponent(Multiselect, { bindings: [
+      inputBinding('label', signal('my label')),
+      inputBinding('selectOptions', signal(['foo', 'bar', 'baz']))
+    ]});
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
