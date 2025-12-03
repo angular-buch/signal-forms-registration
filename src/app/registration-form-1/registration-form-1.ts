@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
-import { Field, FieldState, form, maxLength, min, minLength, required, schema, submit } from '@angular/forms/signals';
+import { Field, FieldState, FieldTree, form, maxLength, min, minLength, required, schema, submit } from '@angular/forms/signals';
 
 import { FormError } from '../form-error/form-error';
 import { RegistrationService } from '../registration-service';
 import { DebugOutput } from '../debug-output/debug-output';
 import { BackButton } from '../back-button/back-button';
 
-export interface RegisterFormData {
+interface RegisterFormData {
   username: string;
   age: number;
   email: string[];
@@ -22,7 +22,7 @@ const initialState: RegisterFormData = {
   agreeToTermsAndConditions: false,
 };
 
-export const formSchema = schema<RegisterFormData>((schemaPath) => {
+const formSchema = schema<RegisterFormData>((schemaPath) => {
   // Username validation
   required(schemaPath.username, { message: 'Username is required' });
   minLength(schemaPath.username, 3, { message: 'A username must be at least 3 characters long' });
@@ -49,9 +49,10 @@ export class RegistrationForm1 {
 
   protected readonly registrationForm = form(this.registrationModel, formSchema);
 
-  protected ariaInvalidState(field: FieldState<string | boolean | number>): boolean | undefined {
-    return field.touched() ? field.errors().length > 0 : undefined;
+  protected ariaInvalidState(field: FieldTree<unknown>): boolean | undefined {
+    return field().touched() && !field().pending() ? field().errors().length > 0 : undefined;
   }
+
 
   protected addEmail(): void {
     this.registrationForm.email().value.update((items) => [...items, '']);
