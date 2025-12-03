@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { vi } from 'vitest';
 
-import { RegistrationForm3 } from './registration-form-3';
 import { RegistrationService } from '../registration-service';
+import { RegistrationForm3 } from './registration-form-3';
 
 describe('RegistrationForm3', () => {
   let component: RegistrationForm3;
@@ -101,6 +101,137 @@ describe('RegistrationForm3', () => {
     expect(termsField.errors()).toEqual([]);
   });
 
+  it('should validate password fields', () => {
+    const pw1Field = component['registrationForm'].password.pw1();
+    const pw2Field = component['registrationForm'].password.pw2();
+
+    // Test required validation for pw1
+    pw1Field.value.set('');
+    pw1Field.markAsTouched();
+    expect(pw1Field.errors().length).toEqual(1);
+    expect(pw1Field.errors()[0].message).toEqual('A password is required');
+
+    // Test required validation for pw2
+    pw2Field.value.set('');
+    pw2Field.markAsTouched();
+    expect(pw2Field.errors().length).toEqual(1);
+    expect(pw2Field.errors()[0].message).toEqual('A password confirmation is required');
+
+    // Test minLength validation
+    pw1Field.value.set('short$');
+    expect(pw1Field.errors().length).toEqual(1);
+    expect(pw1Field.errors()[0].message).toEqual('A password must be at least 8 characters long');
+
+    // Test special character validation
+    pw1Field.value.set('password123');
+    expect(pw1Field.errors().length).toEqual(1);
+    expect(pw1Field.errors()[0].message).toEqual('The passwort must contain at least one special character');
+
+    // Test password confirmation mismatch
+    pw1Field.value.set('password123!');
+    pw2Field.value.set('different123!');
+    expect(pw2Field.errors().length).toEqual(1);
+    expect(pw2Field.errors()[0].message).toEqual('The entered password must match with the one specified in "Password" field');
+
+    // Test valid passwords
+    pw1Field.value.set('password123!');
+    pw2Field.value.set('password123!');
+    expect(pw1Field.errors()).toEqual([]);
+    expect(pw2Field.errors()).toEqual([]);
+  });
+
+  it('should validate email fields', () => {
+    const emailField = component['registrationForm'].email();
+
+    // Test at least one email required
+    emailField.value.set(['']);
+    emailField.markAsTouched();
+    expect(emailField.errors().length).toEqual(1);
+    expect(emailField.errors()[0].message).toEqual('At least one E-Mail address must be added');
+
+    // Test email format validation
+    emailField.value.set(['invalid-email']);
+    expect(emailField.errors()).toEqual([]);
+    const firstEmailField = component['registrationForm'].email[0]();
+    expect(firstEmailField.errors().length).toEqual(1);
+    expect(firstEmailField.errors()[0].message).toEqual('E-Mail format is invalid');
+
+    // Test valid email
+    emailField.value.set(['test@example.com']);
+    expect(emailField.errors()).toEqual([]);
+    expect(firstEmailField.errors()).toEqual([]);
+  });
+
+  it('should validate newsletter topics conditionally', () => {
+    const newsletterField = component['registrationForm'].newsletter();
+    const topicsField = component['registrationForm'].newsletterTopics();
+
+    // Newsletter unchecked - topics should be disabled and no validation
+    newsletterField.value.set(false);
+    expect(topicsField.disabled()).toBe(true);
+
+    // Newsletter checked but no topics selected
+    newsletterField.value.set(true);
+    topicsField.value.set([]);
+    topicsField.markAsTouched();
+    expect(topicsField.disabled()).toBe(false);
+    expect(topicsField.errors().length).toEqual(1);
+    expect(topicsField.errors()[0].message).toEqual('Select at least one newsletter topic');
+
+    // Newsletter checked with topics selected
+    topicsField.value.set(['tech', 'news']);
+    expect(topicsField.errors()).toEqual([]);
+  });
+
+  it('should validate username asynchronously', async () => {
+    const spy = vi.spyOn(registrationService, 'checkUserExists').mockResolvedValue(true);
+    const usernameField = component['registrationForm'].username();
+
+    usernameField.value.set('existinguser');
+    usernameField.markAsTouched();
+
+    // Wait for async validation
+    await vi.waitFor(() => {
+      expect(usernameField.errors().length).toEqual(1);
+      expect(usernameField.errors()[0].message).toEqual('The username you entered was already taken');
+    });
+
+    expect(spy).toHaveBeenCalledWith('existinguser');
+  });
+
+  it('should validate identity fields conditionally', () => {
+    const genderField = component['registrationForm'].identity.gender();
+    const salutationField = component['registrationForm'].identity.salutation();
+    const pronounField = component['registrationForm'].identity.pronoun();
+
+    // Gender not diverse - salutation and pronoun should be hidden
+    genderField.value.set('male');
+    expect(salutationField.hidden()).toBe(true);
+    expect(pronounField.hidden()).toBe(true);
+
+    // Gender diverse - salutation and pronoun should be visible and required
+    genderField.value.set('diverse');
+    expect(salutationField.hidden()).toBe(false);
+    expect(pronounField.hidden()).toBe(false);
+
+    // Test required validation when diverse
+    salutationField.value.set('');
+    salutationField.markAsTouched();
+    expect(salutationField.errors().length).toEqual(1);
+    expect(salutationField.errors()[0].message).toEqual('Please choose a salutation, when diverse gender selected');
+
+    pronounField.value.set('');
+    pronounField.markAsTouched();
+    expect(pronounField.errors().length).toEqual(1);
+    expect(pronounField.errors()[0].message).toEqual('Please choose a pronoun, when diverse gender selected');
+
+    // Test valid values
+    salutationField.value.set('Mx.');
+    pronounField.value.set('they/them');
+    expect(salutationField.errors()).toEqual([]);
+    expect(pronounField.errors()).toEqual([]);
+  });
+
   it('should add email field', () => {
     const initialEmailCount = component['registrationForm'].email().value().length;
 
@@ -156,6 +287,24 @@ describe('RegistrationForm3', () => {
       newsletter: true,
       newsletterTopics: ['Angular'],
       agreeToTermsAndConditions: false,
+    });
+  });
+
+  it('should debounce username validation', async () => {
+    const spy = vi.spyOn(registrationService, 'checkUserExists').mockResolvedValue(false);
+    const usernameField = component['registrationForm'].username();
+
+    usernameField.value.set('testuser');
+    usernameField.markAsTouched();
+
+    // Should not call immediately due to debounce
+    expect(spy).not.toHaveBeenCalled();
+
+    // Fast forward time to trigger debounce
+    vi.advanceTimersByTime(500);
+
+    await vi.waitFor(() => {
+      expect(spy).toHaveBeenCalledWith('testuser');
     });
   });
 

@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { vi } from 'vitest';
 
-import { RegistrationForm2 } from './registration-form-2';
 import { RegistrationService } from '../registration-service';
+import { RegistrationForm2 } from './registration-form-2';
 
 describe('RegistrationForm2', () => {
   let component: RegistrationForm2;
@@ -94,6 +94,104 @@ describe('RegistrationForm2', () => {
 
     termsField.value.set(true);
     expect(termsField.errors()).toEqual([]);
+  });
+
+  it('should validate password fields', () => {
+    const pw1Field = component['registrationForm'].password.pw1();
+    const pw2Field = component['registrationForm'].password.pw2();
+
+    // Test required validation for pw1
+    pw1Field.value.set('');
+    pw1Field.markAsTouched();
+    expect(pw1Field.errors().length).toEqual(1);
+    expect(pw1Field.errors()[0].message).toEqual('A password is required');
+
+    // Test required validation for pw2
+    pw2Field.value.set('');
+    pw2Field.markAsTouched();
+    expect(pw2Field.errors().length).toEqual(1);
+    expect(pw2Field.errors()[0].message).toEqual('A password confirmation is required');
+
+    // Test minLength validation
+    pw1Field.value.set('short$');
+    expect(pw1Field.errors().length).toEqual(1);
+    expect(pw1Field.errors()[0].message).toEqual('A password must be at least 8 characters long');
+
+    // Test special character validation
+    pw1Field.value.set('password123');
+    expect(pw1Field.errors().length).toEqual(1);
+    expect(pw1Field.errors()[0].message).toEqual('The passwort must contain at least one special character');
+
+    // Test password confirmation mismatch
+    pw1Field.value.set('password123!');
+    pw2Field.value.set('different123!');
+    expect(pw2Field.errors().length).toEqual(1);
+    expect(pw2Field.errors()[0].message).toEqual('The entered password must match with the one specified in "Password" field');
+
+    // Test valid passwords
+    pw1Field.value.set('password123!');
+    pw2Field.value.set('password123!');
+    expect(pw1Field.errors()).toEqual([]);
+    expect(pw2Field.errors()).toEqual([]);
+  });
+
+  it('should validate email fields', () => {
+    const emailField = component['registrationForm'].email();
+
+    // Test at least one email required
+    emailField.value.set(['']);
+    emailField.markAsTouched();
+    expect(emailField.errors().length).toEqual(1);
+    expect(emailField.errors()[0].message).toEqual('At least one E-Mail address must be added');
+
+    // Test email format validation
+    emailField.value.set(['invalid-email']);
+    expect(emailField.errors()).toEqual([]);
+    const firstEmailField = component['registrationForm'].email[0]();
+    expect(firstEmailField.errors().length).toEqual(1);
+    expect(firstEmailField.errors()[0].message).toEqual('E-Mail format is invalid');
+
+    // Test valid email
+    emailField.value.set(['test@example.com']);
+    expect(emailField.errors()).toEqual([]);
+    expect(firstEmailField.errors()).toEqual([]);
+  });
+
+  it('should validate newsletter topics conditionally', () => {
+    const newsletterField = component['registrationForm'].newsletter();
+    const topicsField = component['registrationForm'].newsletterTopics();
+
+    // Newsletter unchecked - topics should be disabled and no validation
+    newsletterField.value.set(false);
+    expect(topicsField.disabled()).toBe(true);
+
+    // Newsletter checked but no topics selected
+    newsletterField.value.set(true);
+    topicsField.value.set('');
+    topicsField.markAsTouched();
+    expect(topicsField.disabled()).toBe(false);
+    expect(topicsField.errors().length).toEqual(1);
+    expect(topicsField.errors()[0].message).toEqual('Select at least one newsletter topic');
+
+    // Newsletter checked with topics selected
+    topicsField.value.set('tech,news');
+    expect(topicsField.errors()).toEqual([]);
+  });
+
+  it('should validate username asynchronously', async () => {
+    const spy = vi.spyOn(registrationService, 'checkUserExists').mockResolvedValue(true);
+    const usernameField = component['registrationForm'].username();
+
+    usernameField.value.set('existinguser');
+    usernameField.markAsTouched();
+
+    // Wait for async validation
+    await vi.waitFor(() => {
+      expect(usernameField.errors().length).toEqual(1);
+      expect(usernameField.errors()[0].message).toEqual('The username you entered was already taken');
+    });
+
+    expect(spy).toHaveBeenCalledWith('existinguser');
   });
 
   it('should add email field', () => {
