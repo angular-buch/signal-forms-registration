@@ -7,7 +7,7 @@
     <input
       type="text"
       [field]="registrationForm.username"
-      [aria-invalid]="ariaInvalidState(registrationForm.username())"
+      [aria-invalid]="ariaInvalidState(registrationForm.username)"
     />
     <app-form-error [fieldRef]="registrationForm.username" />
   </label>
@@ -19,7 +19,7 @@
       <input
         type="number"
         [field]="registrationForm.age"
-        [aria-invalid]="ariaInvalidState(registrationForm.age())"
+        [aria-invalid]="ariaInvalidState(registrationForm.age)"
       />
       <app-form-error [fieldRef]="registrationForm.age" />
     </label>
@@ -37,7 +37,7 @@
             type="email"
             [field]="emailField"
             [aria-label]="'E-Mail ' + $index"
-            [aria-invalid]="ariaInvalidState(emailField())"
+            [aria-invalid]="ariaInvalidState(emailField)"
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
@@ -55,7 +55,7 @@
     >I agree to the terms and conditions
     <input
       type="checkbox"
-      [aria-invalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions())"
+      [aria-invalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions)"
       [field]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
