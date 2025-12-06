@@ -1,0 +1,26 @@
+:host {
+  display: block;
+  margin-top: -0.75rem;
+  margin-bottom: 1rem;
+}
+
+ul {
+  padding: 0;
+
+  li {
+    list-style: none;
+    font-size: 0.8em;
+
+    &.pending {
+      color: #886b02;
+    }
+
+    &.invalid {
+      color: var(--pico-del-color);
+    }
+
+    &.valid {
+      color: var(--pico-ins-color);
+    }
+  }
+}
