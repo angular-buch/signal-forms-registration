@@ -5,6 +5,7 @@ import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
 import { FormFieldInfo } from '../form-field-info/form-field-info';
 import { FIELD_INFO } from '../form-props';
+import { FieldAriaAttributes } from '../field-aria-attributes';
 import { GenderIdentity, IdentityForm, identitySchema, initialGenderIdentityState } from '../identity-form/identity-form';
 import { Multiselect } from '../multiselect/multiselect';
 import { RegistrationService } from '../registration-service';
@@ -134,7 +135,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
 
 @Component({
   selector: 'app-registration-form-3',
-  imports: [BackButton, Field, DebugOutput, FormFieldInfo, IdentityForm, Multiselect],
+  imports: [BackButton, Field, DebugOutput, FormFieldInfo, IdentityForm, Multiselect, FieldAriaAttributes],
   templateUrl: './registration-form-3.html',
   styleUrl: './registration-form-3.scss',
   // Also possible: set SignalFormsConfig only for local component:
@@ -147,10 +148,6 @@ export class RegistrationForm3 {
   protected readonly registrationModel = signal<RegisterFormData>(initialState);
 
   protected readonly registrationForm = form(this.registrationModel, formSchema);
-
-  protected ariaInvalidState(field: FieldTree<unknown>): boolean | undefined {
-    return field().touched() && !field().pending() ? field().errors().length > 0 : undefined;
-  }
 
   protected addEmail(): void {
     this.registrationForm.email().value.update((items) => [...items, '']);

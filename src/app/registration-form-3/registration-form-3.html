@@ -12,9 +12,9 @@
     <input
       type="text"
       id="myField"
-      aria-describedby="username-info"
+      fieldDescriptionId="username-info"
       [field]="registrationForm.username"
-      [aria-invalid]="ariaInvalidState(registrationForm.username)"
+      descriptionId="username"
     />
     <app-form-field-info id="username-info" [fieldRef]="registrationForm.username" />
   </label>
@@ -28,9 +28,8 @@
       >Age
       <input
         type="number"
-        aria-describedby="age-info"
+        fieldDescriptionId="age-info"
         [field]="registrationForm.age"
-        [aria-invalid]="ariaInvalidState(registrationForm.age)"
       />
       <app-form-field-info id="age-info" [fieldRef]="registrationForm.age" />
     </label>
@@ -42,9 +41,8 @@
       <input
         type="password"
         autocomplete
-        aria-describedby="pw1-info"
+        fieldDescriptionId="pw1-info"
         [field]="registrationForm.password.pw1"
-        [aria-invalid]="ariaInvalidState(registrationForm.password.pw1)"
       />
       <app-form-field-info id="pw-info pw1-info" [fieldRef]="registrationForm.password.pw1" />
     </label>
@@ -53,13 +51,12 @@
       <input
         type="password"
         autocomplete
-        aria-describedby="pw2-info"
+        fieldDescriptionId="pw2-info"
         [field]="registrationForm.password.pw2"
-        [aria-invalid]="ariaInvalidState(registrationForm.password.pw2)"
       />
       <app-form-field-info id="pw-info pw2-info" [fieldRef]="registrationForm.password.pw2" />
     </label>
-    <app-form-field-info aria-describedby="pw-info" [fieldRef]="registrationForm.password" />
+    <app-form-field-info id="pw-info" [fieldRef]="registrationForm.password" />
   </div>
   <fieldset>
     <legend>
@@ -72,14 +69,13 @@
         <div role="group">
           <input
             type="email"
-            [aria-describedby]="`email-info email${$index}-info`"
+            [fieldDescriptionId]="`email-info email${$index}-info`"
             [field]="emailField"
             [aria-label]="'E-Mail ' + $index"
-            [aria-invalid]="ariaInvalidState(emailField)"
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
-        <app-form-field-info [id]="`email-info email${$index}-info`" aria-describedby="pw1-info" [fieldRef]="emailField" />
+        <app-form-field-info [id]="`email-info email${$index}-info`" fieldDescriptionId="pw1-info" [fieldRef]="emailField" />
       </div>
       }
     </div>
@@ -100,12 +96,11 @@
     >I agree to the terms and conditions
     <input
       type="checkbox"
-      aria-describedby="agree-info"
-      [aria-invalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions)"
+      fieldDescriptionId="agree-info"
       [field]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
-  <app-form-field-info aria-describedby="agree-info" [fieldRef]="registrationForm.agreeToTermsAndConditions" />
+  <app-form-field-info id="agree-info" [fieldRef]="registrationForm.agreeToTermsAndConditions" />
   <hr />
   <app-form-field-info [fieldRef]="registrationForm" />
   <div role="group">
