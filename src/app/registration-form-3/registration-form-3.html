@@ -1,5 +1,5 @@
 <app-back-button />
-<h1>Version 3: Child Forms, Custom UI Controls and SignalFormsConfig</h1>
+<h1>Version 3: Child Forms and Custom UI Controls</h1>
 
 <p>
   <mark>Note:</mark> User "johndoe" already exists. Use this user to simulate async validation
@@ -11,12 +11,13 @@
     >Username
     <input
       type="text"
-      id="myField"
-      fieldDescriptionId="username-info"
       [field]="registrationForm.username"
-      descriptionId="username"
+      [aria-invalid]="ariaInvalidState(registrationForm.username)"
     />
-    <app-form-field-info id="username-info" [fieldRef]="registrationForm.username" />
+    @if (registrationForm.username().pending()) {
+      <small>Checking availability ...</small>
+    }
+    <app-form-error [fieldRef]="registrationForm.username" />
   </label>
 
   <!-- A whole child form with own model -->
@@ -28,10 +29,10 @@
       >Age
       <input
         type="number"
-        fieldDescriptionId="age-info"
         [field]="registrationForm.age"
+        [aria-invalid]="ariaInvalidState(registrationForm.age)"
       />
-      <app-form-field-info id="age-info" [fieldRef]="registrationForm.age" />
+      <app-form-error [fieldRef]="registrationForm.age" />
     </label>
   </div>
 
@@ -41,22 +42,22 @@
       <input
         type="password"
         autocomplete
-        fieldDescriptionId="pw1-info"
         [field]="registrationForm.password.pw1"
+        [aria-invalid]="ariaInvalidState(registrationForm.password.pw1)"
       />
-      <app-form-field-info id="pw-info pw1-info" [fieldRef]="registrationForm.password.pw1" />
+      <app-form-error [fieldRef]="registrationForm.password.pw1" />
     </label>
     <label
       >Password Confirmation
       <input
         type="password"
         autocomplete
-        fieldDescriptionId="pw2-info"
         [field]="registrationForm.password.pw2"
+        [aria-invalid]="ariaInvalidState(registrationForm.password.pw2)"
       />
-      <app-form-field-info id="pw-info pw2-info" [fieldRef]="registrationForm.password.pw2" />
+      <app-form-error [fieldRef]="registrationForm.password.pw2" />
     </label>
-    <app-form-field-info id="pw-info" [fieldRef]="registrationForm.password" />
+    <app-form-error [fieldRef]="registrationForm.password" />
   </div>
   <fieldset>
     <legend>
@@ -69,40 +70,39 @@
         <div role="group">
           <input
             type="email"
-            [fieldDescriptionId]="`email-info email${$index}-info`"
             [field]="emailField"
             [aria-label]="'E-Mail ' + $index"
+            [aria-invalid]="ariaInvalidState(emailField)"
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
-        <app-form-field-info [id]="`email-info email${$index}-info`" fieldDescriptionId="pw1-info" [fieldRef]="emailField" />
+        <app-form-error [fieldRef]="emailField" />
       </div>
       }
     </div>
-    <app-form-field-info id="email-info" [fieldRef]="registrationForm.email" />
+    <app-form-error [fieldRef]="registrationForm.email" />
   </fieldset>
   <label
     >Subscribe to Newsletter?
     <input type="checkbox" [field]="registrationForm.newsletter" />
   </label>
   <app-multiselect
-    ariaDescribedby="newsletter-topics-info"
     [field]="registrationForm.newsletterTopics"
     [selectOptions]="['Angular', 'React', 'Vue', 'Svelte']"
     label="Topics (multiple possible):"
   />
-  <app-form-field-info id="newsletter-topics-info" [fieldRef]="registrationForm.newsletterTopics" />
+  <app-form-error [fieldRef]="registrationForm.newsletterTopics" />
   <label
     >I agree to the terms and conditions
     <input
       type="checkbox"
-      fieldDescriptionId="agree-info"
+      [aria-invalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions)"
       [field]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
-  <app-form-field-info id="agree-info" [fieldRef]="registrationForm.agreeToTermsAndConditions" />
+  <app-form-error [fieldRef]="registrationForm.agreeToTermsAndConditions" />
   <hr />
-  <app-form-field-info [fieldRef]="registrationForm" />
+  <app-form-error [fieldRef]="registrationForm" />
   <div role="group">
     <button
       type="submit"
