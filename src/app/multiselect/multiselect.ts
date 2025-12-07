@@ -11,6 +11,7 @@ export class Multiselect implements FormValueControl<string[]> {
   readonly value = model<string[]>([]);
   readonly errors = input<readonly WithOptionalField<ValidationError>[]>([]);
   readonly disabled = input<boolean>(false);
+  readonly ariaDescribedBy = input<string>();
 
   readonly label = input.required<string>();
   readonly selectOptions = input.required<string[]>();

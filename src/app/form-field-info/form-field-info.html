@@ -1,0 +1,9 @@
+@if(messages()) {
+<ul>
+  @for (message of messages(); track $index) {
+  <li [class]="message.cssClass">
+    <small>{{ message.info }}</small>
+  </li>
+  }
+</ul>
+}

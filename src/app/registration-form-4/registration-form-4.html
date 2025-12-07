@@ -1,0 +1,121 @@
+<app-back-button />
+<h1>Version 4: Metadata and Accessibility Handling</h1>
+
+<p>
+  <mark>Note:</mark> User "johndoe" already exists. Use this user to simulate async validation
+  error.
+</p>
+
+<form (submit)="submitForm()" novalidate>
+  <label
+    >Username
+    <input
+      type="text"
+      id="myField"
+      fieldDescriptionId="username-info"
+      [field]="registrationForm.username"
+    />
+    <app-form-field-info id="username-info" [fieldRef]="registrationForm.username" />
+  </label>
+
+  <!-- A whole child form with own model -->
+  <app-identity-form [identity]="registrationForm.identity" />
+
+  <!-- native HTML inputs bound with the [field] directive -->
+  <div>
+    <label
+      >Age
+      <input
+        type="number"
+        fieldDescriptionId="age-info"
+        [field]="registrationForm.age"
+      />
+      <app-form-field-info id="age-info" [fieldRef]="registrationForm.age" />
+    </label>
+  </div>
+
+  <div>
+    <label
+      >Password
+      <input
+        type="password"
+        autocomplete
+        fieldDescriptionId="pw1-info"
+        [field]="registrationForm.password.pw1"
+      />
+      <app-form-field-info id="pw-info pw1-info" [fieldRef]="registrationForm.password.pw1" />
+    </label>
+    <label
+      >Password Confirmation
+      <input
+        type="password"
+        autocomplete
+        fieldDescriptionId="pw2-info"
+        [field]="registrationForm.password.pw2"
+      />
+      <app-form-field-info id="pw-info pw2-info" [fieldRef]="registrationForm.password.pw2" />
+    </label>
+    <app-form-field-info id="pw-info" [fieldRef]="registrationForm.password" />
+  </div>
+  <fieldset>
+    <legend>
+      E-Mail Addresses
+      <button type="button" (click)="addEmail()">+</button>
+    </legend>
+    <div>
+      @for (emailField of registrationForm.email; track $index) {
+      <div>
+        <div role="group">
+          <input
+            type="email"
+            [fieldDescriptionId]="`email-info email${$index}-info`"
+            [field]="emailField"
+            [aria-label]="'E-Mail ' + $index"
+          />
+          <button type="button" (click)="removeEmail($index)">-</button>
+        </div>
+        <app-form-field-info [id]="`email-info email${$index}-info`" fieldDescriptionId="pw1-info" [fieldRef]="emailField" />
+      </div>
+      }
+    </div>
+    <app-form-field-info id="email-info" [fieldRef]="registrationForm.email" />
+  </fieldset>
+  <label
+    >Subscribe to Newsletter?
+    <input type="checkbox" [field]="registrationForm.newsletter" />
+  </label>
+  <app-multiselect
+    ariaDescribedby="newsletter-topics-info"
+    [field]="registrationForm.newsletterTopics"
+    [selectOptions]="['Angular', 'React', 'Vue', 'Svelte']"
+    label="Topics (multiple possible):"
+  />
+  <app-form-field-info id="newsletter-topics-info" [fieldRef]="registrationForm.newsletterTopics" />
+  <label
+    >I agree to the terms and conditions
+    <input
+      type="checkbox"
+      fieldDescriptionId="agree-info"
+      [field]="registrationForm.agreeToTermsAndConditions"
+    />
+  </label>
+  <app-form-field-info id="agree-info" [fieldRef]="registrationForm.agreeToTermsAndConditions" />
+  <hr />
+  <app-form-field-info [fieldRef]="registrationForm" />
+  <div role="group">
+    <button
+      type="submit"
+      [disabled]="registrationForm().submitting()"
+      [aria-busy]="registrationForm().submitting()"
+    >
+      @if (registrationForm().submitting()) {
+        Registering ...
+      } @else {
+        Register
+      }
+    </button>
+    <button type="reset" (click)="resetForm()">Reset</button>
+  </div>
+</form>
+
+<app-debug-output [form]="registrationForm"/>
