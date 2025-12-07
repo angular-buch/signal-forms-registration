@@ -4,10 +4,10 @@ import { FieldTree } from '@angular/forms/signals';
 @Directive({
   selector: '[field]',
   host: {
-    '[attr.aria-invalid]': 'ariaInvalid()',
-    '[attr.aria-busy]': 'ariaBusy()',
-    '[attr.aria-describedby]': 'ariaDescribedBy()',
-    '[attr.aria-errormessage]': 'ariaErrorMessage()',
+    '[aria-invalid]': 'ariaInvalid()',
+    '[aria-busy]': 'ariaBusy()',
+    '[aria-describedby]': 'ariaDescribedBy()',
+    '[aria-errormessage]': 'ariaErrorMessage()',
   },
 })
 export class FieldAriaAttributes<T> {
