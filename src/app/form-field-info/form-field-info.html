@@ -1,4 +1,4 @@
-@if(messages()) {
+@if(messages().length) {
 <ul>
   @for (message of messages(); track $index) {
   <li [class]="message.cssClass">
