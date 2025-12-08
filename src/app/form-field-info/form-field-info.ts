@@ -17,7 +17,7 @@ export class FormFieldInfo<T> {
     let messages: { info: string; cssClass: 'info' | 'pending' | 'valid' | 'invalid' }[] = [];
 
     if (field.pending()) {
-      messages = [{ info: 'Checking availability ...', cssClass: 'pending' }];
+      messages = [{ info: 'Checking validity ...', cssClass: 'pending' }];
     } else if (field.touched() && field.errors().length > 0) {
       messages = field.errors().map((e) => ({ info: e.message || 'Invalid', cssClass: 'invalid' }));
     } else if (field.hasMetadata(FIELD_INFO)) {
