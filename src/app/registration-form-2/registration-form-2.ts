@@ -1,5 +1,5 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { applyEach, applyWhen, Field, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
+import { applyEach, applyWhen, FormField, disabled, email, FieldTree, form, maxLength, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
@@ -94,7 +94,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
     return ctx.value().pw2 === ctx.value().pw1
       ? undefined
       : {
-          field: ctx.field.pw2, // assign the error to the second password field
+          field: ctx.fieldTree.pw2, // assign the error to the second password field
           kind: 'confirmationPassword',
           message: 'The entered password must match with the one specified in "Password" field',
         };
@@ -122,7 +122,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
 
 @Component({
   selector: 'app-registration-form-2',
-  imports: [BackButton, Field, DebugOutput, FormError],
+  imports: [BackButton, FormField, DebugOutput, FormError],
   templateUrl: './registration-form-2.html',
   styleUrl: './registration-form-2.scss',
 })
@@ -163,7 +163,7 @@ export class RegistrationForm2 {
       } catch (e) {
         errors.push(
           {
-            field: form,
+            fieldTree: form,
             kind: 'serverError',
             message: 'There was an server error, please try again (should work after 3rd try)',
           }

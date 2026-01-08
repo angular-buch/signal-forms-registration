@@ -13,7 +13,7 @@
       type="text"
       id="myField"
       fieldDescriptionId="username-info"
-      [field]="registrationForm.username"
+      [formField]="registrationForm.username"
     />
     <app-form-field-info id="username-info" [fieldRef]="registrationForm.username" />
   </label>
@@ -21,14 +21,14 @@
   <!-- A whole child form with own model -->
   <app-identity-form [identity]="registrationForm.identity" />
 
-  <!-- native HTML inputs bound with the [field] directive -->
+  <!-- native HTML inputs bound with the [formField] directive -->
   <div>
     <label
       >Age
       <input
         type="number"
         fieldDescriptionId="age-info"
-        [field]="registrationForm.age"
+        [formField]="registrationForm.age"
       />
       <app-form-field-info id="age-info" [fieldRef]="registrationForm.age" />
     </label>
@@ -41,7 +41,7 @@
         type="password"
         autocomplete
         fieldDescriptionId="pw1-info"
-        [field]="registrationForm.password.pw1"
+        [formField]="registrationForm.password.pw1"
       />
       <app-form-field-info id="pw-info pw1-info" [fieldRef]="registrationForm.password.pw1" />
     </label>
@@ -51,7 +51,7 @@
         type="password"
         autocomplete
         fieldDescriptionId="pw2-info"
-        [field]="registrationForm.password.pw2"
+        [formField]="registrationForm.password.pw2"
       />
       <app-form-field-info id="pw-info pw2-info" [fieldRef]="registrationForm.password.pw2" />
     </label>
@@ -69,7 +69,7 @@
           <input
             type="email"
             [fieldDescriptionId]="`email-info email${$index}-info`"
-            [field]="emailField"
+            [formField]="emailField"
             [aria-label]="'E-Mail ' + $index"
           />
           <button type="button" (click)="removeEmail($index)">-</button>
@@ -82,11 +82,11 @@
   </fieldset>
   <label
     >Subscribe to Newsletter?
-    <input type="checkbox" [field]="registrationForm.newsletter" />
+    <input type="checkbox" [formField]="registrationForm.newsletter" />
   </label>
   <app-multiselect
     fieldDescriptionId="newsletter-topics-info"
-    [field]="registrationForm.newsletterTopics"
+    [formField]="registrationForm.newsletterTopics"
     [selectOptions]="['Angular', 'React', 'Vue', 'Svelte']"
     label="Topics (multiple possible):"
   />
@@ -96,7 +96,7 @@
     <input
       type="checkbox"
       fieldDescriptionId="agree-info"
-      [field]="registrationForm.agreeToTermsAndConditions"
+      [formField]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
   <app-form-field-info id="agree-info" [fieldRef]="registrationForm.agreeToTermsAndConditions" />

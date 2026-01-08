@@ -20,8 +20,8 @@ export class FormFieldInfo<T> {
       messages = [{ info: 'Checking validity ...', cssClass: 'pending' }];
     } else if (field.touched() && field.errors().length > 0) {
       messages = field.errors().map((e) => ({ info: e.message || 'Invalid', cssClass: 'invalid' }));
-    } else if (field.hasMetadata(FIELD_INFO)) {
-      messages = [{ info: field.metadata(FIELD_INFO)!, cssClass: field.valid() ? 'valid': 'info' }];
+    } else if (field.metadata(FIELD_INFO)) {
+      messages = [{ info: field.metadata(FIELD_INFO)?.()!, cssClass: field.valid() ? 'valid': 'info' }];
     }
     return messages;
   });
