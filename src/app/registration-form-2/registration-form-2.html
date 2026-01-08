@@ -11,7 +11,7 @@
     >Username
     <input
       type="text"
-      [field]="registrationForm.username"
+      [formField]="registrationForm.username"
       [aria-invalid]="ariaInvalidState(registrationForm.username)"
     />
     @if (registrationForm.username().pending()) {
@@ -20,13 +20,13 @@
     <app-form-error [fieldRef]="registrationForm.username" />
   </label>
 
-  <!-- native HTML inputs bound with the [field] directive -->
+  <!-- native HTML inputs bound with the [formField] directive -->
   <div>
     <label
       >Age
       <input
         type="number"
-        [field]="registrationForm.age"
+        [formField]="registrationForm.age"
         [aria-invalid]="ariaInvalidState(registrationForm.age)"
       />
       <app-form-error [fieldRef]="registrationForm.age" />
@@ -39,7 +39,7 @@
       <input
         type="password"
         autocomplete
-        [field]="registrationForm.password.pw1"
+        [formField]="registrationForm.password.pw1"
         [aria-invalid]="ariaInvalidState(registrationForm.password.pw1)"
       />
       <app-form-error [fieldRef]="registrationForm.password.pw1" />
@@ -49,7 +49,7 @@
       <input
         type="password"
         autocomplete
-        [field]="registrationForm.password.pw2"
+        [formField]="registrationForm.password.pw2"
         [aria-invalid]="ariaInvalidState(registrationForm.password.pw2)"
       />
       <app-form-error [fieldRef]="registrationForm.password.pw2" />
@@ -67,7 +67,7 @@
         <div role="group">
           <input
             type="email"
-            [field]="emailField"
+            [formField]="emailField"
             [aria-label]="'E-Mail ' + $index"
             [aria-invalid]="ariaInvalidState(emailField)"
           />
@@ -81,12 +81,12 @@
   </fieldset>
   <label
     >Subscribe to Newsletter?
-    <input type="checkbox" [field]="registrationForm.newsletter" />
+    <input type="checkbox" [formField]="registrationForm.newsletter" />
   </label>
 
   <label>
     Topics (multiple possible):
-    <select [field]="registrationForm.newsletterTopics">
+    <select [formField]="registrationForm.newsletterTopics">
       <option value=""></option>
       <option value="Angular">Angular</option>
       <option value="Vue">Vue</option>
@@ -100,7 +100,7 @@
     <input
       type="checkbox"
       [aria-invalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions)"
-      [field]="registrationForm.agreeToTermsAndConditions"
+      [formField]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
   <app-form-error [fieldRef]="registrationForm.agreeToTermsAndConditions" />
