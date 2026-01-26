@@ -154,6 +154,7 @@ export class RegistrationForm4 {
   }
 
   protected removeEmail(removeIndex: number): void {
+    const foo = this.registrationForm.email[0]
     this.registrationForm
       .email()
       .value.update((items) => items.filter((_, index) => index !== removeIndex));
