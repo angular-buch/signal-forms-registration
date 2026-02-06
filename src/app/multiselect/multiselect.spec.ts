@@ -17,7 +17,7 @@ describe('Multiselect', () => {
       inputBinding('selectOptions', signal(['foo', 'bar', 'baz']))
     ]});
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

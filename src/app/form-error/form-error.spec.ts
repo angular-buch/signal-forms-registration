@@ -30,7 +30,7 @@ describe('FormError', () => {
       bindings: [inputBinding('fieldRef', signal(field))],
     });
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
@@ -41,16 +41,16 @@ describe('FormError', () => {
     expect(fixture.nativeElement.textContent).toEqual('');
   });
 
-  it('should display nothing, when field has no error', () => {
+  it('should display nothing, when field has no error', async () => {
     fieldData.set('foo');
     field().markAsTouched();
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(fixture.nativeElement.textContent).toEqual('');
   });
 
-  it('should display an error message', () => {
+  it('should display an error message', async () => {
     field().markAsTouched();
-    fixture.detectChanges();
+    await fixture.whenStable();
     expect(fixture.nativeElement.textContent).toContain('field is required');
   });
 });

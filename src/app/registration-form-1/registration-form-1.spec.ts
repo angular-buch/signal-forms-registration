@@ -19,7 +19,7 @@ describe('RegistrationForm1', () => {
     fixture = TestBed.createComponent(RegistrationForm1);
     component = fixture.componentInstance;
     registrationService = TestBed.inject(RegistrationService);
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

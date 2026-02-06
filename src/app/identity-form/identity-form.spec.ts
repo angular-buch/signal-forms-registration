@@ -24,7 +24,7 @@ describe('IdentityForm', () => {
       bindings: [inputBinding('identity', signal(identityFormModel))],
     });
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

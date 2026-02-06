@@ -1,12 +1,39 @@
 import { Component, inject, resource, signal } from '@angular/core';
-import { apply, applyEach, applyWhen, debounce, disabled, email, FormField, form, maxLength, metadata, min, minLength, pattern, required, schema, submit, validate, validateAsync, validateTree, ValidationError, WithField } from '@angular/forms/signals';
+import {
+  apply,
+  applyEach,
+  applyWhen,
+  debounce,
+  disabled,
+  email,
+  FormField,
+  form,
+  maxLength,
+  metadata,
+  min,
+  minLength,
+  pattern,
+  required,
+  schema,
+  submit,
+  validate,
+  validateAsync,
+  validateTree,
+  ValidationError,
+  WithFieldTree,
+} from '@angular/forms/signals';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
 import { FormFieldInfo } from '../form-field-info/form-field-info';
 import { FIELD_INFO } from '../form-props';
 import { FieldAriaAttributes } from '../field-aria-attributes';
-import { GenderIdentity, IdentityForm, identitySchema, initialGenderIdentityState } from '../identity-form/identity-form';
+import {
+  GenderIdentity,
+  IdentityForm,
+  identitySchema,
+  initialGenderIdentityState,
+} from '../identity-form/identity-form';
 import { Multiselect } from '../multiselect/multiselect';
 import { RegistrationService } from '../registration-service';
 
@@ -60,9 +87,9 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
           }
         : undefined;
     },
-    onError: () => undefined
+    onError: () => undefined,
   });
-  metadata(schemaPath.username, FIELD_INFO, () => "A username must consists of 3-12 characters.")
+  metadata(schemaPath.username, FIELD_INFO, () => 'A username must consists of 3-12 characters.');
 
   // Age validation
   min(schemaPath.age, 18, { message: 'You must be >=18 years old.' });
@@ -79,12 +106,12 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
           kind: 'atLeastOneEmail',
           message: 'At least one E-Mail address must be added',
         }
-      : undefined
+      : undefined,
   );
   applyEach(schemaPath.email, (emailPath) => {
     email(emailPath, { message: 'E-Mail format is invalid' });
   });
-  metadata(schemaPath.email, FIELD_INFO, () => "Please enter at least one valid E-Mail address")
+  metadata(schemaPath.email, FIELD_INFO, () => 'Please enter at least one valid E-Mail address');
 
   // Password validation
   required(schemaPath.password.pw1, { message: 'A password is required' });
@@ -97,7 +124,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
   pattern(
     schemaPath.password.pw1,
     new RegExp('^.*[!@#$%^&*(),.?":{}|<>\\[\\]\\\\/~`_+=;\'\\-].*$'),
-    { message: 'The passwort must contain at least one special character' }
+    { message: 'The passwort must contain at least one special character' },
   );
   validateTree(schemaPath.password, (ctx) => {
     return ctx.value().pw2 === ctx.value().pw1
@@ -108,7 +135,11 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
           message: 'The entered password must match with the one specified in "Password" field',
         };
   });
-  metadata(schemaPath.password, FIELD_INFO, () => "Please enter a password with min 8 characters and a special character.")
+  metadata(
+    schemaPath.password,
+    FIELD_INFO,
+    () => 'Please enter a password with min 8 characters and a special character.',
+  );
 
   // Newsletter validation
   applyWhen(
@@ -121,9 +152,9 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
               kind: 'noTopicSelected',
               message: 'Select at least one newsletter topic',
             }
-          : undefined
+          : undefined,
       );
-    }
+    },
   );
 
   // Disable newsletter topics when newsletter is unchecked
@@ -135,7 +166,15 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
 
 @Component({
   selector: 'app-registration-form-4',
-  imports: [BackButton, FormField, DebugOutput, FormFieldInfo, IdentityForm, Multiselect, FieldAriaAttributes],
+  imports: [
+    BackButton,
+    FormField,
+    DebugOutput,
+    FormFieldInfo,
+    IdentityForm,
+    Multiselect,
+    FieldAriaAttributes,
+  ],
   templateUrl: './registration-form-4.html',
   styleUrl: './registration-form-4.scss',
   // Also possible: set SignalFormsConfig only for local component:
@@ -147,14 +186,33 @@ export class RegistrationForm4 {
   readonly #registrationService = inject(RegistrationService);
   protected readonly registrationModel = signal<RegisterFormData>(initialState);
 
-  protected readonly registrationForm = form(this.registrationModel, formSchema);
+  protected readonly registrationForm = form(this.registrationModel, formSchema, {
+    submission: {
+      action: async (form) => {
+        const errors: WithFieldTree<ValidationError>[] = [];
+
+        try {
+          await this.#registrationService.registerUser(form().value);
+          setTimeout(() => this.resetForm(), 3000);
+        } catch (e) {
+          errors.push({
+            fieldTree: form,
+            kind: 'serverError',
+            message: 'There was an server error, please try again (should work after 3rd try)',
+          });
+        }
+
+        return errors;
+      },
+    },
+  });
 
   protected addEmail(): void {
     this.registrationForm.email().value.update((items) => [...items, '']);
   }
 
   protected removeEmail(removeIndex: number): void {
-    const foo = this.registrationForm.email[0]
+    const foo = this.registrationForm.email[0];
     this.registrationForm
       .email()
       .value.update((items) => items.filter((_, index) => index !== removeIndex));
@@ -162,24 +220,7 @@ export class RegistrationForm4 {
 
   protected submitForm() {
     // validate when submitting and assign possible errors for matching field for showing in the UI
-    submit(this.registrationForm, async (form) => {
-      const errors: WithField<ValidationError>[] = [];
-
-      try {
-        await this.#registrationService.registerUser(form().value);
-        setTimeout(() => this.resetForm(), 3000);
-      } catch (e) {
-        errors.push(
-          {
-            fieldTree: form,
-            kind: 'serverError',
-            message: 'There was an server error, please try again (should work after 3rd try)',
-          }
-        );
-      }
-
-      return errors;
-    });
+    submit(this.registrationForm);
 
     // Prevent reloading (default browser behavior)
     return false;

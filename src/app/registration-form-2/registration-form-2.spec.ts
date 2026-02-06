@@ -23,7 +23,8 @@ describe('RegistrationForm2', () => {
     fixture = TestBed.createComponent(RegistrationForm2);
     component = fixture.componentInstance;
     registrationService = TestBed.inject(RegistrationService);
-    fixture.detectChanges();
+    TestBed.tick();
+    await fixture.whenStable();
   });
 
   afterAll(() => {
@@ -125,8 +126,11 @@ describe('RegistrationForm2', () => {
     // Test password confirmation mismatch
     pw1Field.value.set('password123!');
     pw2Field.value.set('different123!');
-    expect(pw2Field.errors().length).toEqual(1);
-    expect(pw2Field.errors()[0].message).toEqual('The entered password must match with the one specified in "Password" field');
+    pw2Field.markAsTouched();
+    component['registrationForm'].password().markAsTouched();
+    const passwordErrors = component['registrationForm'].password().errors();
+    expect(passwordErrors.length).toEqual(1);
+    expect(passwordErrors[0].message).toEqual('The entered password must match with the one specified in "Password" field');
 
     // Test valid passwords
     pw1Field.value.set('password123!');
