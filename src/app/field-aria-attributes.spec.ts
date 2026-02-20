@@ -29,8 +29,8 @@ describe('FieldAriaAttributes', () => {
     component = fixture.componentInstance;
     component.field = form(
       fieldData,
-      (schemaPath) => {
-        required(schemaPath, { message: 'Field is required.' });
+      (path) => {
+        required(path, { message: 'Field is required.' });
       },
       { injector: TestBed.inject(Injector) }
     );
@@ -95,8 +95,8 @@ describe('FieldAriaAttributes', () => {
       component = fixture.componentInstance;
       component.field = form(
         fieldData,
-        (schemaPath) => {
-          required(schemaPath, { message: 'Field is required.' });
+        (path) => {
+          required(path, { message: 'Field is required.' });
         },
         { injector: TestBed.inject(Injector) }
       );
@@ -136,8 +136,8 @@ describe('FieldAriaAttributes', () => {
       component = fixture.componentInstance;
       component.field = form(
         fieldData,
-        (schemaPath) => {
-          required(schemaPath, { message: 'Field is required.' });
+        (path) => {
+          required(path, { message: 'Field is required.' });
         },
         { injector: TestBed.inject(Injector) }
       );

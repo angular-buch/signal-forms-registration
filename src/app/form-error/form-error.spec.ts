@@ -19,9 +19,9 @@ describe('FormError', () => {
 
     field = form(
       fieldData,
-      (schemaPath) => {
-        required(schemaPath, { message: 'Field is required.' });
-        minLength(schemaPath, 3, { message: 'Field must contain at least 3 characters.' })
+      (path) => {
+        required(path, { message: 'Field is required.' });
+        minLength(path, 3, { message: 'Field must contain at least 3 characters.' })
       },
       { injector: TestBed.inject(Injector) }
     );

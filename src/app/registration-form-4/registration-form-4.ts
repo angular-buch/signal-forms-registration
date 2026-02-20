@@ -59,13 +59,13 @@ const initialState: RegisterFormData = {
   agreeToTermsAndConditions: false,
 };
 
-export const formSchema = schema<RegisterFormData>((schemaPath) => {
+export const formSchema = schema<RegisterFormData>((path) => {
   // Username validation
-  required(schemaPath.username, { message: 'Username is required.' });
-  minLength(schemaPath.username, 3, { message: 'A username must be at least 3 characters long.' });
-  maxLength(schemaPath.username, 12, { message: 'A username can be max. 12 characters long.' });
-  debounce(schemaPath.username, 500);
-  validateAsync(schemaPath.username, {
+  required(path.username, { message: 'Username is required.' });
+  minLength(path.username, 3, { message: 'A username must be at least 3 characters long.' });
+  maxLength(path.username, 12, { message: 'A username can be max. 12 characters long.' });
+  debounce(path.username, 500);
+  validateAsync(path.username, {
     // Reactive params
     params: (ctx) => ctx.value(),
     // Factory creating a resource
@@ -89,18 +89,18 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
     },
     onError: () => undefined,
   });
-  metadata(schemaPath.username, FIELD_INFO, () => 'A username must consists of 3-12 characters.');
+  metadata(path.username, FIELD_INFO, () => 'A username must consists of 3-12 characters.');
 
   // Age validation
-  min(schemaPath.age, 18, { message: 'You must be >=18 years old.' });
+  min(path.age, 18, { message: 'You must be >=18 years old.' });
 
   // Terms and conditions
-  required(schemaPath.agreeToTermsAndConditions, {
+  required(path.agreeToTermsAndConditions, {
     message: 'You must agree to the terms and conditions.',
   });
 
   // E-Mail validation
-  validate(schemaPath.email, (ctx) =>
+  validate(path.email, (ctx) =>
     !ctx.value().some((e) => e)
       ? {
           kind: 'atLeastOneEmail',
@@ -108,25 +108,25 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
         }
       : undefined,
   );
-  applyEach(schemaPath.email, (emailPath) => {
+  applyEach(path.email, (emailPath) => {
     email(emailPath, { message: 'E-Mail format is invalid.' });
   });
-  metadata(schemaPath.email, FIELD_INFO, () => 'Please enter at least one valid E-Mail address');
+  metadata(path.email, FIELD_INFO, () => 'Please enter at least one valid E-Mail address');
 
   // Password validation
-  required(schemaPath.password.pw1, { message: 'A password is required.' });
-  required(schemaPath.password.pw2, {
+  required(path.password.pw1, { message: 'A password is required.' });
+  required(path.password.pw2, {
     message: 'A password confirmation is required.',
   });
-  minLength(schemaPath.password.pw1, 8, {
+  minLength(path.password.pw1, 8, {
     message: 'A password must be at least 8 characters long.',
   });
   pattern(
-    schemaPath.password.pw1,
+    path.password.pw1,
     new RegExp('^.*[!@#$%^&*(),.?":{}|<>\\[\\]\\\\/~`_+=;\'\\-].*$'),
     { message: 'The password must contain at least one special character.' },
   );
-  validateTree(schemaPath.password, (ctx) => {
+  validateTree(path.password, (ctx) => {
     return ctx.value().pw2 === ctx.value().pw1
       ? undefined
       : {
@@ -136,17 +136,17 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
         };
   });
   metadata(
-    schemaPath.password,
+    path.password,
     FIELD_INFO,
     () => 'Please enter a password with min 8 characters and a special character.',
   );
 
   // Newsletter validation
   applyWhen(
-    schemaPath,
+    path,
     (ctx) => ctx.value().newsletter,
-    (schemaPathWhenTrue) => {
-      validate(schemaPathWhenTrue.newsletterTopics, (ctx) =>
+    (pathWhenTrue) => {
+      validate(pathWhenTrue.newsletterTopics, (ctx) =>
         !ctx.value().length
           ? {
               kind: 'noTopicSelected',
@@ -158,10 +158,10 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
   );
 
   // Disable newsletter topics when newsletter is unchecked
-  disabled(schemaPath.newsletterTopics, (ctx) => !ctx.valueOf(schemaPath.newsletter));
+  disabled(path.newsletterTopics, (ctx) => !ctx.valueOf(path.newsletter));
 
   // apply child schema for identity checks
-  apply(schemaPath.identity, identitySchema);
+  apply(path.identity, identitySchema);
 });
 
 @Component({
