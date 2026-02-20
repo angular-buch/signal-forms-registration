@@ -30,7 +30,7 @@ describe('FieldAriaAttributes', () => {
     component.field = form(
       fieldData,
       (schemaPath) => {
-        required(schemaPath, { message: 'Field is required' });
+        required(schemaPath, { message: 'Field is required.' });
       },
       { injector: TestBed.inject(Injector) }
     );
@@ -96,7 +96,7 @@ describe('FieldAriaAttributes', () => {
       component.field = form(
         fieldData,
         (schemaPath) => {
-          required(schemaPath, { message: 'Field is required' });
+          required(schemaPath, { message: 'Field is required.' });
         },
         { injector: TestBed.inject(Injector) }
       );
@@ -137,7 +137,7 @@ describe('FieldAriaAttributes', () => {
       component.field = form(
         fieldData,
         (schemaPath) => {
-          required(schemaPath, { message: 'Field is required' });
+          required(schemaPath, { message: 'Field is required.' });
         },
         { injector: TestBed.inject(Injector) }
       );

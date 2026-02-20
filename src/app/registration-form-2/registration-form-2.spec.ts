@@ -53,20 +53,20 @@ describe('RegistrationForm2', () => {
     // Test required validation
     usernameField.value.set('');
     usernameField.markAsTouched();
-    expect(usernameField.errors().length).toEqual(1);
-    expect(usernameField.errors()[0].message).toEqual('Username is required');
+    expect(usernameField.errors().length).toBe(1);
+    expect(usernameField.errors()[0].message).toBe('Username is required.');
 
     // Test minLength validation
     usernameField.value.set('ab');
-    expect(usernameField.errors().length).toEqual(1);
-    expect(usernameField.errors()[0].message).toEqual(
-      'A username must be at least 3 characters long'
+    expect(usernameField.errors().length).toBe(1);
+    expect(usernameField.errors()[0].message).toBe(
+      'A username must be at least 3 characters long.'
     );
 
     // Test maxLength validation
     usernameField.value.set('verylongusername');
-    expect(usernameField.errors().length).toEqual(1);
-    expect(usernameField.errors()[0].message).toEqual('A username can be max. 12 characters long');
+    expect(usernameField.errors().length).toBe(1);
+    expect(usernameField.errors()[0].message).toBe('A username can be max. 12 characters long.');
 
     // Test valid username
     usernameField.value.set('validuser');
@@ -78,8 +78,8 @@ describe('RegistrationForm2', () => {
 
     ageField.value.set(17);
     ageField.markAsTouched();
-    expect(ageField.errors().length).toEqual(1);
-    expect(ageField.errors()[0].message).toEqual('You must be >=18 years old.');
+    expect(ageField.errors().length).toBe(1);
+    expect(ageField.errors()[0].message).toBe('You must be >=18 years old.');
 
     ageField.value.set(18);
     expect(ageField.errors()).toEqual([]);
@@ -90,8 +90,8 @@ describe('RegistrationForm2', () => {
 
     termsField.value.set(false);
     termsField.markAsTouched();
-    expect(termsField.errors().length).toEqual(1);
-    expect(termsField.errors()[0].message).toEqual('You must agree to the terms and conditions.');
+    expect(termsField.errors().length).toBe(1);
+    expect(termsField.errors()[0].message).toBe('You must agree to the terms and conditions.');
 
     termsField.value.set(true);
     expect(termsField.errors()).toEqual([]);
@@ -104,24 +104,24 @@ describe('RegistrationForm2', () => {
     // Test required validation for pw1
     pw1Field.value.set('');
     pw1Field.markAsTouched();
-    expect(pw1Field.errors().length).toEqual(1);
-    expect(pw1Field.errors()[0].message).toEqual('A password is required');
+    expect(pw1Field.errors().length).toBe(1);
+    expect(pw1Field.errors()[0].message).toBe('A password is required.');
 
     // Test required validation for pw2
     pw2Field.value.set('');
     pw2Field.markAsTouched();
-    expect(pw2Field.errors().length).toEqual(1);
-    expect(pw2Field.errors()[0].message).toEqual('A password confirmation is required');
+    expect(pw2Field.errors().length).toBe(1);
+    expect(pw2Field.errors()[0].message).toBe('A password confirmation is required.');
 
     // Test minLength validation
     pw1Field.value.set('short$');
-    expect(pw1Field.errors().length).toEqual(1);
-    expect(pw1Field.errors()[0].message).toEqual('A password must be at least 8 characters long');
+    expect(pw1Field.errors().length).toBe(1);
+    expect(pw1Field.errors()[0].message).toBe('A password must be at least 8 characters long.');
 
     // Test special character validation
     pw1Field.value.set('password123');
-    expect(pw1Field.errors().length).toEqual(1);
-    expect(pw1Field.errors()[0].message).toEqual('The passwort must contain at least one special character');
+    expect(pw1Field.errors().length).toBe(1);
+    expect(pw1Field.errors()[0].message).toBe('The password must contain at least one special character.');
 
     // Test password confirmation mismatch
     pw1Field.value.set('password123!');
@@ -129,8 +129,8 @@ describe('RegistrationForm2', () => {
     pw2Field.markAsTouched();
     component['registrationForm'].password().markAsTouched();
     const passwordErrors = component['registrationForm'].password().errors();
-    expect(passwordErrors.length).toEqual(1);
-    expect(passwordErrors[0].message).toEqual('The entered password must match with the one specified in "Password" field');
+    expect(passwordErrors.length).toBe(1);
+    expect(passwordErrors[0].message).toBe('The entered password must match with the one specified in "Password" field.');
 
     // Test valid passwords
     pw1Field.value.set('password123!');
@@ -145,15 +145,15 @@ describe('RegistrationForm2', () => {
     // Test at least one email required
     emailField.value.set(['']);
     emailField.markAsTouched();
-    expect(emailField.errors().length).toEqual(1);
-    expect(emailField.errors()[0].message).toEqual('At least one E-Mail address must be added');
+    expect(emailField.errors().length).toBe(1);
+    expect(emailField.errors()[0].message).toBe('At least one E-Mail address must be added.');
 
     // Test email format validation
     emailField.value.set(['invalid-email']);
     expect(emailField.errors()).toEqual([]);
     const firstEmailField = component['registrationForm'].email[0]();
-    expect(firstEmailField.errors().length).toEqual(1);
-    expect(firstEmailField.errors()[0].message).toEqual('E-Mail format is invalid');
+    expect(firstEmailField.errors().length).toBe(1);
+    expect(firstEmailField.errors()[0].message).toBe('E-Mail format is invalid.');
 
     // Test valid email
     emailField.value.set(['test@example.com']);
@@ -174,8 +174,8 @@ describe('RegistrationForm2', () => {
     topicsField.value.set('');
     topicsField.markAsTouched();
     expect(topicsField.disabled()).toBe(false);
-    expect(topicsField.errors().length).toEqual(1);
-    expect(topicsField.errors()[0].message).toEqual('Select at least one newsletter topic');
+    expect(topicsField.errors().length).toBe(1);
+    expect(topicsField.errors()[0].message).toBe('Select at least one newsletter topic.');
 
     // Newsletter checked with topics selected
     topicsField.value.set('tech,news');
@@ -191,8 +191,8 @@ describe('RegistrationForm2', () => {
 
     // Wait for async validation
     await vi.waitFor(() => {
-      expect(usernameField.errors().length).toEqual(1);
-      expect(usernameField.errors()[0].message).toEqual('The username you entered was already taken');
+      expect(usernameField.errors().length).toBe(1);
+      expect(usernameField.errors()[0].message).toBe('The username you entered was already taken.');
     });
 
     expect(spy).toHaveBeenCalledWith('existinguser');

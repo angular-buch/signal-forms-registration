@@ -61,9 +61,9 @@ const initialState: RegisterFormData = {
 
 export const formSchema = schema<RegisterFormData>((schemaPath) => {
   // Username validation
-  required(schemaPath.username, { message: 'Username is required' });
-  minLength(schemaPath.username, 3, { message: 'A username must be at least 3 characters long' });
-  maxLength(schemaPath.username, 12, { message: 'A username can be max. 12 characters long' });
+  required(schemaPath.username, { message: 'Username is required.' });
+  minLength(schemaPath.username, 3, { message: 'A username must be at least 3 characters long.' });
+  maxLength(schemaPath.username, 12, { message: 'A username can be max. 12 characters long.' });
   debounce(schemaPath.username, 500);
   validateAsync(schemaPath.username, {
     // Reactive params
@@ -83,7 +83,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
       return result
         ? {
             kind: 'userExists',
-            message: 'The username you entered was already taken',
+            message: 'The username you entered was already taken.',
           }
         : undefined;
     },
@@ -104,27 +104,27 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
     !ctx.value().some((e) => e)
       ? {
           kind: 'atLeastOneEmail',
-          message: 'At least one E-Mail address must be added',
+          message: 'At least one E-Mail address must be added.',
         }
       : undefined,
   );
   applyEach(schemaPath.email, (emailPath) => {
-    email(emailPath, { message: 'E-Mail format is invalid' });
+    email(emailPath, { message: 'E-Mail format is invalid.' });
   });
   metadata(schemaPath.email, FIELD_INFO, () => 'Please enter at least one valid E-Mail address');
 
   // Password validation
-  required(schemaPath.password.pw1, { message: 'A password is required' });
+  required(schemaPath.password.pw1, { message: 'A password is required.' });
   required(schemaPath.password.pw2, {
-    message: 'A password confirmation is required',
+    message: 'A password confirmation is required.',
   });
   minLength(schemaPath.password.pw1, 8, {
-    message: 'A password must be at least 8 characters long',
+    message: 'A password must be at least 8 characters long.',
   });
   pattern(
     schemaPath.password.pw1,
     new RegExp('^.*[!@#$%^&*(),.?":{}|<>\\[\\]\\\\/~`_+=;\'\\-].*$'),
-    { message: 'The passwort must contain at least one special character' },
+    { message: 'The password must contain at least one special character.' },
   );
   validateTree(schemaPath.password, (ctx) => {
     return ctx.value().pw2 === ctx.value().pw1
@@ -132,7 +132,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
       : {
           field: ctx.fieldTree.pw2, // assign the error to the second password field
           kind: 'confirmationPassword',
-          message: 'The entered password must match with the one specified in "Password" field',
+          message: 'The entered password must match with the one specified in "Password" field.',
         };
   });
   metadata(
@@ -150,7 +150,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
         !ctx.value().length
           ? {
               kind: 'noTopicSelected',
-              message: 'Select at least one newsletter topic',
+              message: 'Select at least one newsletter topic.',
             }
           : undefined,
       );
@@ -198,7 +198,7 @@ export class RegistrationForm4 {
           errors.push({
             fieldTree: form,
             kind: 'serverError',
-            message: 'There was an server error, please try again (should work after 3rd try)',
+            message: 'There was a server error, please try again (should work after 3rd try).',
           });
         }
 

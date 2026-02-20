@@ -20,8 +20,8 @@ describe('FormError', () => {
     field = form(
       fieldData,
       (schemaPath) => {
-        required(schemaPath, { message: 'field is required' });
-        minLength(schemaPath, 3, { message: 'field must contain at least 3 characters' })
+        required(schemaPath, { message: 'Field is required.' });
+        minLength(schemaPath, 3, { message: 'Field must contain at least 3 characters.' })
       },
       { injector: TestBed.inject(Injector) }
     );
@@ -38,19 +38,19 @@ describe('FormError', () => {
   });
 
   it('should display nothing, when field is not touched', () => {
-    expect(fixture.nativeElement.textContent).toEqual('');
+    expect(fixture.nativeElement.textContent).toBe('');
   });
 
   it('should display nothing, when field has no error', async () => {
     fieldData.set('foo');
     field().markAsTouched();
     await fixture.whenStable();
-    expect(fixture.nativeElement.textContent).toEqual('');
+    expect(fixture.nativeElement.textContent).toBe('');
   });
 
   it('should display an error message', async () => {
     field().markAsTouched();
     await fixture.whenStable();
-    expect(fixture.nativeElement.textContent).toContain('field is required');
+    expect(fixture.nativeElement.textContent).toContain('Field is required.');
   });
 });

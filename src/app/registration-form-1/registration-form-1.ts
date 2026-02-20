@@ -34,9 +34,9 @@ const initialState: RegisterFormData = {
 
 const formSchema = schema<RegisterFormData>((schemaPath) => {
   // Username validation
-  required(schemaPath.username, { message: 'Username is required' });
-  minLength(schemaPath.username, 3, { message: 'A username must be at least 3 characters long' });
-  maxLength(schemaPath.username, 12, { message: 'A username can be max. 12 characters long' });
+  required(schemaPath.username, { message: 'Username is required.' });
+  minLength(schemaPath.username, 3, { message: 'A username must be at least 3 characters long.' });
+  maxLength(schemaPath.username, 12, { message: 'A username can be max. 12 characters long.' });
 
   // Age validation
   min(schemaPath.age, 18, { message: 'You must be >=18 years old.' });
