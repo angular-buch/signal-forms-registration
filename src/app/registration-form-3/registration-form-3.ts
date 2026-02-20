@@ -15,7 +15,7 @@ import {
   pattern,
   required,
   schema,
-  submit,
+  FormRoot,
   validate,
   validateAsync,
   validateTree,
@@ -157,7 +157,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
 
 @Component({
   selector: 'app-registration-form-3',
-  imports: [BackButton, FormField, DebugOutput, FormError, IdentityForm, Multiselect],
+  imports: [BackButton, FormField, DebugOutput, FormError, FormRoot, IdentityForm, Multiselect],
   templateUrl: './registration-form-3.html',
   styleUrl: './registration-form-3.scss',
   // Also possible: set SignalFormsConfig only for local component:
@@ -202,14 +202,6 @@ export class RegistrationForm3 {
     this.registrationForm
       .email()
       .value.update((items) => items.filter((_, index) => index !== removeIndex));
-  }
-
-  protected submitForm() {
-    // validate when submitting and assign possible errors for matching field for showing in the UI
-    submit(this.registrationForm);
-
-    // Prevent reloading (default browser behavior)
-    return false;
   }
 
   // Reset form

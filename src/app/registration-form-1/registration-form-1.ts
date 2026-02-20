@@ -8,7 +8,7 @@ import {
   minLength,
   required,
   schema,
-  submit,
+  FormRoot,
 } from '@angular/forms/signals';
 
 import { FormError } from '../form-error/form-error';
@@ -49,7 +49,7 @@ const formSchema = schema<RegisterFormData>((schemaPath) => {
 
 @Component({
   selector: 'app-registration-form-1',
-  imports: [BackButton, FormField, DebugOutput, FormError],
+  imports: [BackButton, FormField, DebugOutput, FormError, FormRoot],
   templateUrl: './registration-form-1.html',
   styleUrl: './registration-form-1.scss',
 })
@@ -79,13 +79,6 @@ export class RegistrationForm1 {
     this.registrationForm
       .email()
       .value.update((items) => items.filter((_, index) => index !== removeIndex));
-  }
-
-  protected submitForm() {
-    submit(this.registrationForm);
-
-    // Prevent reloading (default browser behavior)
-    return false;
   }
 
   protected resetForm() {

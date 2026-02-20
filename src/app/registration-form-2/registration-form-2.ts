@@ -13,7 +13,7 @@ import {
   pattern,
   required,
   schema,
-  submit,
+  FormRoot,
   validate,
   validateAsync,
   validateTree,
@@ -142,7 +142,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
 
 @Component({
   selector: 'app-registration-form-2',
-  imports: [BackButton, FormField, DebugOutput, FormError],
+  imports: [BackButton, FormField, DebugOutput, FormError, FormRoot],
   templateUrl: './registration-form-2.html',
   styleUrl: './registration-form-2.scss',
 })
@@ -190,14 +190,6 @@ export class RegistrationForm2 {
     this.registrationForm
       .email()
       .value.update((items) => items.filter((_, index) => index !== removeIndex));
-  }
-
-  protected submitForm() {
-    // validate when submitting and assign possible errors for matching field for showing in the UI
-    submit(this.registrationForm);
-
-    // Prevent reloading (default browser behavior)
-    return false;
   }
 
   // Reset form

@@ -262,12 +262,11 @@ describe('RegistrationForm2', () => {
     component['registrationForm'].email().value.set(['mail@example.org']);
     component['registrationForm'].agreeToTermsAndConditions().value.set(true);
 
-    const result = component['submitForm']();
+    fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
 
     vi.runAllTimers();
 
     expect(spy).toHaveBeenCalled();
-    expect(result).toBe(false); // Prevents default form submission
   });
 
   it('should render form elements', () => {

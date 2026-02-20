@@ -15,7 +15,7 @@ import {
   pattern,
   required,
   schema,
-  submit,
+  FormRoot,
   validate,
   validateAsync,
   validateTree,
@@ -174,6 +174,7 @@ export const formSchema = schema<RegisterFormData>((schemaPath) => {
     IdentityForm,
     Multiselect,
     FieldAriaAttributes,
+    FormRoot,
   ],
   templateUrl: './registration-form-4.html',
   styleUrl: './registration-form-4.scss',
@@ -216,14 +217,6 @@ export class RegistrationForm4 {
     this.registrationForm
       .email()
       .value.update((items) => items.filter((_, index) => index !== removeIndex));
-  }
-
-  protected submitForm() {
-    // validate when submitting and assign possible errors for matching field for showing in the UI
-    submit(this.registrationForm);
-
-    // Prevent reloading (default browser behavior)
-    return false;
   }
 
   // Reset form
