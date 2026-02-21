@@ -89,7 +89,7 @@ export const formSchema = schema<RegisterFormData>((path) => {
     },
     onError: () => undefined,
   });
-  metadata(path.username, FIELD_INFO, () => 'A username must consists of 3-12 characters.');
+  metadata(path.username, FIELD_INFO, () => 'A username must consist of 3-12 characters.');
 
   // Age validation
   min(path.age, 18, { message: 'You must be >=18 years old.' });
@@ -99,19 +99,19 @@ export const formSchema = schema<RegisterFormData>((path) => {
     message: 'You must agree to the terms and conditions.',
   });
 
-  // E-Mail validation
+  // E-mail validation
   validate(path.email, (ctx) =>
     !ctx.value().some((e) => e)
       ? {
           kind: 'atLeastOneEmail',
-          message: 'At least one E-Mail address must be added.',
+          message: 'At least one E-mail address must be added.',
         }
       : undefined,
   );
   applyEach(path.email, (emailPath) => {
-    email(emailPath, { message: 'E-Mail format is invalid.' });
+    email(emailPath, { message: 'E-mail format is invalid.' });
   });
-  metadata(path.email, FIELD_INFO, () => 'Please enter at least one valid E-Mail address');
+  metadata(path.email, FIELD_INFO, () => 'Please enter at least one valid E-mail address');
 
   // Password validation
   required(path.password.pw1, { message: 'A password is required.' });
@@ -187,26 +187,30 @@ export class RegistrationForm4 {
   readonly #registrationService = inject(RegistrationService);
   protected readonly registrationModel = signal<RegisterFormData>(initialState);
 
-  protected readonly registrationForm = form(this.registrationModel, formSchema, {
-    submission: {
-      action: async (form) => {
-        const errors: WithFieldTree<ValidationError>[] = [];
+  protected readonly registrationForm = form(
+    this.registrationModel,
+    formSchema,
+    {
+      submission: {
+        action: async (form) => {
+          const errors: WithFieldTree<ValidationError>[] = [];
 
-        try {
-          await this.#registrationService.registerUser(form().value);
-          setTimeout(() => this.resetForm(), 3000);
-        } catch (e) {
-          errors.push({
-            fieldTree: form,
-            kind: 'serverError',
-            message: 'There was a server error, please try again (should work after 3rd try).',
-          });
-        }
+          try {
+            await this.#registrationService.registerUser(form().value);
+            setTimeout(() => this.resetForm(), 3000);
+          } catch (e) {
+            errors.push({
+              fieldTree: form,
+              kind: 'serverError',
+              message: 'There was a server error, please try again (should work after 3rd try).',
+            });
+          }
 
-        return errors;
+          return errors;
+        },
       },
-    },
-  });
+    }
+  );
 
   protected addEmail(): void {
     this.registrationForm.email().value.update((items) => [...items, '']);

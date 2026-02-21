@@ -57,15 +57,19 @@ export class RegistrationForm1 {
   readonly #registrationService = inject(RegistrationService);
   protected readonly registrationModel = signal<RegisterFormData>(initialState);
 
-  protected readonly registrationForm = form(this.registrationModel, formSchema, {
-    submission: {
-      action: async (form) => {
-        await this.#registrationService.registerUser(form().value);
-        console.log('Registration successful!');
-        this.resetForm();
+  protected readonly registrationForm = form(
+    this.registrationModel,
+    formSchema,
+    {
+      submission: {
+        action: async (form) => {
+          await this.#registrationService.registerUser(form().value);
+          console.log('Registration successful!');
+          this.resetForm();
+        },
       },
-    },
-  });
+    }
+  );
 
   protected ariaInvalidState(field: FieldTree<unknown>): boolean | undefined {
     return field().touched() && !field().pending() ? field().errors().length > 0 : undefined;

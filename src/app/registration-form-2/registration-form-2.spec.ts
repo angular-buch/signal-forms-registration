@@ -146,14 +146,14 @@ describe('RegistrationForm2', () => {
     emailField.value.set(['']);
     emailField.markAsTouched();
     expect(emailField.errors().length).toBe(1);
-    expect(emailField.errors()[0].message).toBe('At least one E-Mail address must be added.');
+    expect(emailField.errors()[0].message).toBe('At least one E-mail address must be added.');
 
     // Test email format validation
     emailField.value.set(['invalid-email']);
     expect(emailField.errors()).toEqual([]);
     const firstEmailField = component['registrationForm'].email[0]();
     expect(firstEmailField.errors().length).toBe(1);
-    expect(firstEmailField.errors()[0].message).toBe('E-Mail format is invalid.');
+    expect(firstEmailField.errors()[0].message).toBe('E-mail format is invalid.');
 
     // Test valid email
     emailField.value.set(['test@example.com']);

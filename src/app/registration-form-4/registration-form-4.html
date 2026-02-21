@@ -59,7 +59,7 @@
   </div>
   <fieldset>
     <legend>
-      E-Mail Addresses
+      E-mail Addresses
       <button type="button" (click)="addEmail()">+</button>
     </legend>
     <div>
@@ -70,7 +70,7 @@
             type="email"
             [fieldDescriptionId]="`email-info email${$index}-info`"
             [formField]="emailField"
-            [aria-label]="'E-Mail ' + $index"
+            [aria-label]="'E-mail ' + $index"
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>

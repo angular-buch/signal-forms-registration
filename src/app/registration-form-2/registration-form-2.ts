@@ -84,17 +84,17 @@ export const formSchema = schema<RegisterFormData>((path) => {
     message: 'You must agree to the terms and conditions.',
   });
 
-  // E-Mail validation
+  // E-mail validation
   validate(path.email, (ctx) =>
     !ctx.value().some((e) => e)
       ? {
           kind: 'atLeastOneEmail',
-          message: 'At least one E-Mail address must be added.',
+          message: 'At least one E-mail address must be added.',
         }
       : undefined,
   );
   applyEach(path.email, (emailPath) => {
-    email(emailPath, { message: 'E-Mail format is invalid.' });
+    email(emailPath, { message: 'E-mail format is invalid.' });
   });
 
   // Password validation
@@ -150,26 +150,30 @@ export class RegistrationForm2 {
   readonly #registrationService = inject(RegistrationService);
   protected readonly registrationModel = signal<RegisterFormData>(initialState);
 
-  protected readonly registrationForm = form(this.registrationModel, formSchema, {
-    submission: {
-      action: async (form) => {
-        const errors: WithFieldTree<ValidationError>[] = [];
+  protected readonly registrationForm = form(
+    this.registrationModel,
+    formSchema,
+    {
+      submission: {
+        action: async (form) => {
+          const errors: WithFieldTree<ValidationError>[] = [];
 
-        try {
-          await this.#registrationService.registerUser(form().value);
-        } catch (e) {
-          errors.push({
-            fieldTree: form,
-            kind: 'serverError',
-            message: 'There was a server error, please try again (should work after 3rd try).',
-          });
-        }
+          try {
+            await this.#registrationService.registerUser(form().value);
+          } catch (e) {
+            errors.push({
+              fieldTree: form,
+              kind: 'serverError',
+              message: 'There was a server error, please try again (should work after 3rd try).',
+            });
+          }
 
-        setTimeout(() => this.resetForm(), 3000);
-        return errors;
+          setTimeout(() => this.resetForm(), 3000);
+          return errors;
+        },
       },
-    },
-  });
+    }
+  );
 
   protected ariaInvalidState(field: FieldTree<unknown>): boolean | undefined {
     if (field().value() === 'validuser') {
