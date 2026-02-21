@@ -19,7 +19,7 @@ describe('RegistrationForm1', () => {
     fixture = TestBed.createComponent(RegistrationForm1);
     component = fixture.componentInstance;
     registrationService = TestBed.inject(RegistrationService);
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
@@ -42,18 +42,18 @@ describe('RegistrationForm1', () => {
     // Test required validation
     usernameField.value.set('');
     usernameField.markAsTouched();
-    expect(usernameField.errors().length).toEqual(1);
-    expect(usernameField.errors()[0].message).toEqual('Username is required');
+    expect(usernameField.errors().length).toBe(1);
+    expect(usernameField.errors()[0].message).toBe('Username is required.');
 
     // Test minLength validation
     usernameField.value.set('ab');
-    expect(usernameField.errors().length).toEqual(1);
-    expect(usernameField.errors()[0].message).toEqual('A username must be at least 3 characters long');
+    expect(usernameField.errors().length).toBe(1);
+    expect(usernameField.errors()[0].message).toBe('A username must be at least 3 characters long.');
 
     // Test maxLength validation
     usernameField.value.set('verylongusername');
-    expect(usernameField.errors().length).toEqual(1);
-    expect(usernameField.errors()[0].message).toEqual('A username can be max. 12 characters long');
+    expect(usernameField.errors().length).toBe(1);
+    expect(usernameField.errors()[0].message).toBe('A username can be max. 12 characters long.');
 
     // Test valid username
     usernameField.value.set('validuser');
@@ -65,8 +65,8 @@ describe('RegistrationForm1', () => {
 
     ageField.value.set(17);
     ageField.markAsTouched();
-    expect(ageField.errors().length).toEqual(1);
-    expect(ageField.errors()[0].message).toEqual('You must be >=18 years old.');
+    expect(ageField.errors().length).toBe(1);
+    expect(ageField.errors()[0].message).toBe('You must be >=18 years old.');
 
     ageField.value.set(18);
     expect(ageField.errors()).toEqual([]);
@@ -77,8 +77,8 @@ describe('RegistrationForm1', () => {
 
     termsField.value.set(false);
     termsField.markAsTouched();
-    expect(termsField.errors().length).toEqual(1);
-    expect(termsField.errors()[0].message).toEqual('You must agree to the terms and conditions.');
+    expect(termsField.errors().length).toBe(1);
+    expect(termsField.errors()[0].message).toBe('You must agree to the terms and conditions.');
 
     termsField.value.set(true);
     expect(termsField.errors()).toEqual([]);
@@ -144,13 +144,12 @@ describe('RegistrationForm1', () => {
     component['registrationForm'].age().value.set(25);
     component['registrationForm'].agreeToTermsAndConditions().value.set(true);
 
-    const result = component['submitForm']();
+    fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
 
     vi.runAllTimers();
     vi.useRealTimers();
 
     expect(spy).toHaveBeenCalled();
-    expect(result).toBe(false); // Prevents default form submission
   });
 
   it('should render form elements', () => {

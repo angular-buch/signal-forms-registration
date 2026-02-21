@@ -19,9 +19,9 @@ describe('FormError', () => {
 
     field = form(
       fieldData,
-      (schemaPath) => {
-        required(schemaPath, { message: 'field is required' });
-        minLength(schemaPath, 3, { message: 'field must contain at least 3 characters' })
+      (path) => {
+        required(path, { message: 'Field is required.' });
+        minLength(path, 3, { message: 'Field must contain at least 3 characters.' })
       },
       { injector: TestBed.inject(Injector) }
     );
@@ -30,7 +30,7 @@ describe('FormError', () => {
       bindings: [inputBinding('fieldRef', signal(field))],
     });
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
@@ -38,19 +38,19 @@ describe('FormError', () => {
   });
 
   it('should display nothing, when field is not touched', () => {
-    expect(fixture.nativeElement.textContent).toEqual('');
+    expect(fixture.nativeElement.textContent).toBe('');
   });
 
-  it('should display nothing, when field has no error', () => {
+  it('should display nothing, when field has no error', async () => {
     fieldData.set('foo');
     field().markAsTouched();
-    fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toEqual('');
+    await fixture.whenStable();
+    expect(fixture.nativeElement.textContent).toBe('');
   });
 
-  it('should display an error message', () => {
+  it('should display an error message', async () => {
     field().markAsTouched();
-    fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('field is required');
+    await fixture.whenStable();
+    expect(fixture.nativeElement.textContent).toContain('Field is required.');
   });
 });

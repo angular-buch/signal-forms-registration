@@ -6,7 +6,7 @@
   error.
 </p>
 
-<form (submit)="submitForm()" novalidate>
+<form [formRoot]="registrationForm">
   <label
     >Username
     <input

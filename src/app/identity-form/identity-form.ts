@@ -25,11 +25,11 @@ export const identitySchema = schema<GenderIdentity>((path) => {
 
   required(path.salutation, {
     when: (ctx) => ctx.valueOf(path.gender) === 'diverse',
-    message: 'Please choose a salutation, when diverse gender selected',
+    message: 'Please choose a salutation, when diverse gender selected.',
   });
   required(path.pronoun, {
     when: (ctx) => ctx.valueOf(path.gender) === 'diverse',
-    message: 'Please choose a pronoun, when diverse gender selected',
+    message: 'Please choose a pronoun, when diverse gender selected.',
   });
 });
 
