@@ -1,5 +1,5 @@
 import { computed, Directive, input } from '@angular/core';
-import { FieldTree } from '@angular/forms/signals';
+import { FieldTree, FormField } from '@angular/forms/signals';
 
 @Directive({
   selector: '[formField]',
@@ -9,6 +9,7 @@ import { FieldTree } from '@angular/forms/signals';
     '[aria-describedby]': 'ariaDescribedBy()',
     '[aria-errormessage]': 'ariaErrorMessage()',
   },
+  hostDirectives: [{ directive: FormField, inputs: ['formField: formField'] }]
 })
 export class FieldAriaAttributes<T> {
   readonly formField = input.required<FieldTree<T>>();

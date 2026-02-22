@@ -168,7 +168,7 @@ export const formSchema = schema<RegisterFormData>((path) => {
   selector: 'app-registration-form-4',
   imports: [
     BackButton,
-    FormField,
+    // FormField,
     DebugOutput,
     FormFieldInfo,
     IdentityForm,
@@ -208,6 +208,10 @@ export class RegistrationForm4 {
 
           return errors;
         },
+        onInvalid: (form) => {
+           const errors = form().errorSummary();
+          errors.at(0)?.fieldTree().focusBoundControl();
+        }
       },
     }
   );
