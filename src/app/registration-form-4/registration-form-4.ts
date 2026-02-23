@@ -168,7 +168,7 @@ export const formSchema = schema<RegisterFormData>((path) => {
   selector: 'app-registration-form-4',
   imports: [
     BackButton,
-    // FormField,
+    FormField,
     DebugOutput,
     FormFieldInfo,
     IdentityForm,

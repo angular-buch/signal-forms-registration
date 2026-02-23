@@ -14,6 +14,7 @@
       id="myField"
       fieldDescriptionId="username-info"
       [formField]="registrationForm.username"
+      [formFieldAria]="registrationForm.username"
     />
     <app-form-field-info id="username-info" [fieldRef]="registrationForm.username" />
   </label>
@@ -29,6 +30,7 @@
         type="number"
         fieldDescriptionId="age-info"
         [formField]="registrationForm.age"
+        [formFieldAria]="registrationForm.age"
       />
       <app-form-field-info id="age-info" [fieldRef]="registrationForm.age" />
     </label>
@@ -42,6 +44,7 @@
         autocomplete
         fieldDescriptionId="pw1-info"
         [formField]="registrationForm.password.pw1"
+        [formFieldAria]="registrationForm.password.pw1"
       />
       <app-form-field-info id="pw-info pw1-info" [fieldRef]="registrationForm.password.pw1" />
     </label>
@@ -52,6 +55,7 @@
         autocomplete
         fieldDescriptionId="pw2-info"
         [formField]="registrationForm.password.pw2"
+        [formFieldAria]="registrationForm.password.pw2"
       />
       <app-form-field-info id="pw-info pw2-info" [fieldRef]="registrationForm.password.pw2" />
     </label>
@@ -70,6 +74,7 @@
             type="email"
             [fieldDescriptionId]="`email-info email${$index}-info`"
             [formField]="emailField"
+            [formFieldAria]="emailField"
             [aria-label]="'E-mail ' + $index"
           />
           <button type="button" (click)="removeEmail($index)">-</button>
@@ -82,11 +87,12 @@
   </fieldset>
   <label
     >Subscribe to Newsletter?
-    <input type="checkbox" [formField]="registrationForm.newsletter" />
+    <input type="checkbox" [formField]="registrationForm.newsletter" [formFieldAria]="registrationForm.newsletter" />
   </label>
   <app-multiselect
     fieldDescriptionId="newsletter-topics-info"
     [formField]="registrationForm.newsletterTopics"
+    [formFieldAria]="registrationForm.newsletterTopics"
     [selectOptions]="['Angular', 'React', 'Vue', 'Svelte']"
     label="Topics (multiple possible):"
   />
@@ -97,6 +103,7 @@
       type="checkbox"
       fieldDescriptionId="agree-info"
       [formField]="registrationForm.agreeToTermsAndConditions"
+      [formFieldAria]="registrationForm.agreeToTermsAndConditions"
     />
   </label>
   <app-form-field-info id="agree-info" [fieldRef]="registrationForm.agreeToTermsAndConditions" />
