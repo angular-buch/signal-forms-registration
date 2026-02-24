@@ -96,7 +96,7 @@ index 0000000..cbfa5f0
 +
 +export const FIELD_INFO = createMetadataKey<string>()
 diff --git a/tmp/version-3/registration-form.html b/tmp/version-4/registration-form.html
-index 12b201d..6999aab 100644
+index 12b201d..481dfaf 100644
 --- a/tmp/version-3/registration-form.html
 +++ b/tmp/version-4/registration-form.html
 @@ -3,13 +3,12 @@
@@ -174,7 +174,7 @@ index 12b201d..6999aab 100644
            <button type="button" (click)="removeEmail($index)">-</button>
          </div>
 -        <app-form-error [fieldRef]="emailField" />
-+        <app-form-field-info [id]="`email-info email${$index}-info`" [fieldRef]="emailField" />
++        <app-form-field-info [id]="`email${$index}-info`" [fieldRef]="emailField" />
        </div>
        }
      </div>
@@ -214,7 +214,7 @@ index 12b201d..6999aab 100644
      <button
        type="submit"
 diff --git a/tmp/version-3/registration-form.ts b/tmp/version-4/registration-form.ts
-index 4e34e02..5084799 100644
+index 4e34e02..5627be0 100644
 --- a/tmp/version-3/registration-form.ts
 +++ b/tmp/version-4/registration-form.ts
 @@ -7,9 +7,9 @@ import {
@@ -290,7 +290,7 @@ index 4e34e02..5084799 100644
            return errors;
          },
 +        onInvalid: (form) => {
-+           const errors = form().errorSummary();
++          const errors = form().errorSummary();
 +          errors.at(0)?.fieldTree().focusBoundControl();
 +        }
        },

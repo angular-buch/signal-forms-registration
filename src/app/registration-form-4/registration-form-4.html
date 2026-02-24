@@ -79,7 +79,7 @@
           />
           <button type="button" (click)="removeEmail($index)">-</button>
         </div>
-        <app-form-field-info [id]="`email-info email${$index}-info`" [fieldRef]="emailField" />
+        <app-form-field-info [id]="`email${$index}-info`" [fieldRef]="emailField" />
       </div>
       }
     </div>

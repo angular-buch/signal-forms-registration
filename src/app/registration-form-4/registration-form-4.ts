@@ -209,7 +209,7 @@ export class RegistrationForm4 {
           return errors;
         },
         onInvalid: (form) => {
-           const errors = form().errorSummary();
+          const errors = form().errorSummary();
           errors.at(0)?.fieldTree().focusBoundControl();
         }
       },
