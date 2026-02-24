@@ -1,0 +1,312 @@
+diff --git a/tmp/version-4/field-aria-attributes.ts b/tmp/version-4/field-aria-attributes.ts
+new file mode 100644
+index 0000000..c2ce81c
+--- /dev/null
++++ b/tmp/version-4/field-aria-attributes.ts
+@@ -0,0 +1,33 @@
++import { computed, Directive, input } from '@angular/core';
++import { FieldTree } from '@angular/forms/signals';
++
++@Directive({
++  selector: '[formFieldAria]',
++  host: {
++    '[aria-invalid]': 'ariaInvalid()',
++    '[aria-busy]': 'ariaBusy()',
++    '[aria-describedby]': 'ariaDescribedBy()',
++    '[aria-errormessage]': 'ariaErrorMessage()',
++  },
++})
++export class FieldAriaAttributes<T> {
++  readonly formFieldAria = input.required<FieldTree<T>>();
++  readonly fieldDescriptionId = input<string>();
++
++  readonly ariaInvalid = computed(() => {
++    const state = this.formFieldAria()();
++    return state.touched() && !state.pending() ? state.errors().length > 0 : undefined;
++  });
++  readonly ariaBusy = computed(() => {
++    const state = this.formFieldAria()();
++    return state.pending();
++  });
++  readonly ariaDescribedBy = computed(() => {
++    const id = this.fieldDescriptionId();
++    return !id || this.ariaInvalid() ? null : id;
++  });
++  readonly ariaErrorMessage = computed(() => {
++    const id = this.fieldDescriptionId();
++    return !id || !this.ariaInvalid() ? null : id;
++  });
++}
+diff --git a/tmp/version-4/form-field-info.html b/tmp/version-4/form-field-info.html
+new file mode 100644
+index 0000000..3460f6c
+--- /dev/null
++++ b/tmp/version-4/form-field-info.html
+@@ -0,0 +1,9 @@
++@if(messages().length) {
++<ul>
++  @for (message of messages(); track $index) {
++  <li [class]="message.cssClass">
++    <small>{{ message.info }}</small>
++  </li>
++  }
++</ul>
++}
+diff --git a/tmp/version-4/form-field-info.ts b/tmp/version-4/form-field-info.ts
+new file mode 100644
+index 0000000..cc1b66a
+--- /dev/null
++++ b/tmp/version-4/form-field-info.ts
+@@ -0,0 +1,28 @@
++import { Component, computed, input, signal } from '@angular/core';
++import { FieldTree } from '@angular/forms/signals';
++
++import { FIELD_INFO } from '../form-props';
++
++@Component({
++  selector: 'app-form-field-info',
++  imports: [],
++  templateUrl: './form-field-info.html',
++  styleUrl: './form-field-info.scss',
++})
++export class FormFieldInfo<T> {
++  readonly fieldRef = input.required<FieldTree<T>>();
++
++  protected readonly messages = computed(() => {
++    const field = this.fieldRef()();
++    let messages: { info: string; cssClass: 'info' | 'pending' | 'valid' | 'invalid' }[] = [];
++
++    if (field.pending()) {
++      messages = [{ info: 'Checking validity ...', cssClass: 'pending' }];
++    } else if (field.touched() && field.errors().length > 0) {
++      messages = field.errors().map((e) => ({ info: e.message || 'Invalid', cssClass: 'invalid' }));
++    } else if (field.metadata(FIELD_INFO)) {
++      messages = [{ info: field.metadata(FIELD_INFO)?.()!, cssClass: field.valid() ? 'valid': 'info' }];
++    }
++    return messages;
++  });
++}
+diff --git a/tmp/version-4/form-props.ts b/tmp/version-4/form-props.ts
+new file mode 100644
+index 0000000..cbfa5f0
+--- /dev/null
++++ b/tmp/version-4/form-props.ts
+@@ -0,0 +1,3 @@
++import { createMetadataKey } from "@angular/forms/signals";
++
++export const FIELD_INFO = createMetadataKey<string>()
+diff --git a/tmp/version-3/registration-form.html b/tmp/version-4/registration-form.html
+index 12b201d..481dfaf 100644
+--- a/tmp/version-3/registration-form.html
++++ b/tmp/version-4/registration-form.html
+@@ -3,13 +3,12 @@
+     >Username
+     <input
+       type="text"
++      id="myField"
++      fieldDescriptionId="username-info"
+       [formField]="registrationForm.username"
+-      [aria-invalid]="ariaInvalidState(registrationForm.username)"
++      [formFieldAria]="registrationForm.username"
+     />
+-    @if (registrationForm.username().pending()) {
+-      <small>Checking availability ...</small>
+-    }
+-    <app-form-error [fieldRef]="registrationForm.username" />
++    <app-form-field-info id="username-info" [fieldRef]="registrationForm.username" />
+   </label>
+ 
+   <!-- A whole child form with own model -->
+@@ -21,10 +20,11 @@
+       >Age
+       <input
+         type="number"
++        fieldDescriptionId="age-info"
+         [formField]="registrationForm.age"
+-        [aria-invalid]="ariaInvalidState(registrationForm.age)"
++        [formFieldAria]="registrationForm.age"
+       />
+-      <app-form-error [fieldRef]="registrationForm.age" />
++      <app-form-field-info id="age-info" [fieldRef]="registrationForm.age" />
+     </label>
+   </div>
+ 
+@@ -34,22 +34,24 @@
+       <input
+         type="password"
+         autocomplete
++        fieldDescriptionId="pw1-info"
+         [formField]="registrationForm.password.pw1"
+-        [aria-invalid]="ariaInvalidState(registrationForm.password.pw1)"
++        [formFieldAria]="registrationForm.password.pw1"
+       />
+-      <app-form-error [fieldRef]="registrationForm.password.pw1" />
++      <app-form-field-info id="pw-info pw1-info" [fieldRef]="registrationForm.password.pw1" />
+     </label>
+     <label
+       >Password Confirmation
+       <input
+         type="password"
+         autocomplete
++        fieldDescriptionId="pw2-info"
+         [formField]="registrationForm.password.pw2"
+-        [aria-invalid]="ariaInvalidState(registrationForm.password.pw2)"
++        [formFieldAria]="registrationForm.password.pw2"
+       />
+-      <app-form-error [fieldRef]="registrationForm.password.pw2" />
++      <app-form-field-info id="pw-info pw2-info" [fieldRef]="registrationForm.password.pw2" />
+     </label>
+-    <app-form-error [fieldRef]="registrationForm.password" />
++    <app-form-field-info id="pw-info" [fieldRef]="registrationForm.password" />
+   </div>
+   <fieldset>
+     <legend>
+@@ -62,39 +64,43 @@
+         <div role="group">
+           <input
+             type="email"
++            [fieldDescriptionId]="`email-info email${$index}-info`"
+             [formField]="emailField"
++            [formFieldAria]="emailField"
+             [aria-label]="'E-mail ' + $index"
+-            [aria-invalid]="ariaInvalidState(emailField)"
+           />
+           <button type="button" (click)="removeEmail($index)">-</button>
+         </div>
+-        <app-form-error [fieldRef]="emailField" />
++        <app-form-field-info [id]="`email${$index}-info`" [fieldRef]="emailField" />
+       </div>
+       }
+     </div>
+-    <app-form-error [fieldRef]="registrationForm.email" />
++    <app-form-field-info id="email-info" [fieldRef]="registrationForm.email" />
+   </fieldset>
+   <label
+     >Subscribe to Newsletter?
+-    <input type="checkbox" [formField]="registrationForm.newsletter" />
++    <input type="checkbox" [formField]="registrationForm.newsletter" [formFieldAria]="registrationForm.newsletter" />
+   </label>
+   <app-multiselect
++    fieldDescriptionId="newsletter-topics-info"
+     [formField]="registrationForm.newsletterTopics"
++    [formFieldAria]="registrationForm.newsletterTopics"
+     [selectOptions]="['Angular', 'React', 'Vue', 'Svelte']"
+     label="Topics (multiple possible):"
+   />
+-  <app-form-error [fieldRef]="registrationForm.newsletterTopics" />
++  <app-form-field-info id="newsletter-topics-info" [fieldRef]="registrationForm.newsletterTopics" />
+   <label
+     >I agree to the terms and conditions
+     <input
+       type="checkbox"
+-      [aria-invalid]="ariaInvalidState(registrationForm.agreeToTermsAndConditions)"
++      fieldDescriptionId="agree-info"
+       [formField]="registrationForm.agreeToTermsAndConditions"
++      [formFieldAria]="registrationForm.agreeToTermsAndConditions"
+     />
+   </label>
+-  <app-form-error [fieldRef]="registrationForm.agreeToTermsAndConditions" />
++  <app-form-field-info id="agree-info" [fieldRef]="registrationForm.agreeToTermsAndConditions" />
+   <hr />
+-  <app-form-error [fieldRef]="registrationForm" />
++  <app-form-field-info [fieldRef]="registrationForm" />
+   <div role="group">
+     <button
+       type="submit"
+diff --git a/tmp/version-3/registration-form.ts b/tmp/version-4/registration-form.ts
+index 4e34e02..5627be0 100644
+--- a/tmp/version-3/registration-form.ts
++++ b/tmp/version-4/registration-form.ts
+@@ -7,9 +7,9 @@ import {
+   disabled,
+   email,
+   FormField,
+-  FieldTree,
+   form,
+   maxLength,
++  metadata,
+   min,
+   minLength,
+   pattern,
+@@ -24,7 +24,9 @@ import {
+ } from '@angular/forms/signals';
+ 
+ import { DebugOutput } from '../debug-output/debug-output';
+-import { FormError } from '../form-error/form-error';
++import { FormFieldInfo } from '../form-field-info/form-field-info';
++import { FIELD_INFO } from '../form-props';
++import { FieldAriaAttributes } from '../field-aria-attributes';
+ import {
+   GenderIdentity,
+   IdentityForm,
+@@ -86,6 +88,7 @@ export const formSchema = schema<RegisterFormData>((path) => {
+     },
+     onError: () => undefined,
+   });
++  metadata(path.username, FIELD_INFO, () => 'A username must consist of 3-12 characters.');
+ 
+   // Age validation
+   min(path.age, 18, { message: 'You must be >=18 years old.' });
+@@ -107,6 +110,7 @@ export const formSchema = schema<RegisterFormData>((path) => {
+   applyEach(path.email, (emailPath) => {
+     email(emailPath, { message: 'E-mail format is invalid.' });
+   });
++  metadata(path.email, FIELD_INFO, () => 'Please enter at least one valid E-mail address');
+ 
+   // Password validation
+   required(path.password.pw1, { message: 'A password is required.' });
+@@ -130,6 +134,11 @@ export const formSchema = schema<RegisterFormData>((path) => {
+           message: 'The entered password must match with the one specified in "Password" field.',
+         };
+   });
++  metadata(
++    path.password,
++    FIELD_INFO,
++    () => 'Please enter a password with min 8 characters and a special character.',
++  );
+ 
+   // Newsletter validation
+   applyWhen(
+@@ -156,7 +165,16 @@ export const formSchema = schema<RegisterFormData>((path) => {
+ 
+ @Component({
+   selector: 'app-registration-form',
+-  imports: [FormField, DebugOutput, FormError, FormRoot, IdentityForm, Multiselect],
++  imports: [
++    BackButton,
++    FormField,
++    DebugOutput,
++    FormFieldInfo,
++    IdentityForm,
++    Multiselect,
++    FieldAriaAttributes,
++    FormRoot,
++  ],
+   templateUrl: './registration-form.html',
+   styleUrl: './registration-form.scss',
+   // Also possible: set SignalFormsConfig only for local component:
+@@ -189,19 +207,20 @@ export class RegistrationForm {
+ 
+           return errors;
+         },
++        onInvalid: (form) => {
++          const errors = form().errorSummary();
++          errors.at(0)?.fieldTree().focusBoundControl();
++        }
+       },
+     }
+   );
+ 
+-  protected ariaInvalidState(field: FieldTree<unknown>): boolean | undefined {
+-    return field().touched() && !field().pending() ? field().errors().length > 0 : undefined;
+-  }
+-
+   protected addEmail(): void {
+     this.registrationForm.email().value.update((items) => [...items, '']);
+   }
+ 
+   protected removeEmail(removeIndex: number): void {
++    const foo = this.registrationForm.email[0];
+     this.registrationForm
+       .email()
+       .value.update((items) => items.filter((_, index) => index !== removeIndex));
