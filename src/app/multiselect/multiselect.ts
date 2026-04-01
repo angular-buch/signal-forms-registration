@@ -1,5 +1,5 @@
 import { Component, effect, input, model } from '@angular/core';
-import { FormValueControl, ValidationError, WithOptionalField } from '@angular/forms/signals';
+import { FormValueControl, ValidationError } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-multiselect',
@@ -9,7 +9,7 @@ import { FormValueControl, ValidationError, WithOptionalField } from '@angular/f
 })
 export class Multiselect implements FormValueControl<string[]> {
   readonly value = model<string[]>([]);
-  readonly errors = input<readonly WithOptionalField<ValidationError>[]>([]);
+  readonly errors = input<readonly ValidationError[]>([]);
   readonly disabled = input<boolean>(false);
   readonly ariaDescribedBy = input<string>();
 

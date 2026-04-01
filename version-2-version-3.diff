@@ -117,12 +117,12 @@ index e69de29..25af118 100644
 +  }
 +</details>
 diff --git a/tmp/version-2/multiselect.ts b/tmp/version-3/multiselect.ts
-index e69de29..693aa49 100644
+index e69de29..42bc6e6 100644
 --- a/tmp/version-2/multiselect.ts
 +++ b/tmp/version-3/multiselect.ts
 @@ -0,0 +1,37 @@
 +import { Component, effect, input, model } from '@angular/core';
-+import { FormValueControl, ValidationError, WithOptionalField } from '@angular/forms/signals';
++import { FormValueControl, ValidationError } from '@angular/forms/signals';
 +
 +@Component({
 +  selector: 'app-multiselect',
@@ -132,7 +132,7 @@ index e69de29..693aa49 100644
 +})
 +export class Multiselect implements FormValueControl<string[]> {
 +  readonly value = model<string[]>([]);
-+  readonly errors = input<readonly WithOptionalField<ValidationError>[]>([]);
++  readonly errors = input<readonly ValidationError[]>([]);
 +  readonly disabled = input<boolean>(false);
 +  readonly ariaDescribedBy = input<string>();
 +
