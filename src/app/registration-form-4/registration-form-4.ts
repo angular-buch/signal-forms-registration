@@ -6,7 +6,6 @@ import {
   debounce,
   disabled,
   email,
-  FormField,
   form,
   maxLength,
   metadata,
@@ -168,7 +167,6 @@ export const formSchema = schema<RegisterFormData>((path) => {
   selector: 'app-registration-form-4',
   imports: [
     BackButton,
-    FormField,
     DebugOutput,
     FormFieldInfo,
     IdentityForm,
