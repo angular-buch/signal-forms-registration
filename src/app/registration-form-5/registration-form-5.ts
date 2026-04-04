@@ -7,7 +7,6 @@ import {
   disabled,
   email,
   FormField,
-  form,
   maxLength,
   metadata,
   min,
@@ -22,6 +21,7 @@ import {
   ValidationError,
   WithFieldTree,
 } from '@angular/forms/signals';
+import { compatForm } from '@angular/forms/signals/compat';
 
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
@@ -34,12 +34,18 @@ import {
   identitySchema,
   initialGenderIdentityState,
 } from '../identity-form/identity-form';
+import {
+  LocationForm,
+  LocationGroup,
+  createLocationGroup,
+} from '../location-form/location-form';
 import { Multiselect } from '../multiselect/multiselect';
 import { RegistrationService } from '../registration-service';
 
 export interface RegisterFormData {
   username: string;
   identity: GenderIdentity;
+  location: LocationGroup;
   age: number;
   password: { pw1: string; pw2: string };
   email: string[];
@@ -48,7 +54,7 @@ export interface RegisterFormData {
   agreeToTermsAndConditions: boolean;
 }
 
-const initialState: RegisterFormData = {
+const initialState: Omit<RegisterFormData, 'location'> = {
   username: '',
   identity: initialGenderIdentityState,
   age: 18,
@@ -172,6 +178,7 @@ export const formSchema = schema<RegisterFormData>((path) => {
     DebugOutput,
     FormFieldInfo,
     IdentityForm,
+    LocationForm,
     Multiselect,
     FieldAriaAttributes,
     FormRoot,
@@ -185,9 +192,16 @@ export const formSchema = schema<RegisterFormData>((path) => {
 })
 export class RegistrationForm5 {
   readonly #registrationService = inject(RegistrationService);
-  protected readonly registrationModel = signal<RegisterFormData>(initialState);
 
-  protected readonly registrationForm = form(
+  // Created here (in injection context) because SignalFormControl requires inject()
+  protected readonly locationGroup = createLocationGroup();
+
+  protected readonly registrationModel = signal<RegisterFormData>({
+    ...initialState,
+    location: this.locationGroup,
+  });
+
+  protected readonly registrationForm = compatForm(
     this.registrationModel,
     formSchema,
     {
@@ -229,7 +243,7 @@ export class RegistrationForm5 {
 
   // Reset form
   protected resetForm() {
-    this.registrationModel.set(initialState);
+    this.registrationModel.set({ ...initialState, location: this.locationGroup });
     this.registrationForm().reset();
   }
 }

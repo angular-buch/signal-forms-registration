@@ -1,6 +1,7 @@
 import { JsonPipe } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { FieldTree } from '@angular/forms/signals';
+import { extractValue } from '@angular/forms/signals/compat';
 
 @Component({
   selector: 'app-debug-output',
@@ -10,4 +11,8 @@ import { FieldTree } from '@angular/forms/signals';
 })
 export class DebugOutput<T> {
   readonly form = input.required<FieldTree<T>>();
+
+  protected readonly valueJson = computed(() => {
+    return extractValue(this.form());
+  });
 }
