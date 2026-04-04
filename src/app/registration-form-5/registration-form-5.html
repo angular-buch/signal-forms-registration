@@ -22,6 +22,9 @@
   <!-- A whole child form with own model -->
   <app-identity-form [identity]="registrationForm.identity" />
 
+  <!-- A Reactive Forms child form with a SignalFormControl inside -->
+  <app-location-form [locationGroup]="registrationModel().location" />
+
   <!-- native HTML inputs bound with the [formField] directive -->
   <div>
     <label

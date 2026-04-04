@@ -1,0 +1,31 @@
+<fieldset [formGroup]="locationGroup()">
+  <legend>Location</legend>
+
+  <label>
+    Country
+    <select
+      formControlName="country"
+      aria-describedby="country-error"
+    >
+      <option value="">Please select</option>
+      <option value="DE">Germany</option>
+      <option value="AT">Austria</option>
+      <option value="CH">Switzerland</option>
+    </select>
+    @if (locationGroup().controls.country.touched && locationGroup().controls.country.invalid) {
+      <small id="country-error" class="error">Please select a country.</small>
+    }
+  </label>
+
+  <label>
+    City
+    <input
+      type="text"
+      formControlName="city"
+      aria-describedby="city-error"
+    />
+    @if (locationGroup().controls.city.touched && locationGroup().controls.city.invalid) {
+      <small id="city-error" class="error">Please enter a city.</small>
+    }
+  </label>
+</fieldset>
