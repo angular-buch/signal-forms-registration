@@ -191,6 +191,10 @@ export class RegistrationForm4 {
     this.registrationModel,
     formSchema,
     {
+      experimentalWebMcpTool: {
+        name: 'registerUser',
+        description: 'Registers a new user.',
+      },
       submission: {
         action: async (form) => {
           const errors: WithFieldTree<ValidationError>[] = [];

@@ -15,3 +15,42 @@ You can try the demo application on StackBlitz or as a live demo on GitHub Pages
 
 - **⚡️ Stackblitz:** [https://stackblitz.com/github/angular-buch/signal-forms-registration](https://stackblitz.com/github/angular-buch/signal-forms-registration)
 - **💻 Live Demo:** [https://angular-buch.github.io/signal-forms-registration/](https://angular-buch.github.io/signal-forms-registration/)
+
+## Test WebMCP
+
+1. Enable experimental Web MCP feature in the browser:
+
+   ```text
+   chrome://flags/#enable-webmcp-testing
+   ```
+
+2. Open [localhost:4200/version-4](http://localhost:4200/version-4)
+3. Test the registered tool by calling it using `modelContextTesting` API:
+
+  ```js
+  const result = await navigator.modelContextTesting.executeTool(
+    "registerUser",
+    JSON.stringify({
+      "username": "Hans",
+      "identity": {
+        "gender": "male",
+        "salutation": "",
+        "pronoun": ""
+      },
+      "age": 18,
+      "password": {
+        "pw1": "1234!uzab",
+        "pw2": "1234!uzab"
+      },
+      "email": [
+        "foo@bar.com"
+      ],
+      "newsletter": true,
+      "newsletterTopics": [
+        "Angular"
+      ],
+      "agreeToTermsAndConditions": true
+    })
+  );
+  console.log(JSON.parse(result));
+  ```
