@@ -1,25 +1,28 @@
 import { computed, Directive, input } from '@angular/core';
-import { FieldTree } from '@angular/forms/signals';
+import { FieldTree, FormField } from '@angular/forms/signals';
 
 @Directive({
-  selector: '[formFieldAria]',
+  selector: '[formField]',
   host: {
     '[aria-invalid]': 'ariaInvalid()',
     '[aria-busy]': 'ariaBusy()',
     '[aria-describedby]': 'ariaDescribedBy()',
     '[aria-errormessage]': 'ariaErrorMessage()',
   },
+  hostDirectives: [
+    { directive: FormField, inputs: ['formField'] }
+  ]
 })
 export class FieldAriaAttributes<T> {
-  readonly formFieldAria = input.required<FieldTree<T>>();
+  readonly formField = input.required<FieldTree<T>>();
   readonly fieldDescriptionId = input<string>();
 
   readonly ariaInvalid = computed(() => {
-    const state = this.formFieldAria()();
+    const state = this.formField()();
     return state.touched() && !state.pending() ? state.errors().length > 0 : undefined;
   });
   readonly ariaBusy = computed(() => {
-    const state = this.formFieldAria()();
+    const state = this.formField()();
     return state.pending();
   });
   readonly ariaDescribedBy = computed(() => {
