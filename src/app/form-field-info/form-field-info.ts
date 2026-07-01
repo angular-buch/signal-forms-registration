@@ -1,7 +1,7 @@
 import { Component, computed, input, signal } from '@angular/core';
 import { FieldTree } from '@angular/forms/signals';
 
-import { FIELD_INFO } from '../form-props';
+import { FIELD_INFO, FIELD_WARN } from '../form-props';
 
 @Component({
   selector: 'app-form-field-info',
@@ -23,6 +23,12 @@ export class FormFieldInfo<T> {
     } else if (field.metadata(FIELD_INFO)) {
       messages = [{ info: field.metadata(FIELD_INFO)?.()!, cssClass: field.valid() ? 'valid': 'info' }];
     }
+
     return messages;
+  });
+
+  protected readonly warnMessage = computed(() => {
+    const field = this.fieldRef()();
+    return field.touched() && field.metadata(FIELD_WARN)?.();
   });
 }
