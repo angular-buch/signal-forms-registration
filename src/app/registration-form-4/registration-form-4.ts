@@ -26,7 +26,7 @@ import {
 import { BackButton } from '../back-button/back-button';
 import { DebugOutput } from '../debug-output/debug-output';
 import { FormFieldInfo } from '../form-field-info/form-field-info';
-import { FIELD_INFO } from '../form-props';
+import { FIELD_INFO, FIELD_WARN } from '../form-props';
 import { FieldAriaAttributes } from '../field-aria-attributes';
 import {
   GenderIdentity,
@@ -112,6 +112,11 @@ export const formSchema = schema<RegisterFormData>((path) => {
     email(emailPath, { message: 'E-mail format is invalid.' });
   });
   metadata(path.email, FIELD_INFO, () => 'Please enter at least one valid E-mail address');
+  metadata(
+    path.email,
+    FIELD_WARN,
+    (mail) => mail.value().length > 0 ? 'You have entered more than one email address. Only the first email address is the primary one and is used for account management. Any additional addresses are used solely for receiving the newsletter.' : null,
+  );
 
   // Password validation
   required(path.password.pw1, { message: 'A password is required.' });
@@ -125,6 +130,11 @@ export const formSchema = schema<RegisterFormData>((path) => {
     path.password.pw1,
     new RegExp('^.*[!@#$%^&*(),.?":{}|<>\\[\\]\\\\/~`_+=;\'\\-].*$'),
     { message: 'The password must contain at least one special character.' },
+  );
+  metadata(
+    path.password.pw1,
+    FIELD_WARN,
+    (pass) => pass.value().length < 12 ? 'Passwords with <12 characters are potentially insecure. Please consider to use a more secure one' : null,
   );
   validateTree(path.password, (ctx) => {
     return ctx.value().pw2 === ctx.value().pw1
